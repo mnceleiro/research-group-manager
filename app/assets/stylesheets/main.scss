@@ -1,0 +1,104 @@
+@import "utils/layout";
+@import "utils/reset";
+
+/* TODO: Ver como arreglar este tipo de URLs relativas enormes */
+@import "../../../target/web/public/main/lib/bootstrap-sass/stylesheets/bootstrap";
+
+/* Variables */
+$sidebar_color: #2A3F54;
+$default_font_color: white;
+
+html, body {height: 100%}
+
+.container-fluid-rgm {
+	@extend .container-fluid;
+	padding-left: 0px;
+}
+
+#main-container {
+	height: 100%;
+	min-height: 100%;
+}
+
+#menu {
+	background-color: $sidebar_color;
+	min-height: 100%;
+}
+
+#menu a {
+	color: $default_font_color;
+	font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+}
+
+#menu a:hover {
+	background-color: rgba(255, 255, 255, 0.0470588);
+    background-image: linear-gradient(rgb(51, 69, 86), rgb(44, 66, 87)), initial;
+	box-shadow: rgba(0,0,0,0.25) 0 1px 0, inset rgba(255,255,255,0.16) 0 1px 0
+}
+
+#menu h3 {
+	color: white;
+	text-decoration: underline;
+}
+
+#menu a h3 {
+	color: #1ABB9C;
+}
+
+.rgm-menu-section {
+	padding-left: 45px;
+}
+
+.rgm-profile-section {
+	padding-left: 25px;
+}
+
+.nav.side-menu > li > a > i {
+	padding: 10px;
+}
+
+#navbar {
+	background-color: #EDEDED;
+	padding-top:15px;
+	padding-left:15px;
+	padding-bottom:15px;
+}
+
+.profile_img {
+	max-width: 60px;
+	float: left;
+	margin: 15px 0px 0px 0px;
+}
+
+.profile_info h2 {
+	font-size: 1.2em;
+	font-weight: bold;
+	float: left;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.profile_info {
+	padding-top: 20px;
+	padding-left: 5px;
+}
+
+.navbar.nav_title {
+	padding: 25px 5px 15px 0px;
+}
+
+.navbar.nav_title a {
+	padding: 15px 5px 15px 0px;
+}
+.navbar.nav_title > a > span {
+	padding-left: 20px;
+	padding-top: 0px;
+	font-weight: bold;
+}
+.navbar.nav_title > a > i {
+	vertical-align: middle;
+}
+
+.right-col {
+	padding-left: 0px;
+}
