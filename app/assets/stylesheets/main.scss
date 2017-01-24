@@ -10,6 +10,28 @@ $default_font_color: white;
 
 html, body {height: 100%}
 
+body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	color: #333333;
+	background-color: #fff;
+}
+
+@media (min-width:1024px) {
+	.nav-md > #main-container > .content-column {
+		margin-left: 230px;
+	}
+}
+
+@media (max-width: 1024px) {
+	.nav-md #menu {
+		display: none;
+	}
+	.nav-md>#main-container>.content-column {
+		margin-left: 0px;
+	}
+}
+
 .container-fluid-rgm {
 	@extend .container-fluid;
 	padding-left: 0px;
@@ -18,16 +40,27 @@ html, body {height: 100%}
 #main-container {
 	height: 100%;
 	min-height: 100%;
+	padding-right: 0px;
 }
 
+.nav-md > #main-container > #menu {
+	width: 230px;
+}
+
+/* SIDEBAR MENU STILES */
 #menu {
 	background-color: $sidebar_color;
 	min-height: 100%;
+	position: absolute;
 }
 
 #menu a {
 	color: $default_font_color;
 	font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+}
+
+#menu a > i {
+	vertical-align: middle;
 }
 
 #menu a:hover {
@@ -39,36 +72,57 @@ html, body {height: 100%}
 #menu h3 {
 	color: white;
 	text-decoration: underline;
+	font-size: 1.3em;
+	text-align: left;
+	padding-left: 25px;
 }
 
-#menu a h3 {
-	color: #1ABB9C;
+/* SIDEBAR MENU STYLES FOR MOBILE */
+.nav-sm > #main-container > #menu {
+	width: 80px;
+	padding-left: 0px;
+	padding-right: 0px;
+	font-size: 0.8em;
 }
 
 .rgm-menu-section {
-	padding-left: 45px;
+	text-align: center;
+}
+
+.rgm-menu-section-title {
+
 }
 
 .rgm-profile-section {
-	padding-left: 25px;
+	padding-left: 15px;
 }
 
 .nav.side-menu > li > a > i {
 	padding: 10px;
 }
 
-#navbar {
+.top-nav {
 	background-color: #EDEDED;
 	padding-top:15px;
 	padding-left:15px;
 	padding-bottom:15px;
 }
 
-.profile_img {
+#menu .profile-img {
 	max-width: 60px;
 	float: left;
+	padding:4px;
 	margin: 15px 0px 0px 0px;
+	background: #fff;
 }
+
+.top-nav .profile-img {
+	max-width: 40px;
+}
+.top-nav .profile-text {
+	padding-left: 8px;
+}
+
 
 .profile_info h2 {
 	font-size: 1.2em;
@@ -80,7 +134,7 @@ html, body {height: 100%}
 
 .profile_info {
 	padding-top: 20px;
-	padding-left: 5px;
+	padding-left: 10px;
 }
 
 .navbar.nav_title {
@@ -88,7 +142,7 @@ html, body {height: 100%}
 }
 
 .navbar.nav_title a {
-	padding: 15px 5px 15px 0px;
+	padding: 10px 5px 10px 5px;
 }
 .navbar.nav_title > a > span {
 	padding-left: 20px;
@@ -99,6 +153,18 @@ html, body {height: 100%}
 	vertical-align: middle;
 }
 
-.right-col {
+.content-column {
 	padding-left: 0px;
+}
+
+.nav-sm > #main-container > .content-column {
+	margin-left: 80px;
+}
+
+.top-nav {
+	color: #515356;
+}
+.top-nav > .user {
+	float: right;
+	padding: 0px 20px 5px 0px;
 }

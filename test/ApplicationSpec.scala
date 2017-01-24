@@ -8,7 +8,6 @@ import play.api.test.Helpers._
  * For more information, consult the wiki.
  */
 class ApplicationSpec extends PlaySpec with OneAppPerTest {
-
   "Routes" should {
 
     "send 404 on a bad request" in  {
@@ -24,7 +23,7 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
 
       status(home) mustBe OK
       contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Your new application is ready.")
+      contentAsString(home) must include ("Research Group Manager")
     }
 
   }
