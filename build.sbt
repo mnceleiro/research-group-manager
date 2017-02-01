@@ -15,6 +15,7 @@ libraryDependencies += "com.typesafe.play" %% "play-slick" % "2.0.2"
 libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "2.0.2"
 libraryDependencies += cache
 libraryDependencies += ws
+libraryDependencies += evolutions
 libraryDependencies += "org.webjars" %% "webjars-play" % "2.5.0"
 libraryDependencies += "org.webjars" % "jquery" % "3.1.1-1"
 libraryDependencies += "org.webjars" % "bootstrap-sass" % "3.3.7" exclude("org.webjars", "jquery")

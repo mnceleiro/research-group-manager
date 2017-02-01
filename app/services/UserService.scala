@@ -3,22 +3,22 @@ package services
 import scala.concurrent.Future
 
 import models.entities.User
-import models.entities.Users
+import models.repositories.UserRepository
 
 object UserService {
   def add(user: User): Future[String] = {
-    Users.add(user)
+    UserRepository.add(user)
   }
 
   def delete(id: Long): Future[Int] = {
-    Users.delete(id)
+    UserRepository.delete(id)
   }
 
   def get(id: Long): Future[Option[User]] = {
-    Users.get(id)
+    UserRepository.get(id)
   }
 
   def listAll: Future[Seq[User]] = {
-    Users.listAll
+    UserRepository.listAll
   }
 }
