@@ -1,3 +1,5 @@
+resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
+
 // The Play plugin
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.10")
 
@@ -22,3 +24,5 @@ addSbtPlugin("org.foundweekends.giter8" % "sbt-giter8-scaffold" % "0.7.1")
 addSbtPlugin("org.irundaia.sbt" % "sbt-sassify" % "1.4.8")
 
 addSbtPlugin("com.github.ddispaltro" % "sbt-reactjs" % "0.6.8")
+
+//addSbtPlugin("com.github.stonexx.sbt" % "sbt-babeljs" % "1.0.5")

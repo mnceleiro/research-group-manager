@@ -9,6 +9,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 scalaVersion := "2.11.8"
 
 SassKeys.syntaxDetection := ForceScss
+JsEngineKeys.engineType := JsEngineKeys.EngineType.Node
 
 libraryDependencies += "com.h2database" % "h2" % "1.4.193"
 libraryDependencies += "com.typesafe.play" %% "play-slick" % "2.0.2"
@@ -23,5 +24,6 @@ libraryDependencies += "org.webjars.bower" % "compass-mixins" % "0.12.10"
 libraryDependencies += "org.webjars" % "font-awesome" % "4.7.0"
 libraryDependencies += "org.webjars" % "requirejs" % "2.3.2" exclude("org.webjars", "jquery")
 libraryDependencies += "org.webjars" % "react" % "15.3.2"
+libraryDependencies += "org.webjars.bower" % "react-router" % "4.0.0-2"
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
 

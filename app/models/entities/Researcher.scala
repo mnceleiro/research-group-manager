@@ -7,4 +7,4 @@ import slick.driver.JdbcProfile
 import slick.driver.MySQLDriver.api._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-case class User(id: Long, firstName: String, lastName: String, email: String)
+case class Researcher(id: Long, firstName: String, lastName: String, email: String)

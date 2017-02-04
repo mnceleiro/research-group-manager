@@ -5,19 +5,19 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json._
 
-import models.entities.User
-import services.UserService
+import models.entities.Researcher
+import services.ResearcherService
 import scala.concurrent.Future
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import play.api.db.slick.DatabaseConfigProvider
 
-class UserController @Inject()(dbConfigProvider: DatabaseConfigProvider) extends Controller {
+class ResearcherController @Inject()(dbConfigProvider: DatabaseConfigProvider) extends Controller {
   def getAll = Action {
-    val users = UserService.listAll
-    implicit val userWrites = Json.writes[User]
+    val researchers = ResearcherService.listAll
+    implicit val userWrites = Json.writes[Researcher]
     
-    val userList = Await.result(users, 3 second)
+    val userList = Await.result(researchers, 3 second)
     Ok(Json.toJson(userList))
   }
 

@@ -17,7 +17,7 @@ two arguments, a `String` for the title of the page and an `Html` * object to in
 <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
 
 <script src="@routes.Assets.versioned("lib/jquery/jquery.min.js")" type="text/javascript"></script>
-<script src="@routes.Assets.versioned("lib/bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
+<script src="@routes.Assets.versioned("lib/bootstrap-sass/javascripts/bootstrap.min.js")" type="text/javascript"></script>
 <script src="@routes.Assets.versioned("lib/react/react.js")" type="text/javascript"></script>
 <script src="@routes.Assets.versioned("lib/react/react-dom.js")" type="text/javascript"></script>
 
@@ -85,15 +85,17 @@ two arguments, a `String` for the title of the page and an `Html` * object to in
 					<span class="profile-text">Marcos Núñez</span>
 				</div>
 			</div>
+			
+			<div id="reactApp" class="content"></div>
 		</div>
 	</div>
 	
 	<script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/App.js")" type="text/javascript"></script>
 	
 	<script>
-		$.get("users/all", function(respuestaSolicitud){
-			debugger;
-		   alert(respuestaSolicitud);
+		$.get("researchers/all", function(respuestaSolicitud){
+		   //alert(respuestaSolicitud);
 		});
 	</script>
 </body>
