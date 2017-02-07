@@ -2,6 +2,10 @@
 
 Aplicación web destinada a la gestión de un grupo de investigación y realizada en Scala. Esta aplicación permitirá la gestión de investigadores, publicaciones y calendarios del grupo.
 
+## Estado
+
+El proyecto se encuentra en la etapa inicial de su desarrollo.
+
 ### Requisitos
 
 1. Instalar SBT o Activator y añadirlo al PATH.
@@ -27,17 +31,14 @@ Esto iniciará el servidor web y abrirá el navegador en localhost:9000.
 * [Slick](http://slick.lightbend.com/) - Acceso a datos
 
 ## Gestión de dependencias
+
 * [SBT] (http://www.scala-sbt.org/)
 * [NPM] (https://www.npmjs.com/)
 
-## Librerias
+## Módulos & Librerias
 
 * [Webpack] (https://webpack.js.org/)
 * [BrowserSync](https://browsersync.io/)
 * [sass] (http://sass-lang.com/)
 * [jQuery] (https://jquery.com/)
 * [Bootstrap] (http://getbootstrap.com/)
-
-## Estado
-
-El proyecto se encuentra en la etapa inicial de su desarrollo.

@@ -13,7 +13,7 @@ server.pid
 /dist/
 .cache
 .cache-main
-.cache_tests
+.cache-tests
 sbt.bat
 sbt
 /sbt-dist/
