@@ -1,8 +1,8 @@
 @import "utils/layout";
 @import "utils/reset";
 
-/* TODO: Ver como arreglar este tipo de URLs relativas enormes */
-@import "lib/bootstrap-sass/stylesheets/bootstrap";
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
 /* Variables */
 $sidebar_color: #2A3F54;
@@ -167,4 +167,21 @@ body {
 .top-nav > .user {
 	float: right;
 	padding: 0px 20px 5px 0px;
+}
+
+.content {
+	margin: 25px;
+}
+
+/** TABLES **/
+.headings {
+	color: #ECF0F1;
+}
+.table > thead {
+	background: rgba(52,73,94,.94);
+  color: #ECF0F1;
+}
+
+.table td, .table th {
+	padding: 8px;
 }
