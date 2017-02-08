@@ -1,21 +1,20 @@
-import React from 'react' 
-import ResearcherList from './ResearcherList'
+import React from "react" 
+import ResearcherList from "./ResearcherList"
 
 class ResearcherTable extends React.Component {
-  
   constructor(props) {
     super(props)
     this.state = { researchers: [] }
   }
   
   componentWillMount() {
-    fetch('researchers/all')
+    fetch("researchers/all")
       .then(resp => { return resp.json() })
       .then(researcherList => { 
         this.setState({
           researchers: researcherList
         })
-    })
+      })
   }
   
   render() {

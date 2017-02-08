@@ -1,5 +1,5 @@
-import React from 'react'
-import ResearcherRow from './ResearcherRow'
+import React from "react"
+import ResearcherRow from "./ResearcherRow"
 
 class ResearcherList extends React.Component {
 
@@ -24,6 +24,10 @@ class ResearcherList extends React.Component {
       </table>
     )
   }
+}
+
+ResearcherList.propTypes = {
+  list: React.PropTypes.array.isRequired
 }
 
 export default ResearcherList
