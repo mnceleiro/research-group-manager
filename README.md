@@ -13,6 +13,7 @@ El proyecto se encuentra en la etapa inicial de su desarrollo.
 3. Instalación de un IDE. Para el desarrollo se ha utilizado Scala IDE (Eclipse + plugin de Scala).
 4. Descargar e instalar el gestor de paquetes NPM.
 5. Instalar Webpack de forma global con NPM: npm install webpack -g
+6. Copiar el fichero git-hooks/pre-push en .git/hooks. Puede hacerse a mano o ejecutando el comando "sbt run" desde la carpeta "git-hooks".
 
 ### Ejecución
 

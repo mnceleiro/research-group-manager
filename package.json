@@ -5,10 +5,11 @@
   "scripts": {
     "watch": "webpack --watch",
     "prod": "webpack -p",
-    "compile": "webpack"
+    "compile": "webpack",
+    "eslint": "eslint ui"
   },
   "pre-commit": [
-    "webpack"
+    "eslint"
   ],
   "dependencies": {
     "jquery": "^3.1.1",
