@@ -1,3 +1,4 @@
+#!/bin/sh
 if test $(sbt compile | grep -c -E "failed") != 0
 then 
     echo "ERROR"
