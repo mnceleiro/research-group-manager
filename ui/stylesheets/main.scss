@@ -7,6 +7,7 @@ $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 /* Variables */
 $sidebar_color: #2A3F54;
 $default_font_color: white;
+$rgm_base_color: #2A3F54;
 
 html, body {height: 100%}
 
@@ -20,6 +21,14 @@ body {
 @media (min-width:1024px) {
 	.nav-md > #main-container > .content-column {
 		margin-left: 230px;
+	}
+	.nav-md .rgm-menu-section a {
+		padding-left: 35px !important;
+		text-align:left;
+	}
+	
+	td > button {
+	  width: 90%;
 	}
 }
 
@@ -45,6 +54,13 @@ body {
 
 .nav-md > #main-container > #menu {
 	width: 230px;
+}
+
+div .panel-right {
+	padding-bottom: 15px;
+	padding-left: 15px;
+	padding-right: 25px;
+	text-align: right;
 }
 
 /* SIDEBAR MENU STILES */
@@ -123,6 +139,9 @@ body {
 	padding-left: 8px;
 }
 
+a.site-title:hover {
+	text-decoration: none;
+}
 
 .profile_info h2 {
 	font-size: 1.2em;
@@ -184,4 +203,35 @@ body {
 
 .table td, .table th {
 	padding: 8px;
+}
+
+.table-listing {
+	border: 1px solid rgba(221, 221, 221, 0.78)
+}
+
+/** BUTTONS **/
+.rgm-btn-primary {
+	@extend .btn-primary;
+	background-color: $rgm_base_color;
+	border-radius: 0px;
+}
+
+.rgm-btn-default {
+	@extend .btn-default;
+	border-radius: 0px;
+}
+
+.rgm-btn-lg {
+  font-size: 1.1em;
+  padding-left: 45px;
+  padding-right: 45px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+@media (max-width:750px) {
+	.rgm-btn-lg {
+    padding-left:20px;
+    padding-right:20px;
+	}
 }

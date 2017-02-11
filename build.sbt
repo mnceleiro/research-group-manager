@@ -6,7 +6,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 PlayKeys.playRunHooks += Webpack(baseDirectory.value)
 
-fork in run := true
+fork in run := false
 
 scalaVersion := "2.11.8"
 

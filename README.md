@@ -23,12 +23,26 @@ Una vez cumplidos los requisitos anteriores, abrir un terminal, situarse en el d
 sbt run
 ```
 
-Esto iniciará el servidor web y abrirá el navegador en localhost:9000.
+En caso de tener instalado nodejs este comando iniciará el servidor web y abrirá el navegador en localhost:9001 utilizando browsersync para recargar automáticamente la página con cada cambio. En caso de no tenerlo instalado habrá que hacer esto manualmente y acceder desde localhost:9000.
+
+## Posibles problemas
+
+```
+ENOENT: no such file or directory, scandir ".../node_modules/node-sass/vendor"
+```
+
+En caso de encontrarte con este error ejecutar:
+
+```
+npm rebuild node-sass
+```
+
+Con esto debería funcionar correctamente.
+
 
 ## Frameworks
 
 * [Play Framework 2.5](https://www.playframework.com/) - Framework web
-* [React](https://facebook.github.io/react/) - Frontend
 * [Slick](http://slick.lightbend.com/) - Acceso a datos
 
 ## Gestión de dependencias
@@ -38,8 +52,12 @@ Esto iniciará el servidor web y abrirá el navegador en localhost:9000.
 
 ## Módulos & Librerias
 
+* [React] (https://facebook.github.io/react/)
 * [Webpack] (https://webpack.js.org/)
-* [BrowserSync](https://browsersync.io/)
-* [sass] (http://sass-lang.com/)
+* [Babel] (https://babeljs.io/)
+* [BrowserSync] (https://browsersync.io/)
+* [ESLint](http://eslint.org/)
+* [SASS] (http://sass-lang.com/)
 * [jQuery] (https://jquery.com/)
 * [Bootstrap] (http://getbootstrap.com/)
+* [Font Awesome] (http://fontawesome.io/)

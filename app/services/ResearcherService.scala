@@ -17,6 +17,10 @@ object ResearcherService {
   def get(id: Long): Future[Option[Researcher]] = {
     ResearcherRepository.get(id)
   }
+  
+  def update(researcher: Researcher): Future[String] = {
+    ResearcherRepository.update(researcher)
+  }
 
   def listAll: Future[Seq[Researcher]] = {
     ResearcherRepository.listAll

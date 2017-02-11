@@ -42,7 +42,7 @@ object Webpack {
 
       override def afterStarted(addr: InetSocketAddress): Unit = {
 //        watchProcess = Some(Process("cmd /c webpack --watch", base).run)
-        watchProcess = Some(Process(getCommand("npm run watch"), base).run)
+        watchProcess = Some(Process(getCommand("npm run compile"), base).run)
       }
 
       override def afterStopped(): Unit = {

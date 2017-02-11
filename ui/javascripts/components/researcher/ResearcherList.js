@@ -5,19 +5,27 @@ class ResearcherList extends React.Component {
 
   render() {
     return (
-      <table className="table">
+      <table className="table table-striped table-listing">
         <thead>
-          <th>Nombre</th>
-          <th>Apellidos</th>
-          <th>Correo</th>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Correo</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th></th>
+          </tr>
         </thead>
         <tbody>
         {
           this.props.list.map(r => {
             return <ResearcherRow key={ r.id }
+                                id={ r.id }
                                 name={ r.firstName }
                                 surname={ r.lastName }
-                                email={ r.email } />
+                                email={ r.email } 
+                                address={ r.address } 
+                                phone={ r.phone } />
           })
         }
         </tbody>

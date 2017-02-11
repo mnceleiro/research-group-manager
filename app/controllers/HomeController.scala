@@ -17,7 +17,7 @@ class HomeController @Inject() extends Controller {
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index = Action {
+  def index(any: String) = Action {
     Ok(views.html.index("Research Group Manager"))
   }
 
