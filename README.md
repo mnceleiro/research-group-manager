@@ -14,6 +14,9 @@ El proyecto se encuentra en la etapa inicial de su desarrollo.
 4. Descargar e instalar el gestor de paquetes NPM.
 5. Instalar Webpack de forma global con NPM: npm install webpack -g
 6. Copiar el fichero git-hooks/pre-push en .git/hooks. Puede hacerse a mano o ejecutando el comando "sbt run" desde la carpeta "git-hooks".
+7. (OPCIONAL) Instalar NodeJS para poder iniciar un servidor que recargue la página automáticamente con cada cambio.
+
+Está pendiente de dar en este README información adicional sobre las versiones mínimas de algunas de las tecnologías anteriores.
 
 ### Ejecución
 
@@ -23,7 +26,12 @@ Una vez cumplidos los requisitos anteriores, abrir un terminal, situarse en el d
 sbt run
 ```
 
-En caso de tener instalado nodejs este comando iniciará el servidor web y abrirá el navegador en localhost:9001 utilizando browsersync para recargar automáticamente la página con cada cambio. En caso de no tenerlo instalado habrá que hacer esto manualmente y acceder desde localhost:9000.
+Opcionalmente se puede ejecutar también el siguiente comando en otro terminal (Es necesario tener instalado NodeJS):
+```
+npm run watch
+```
+
+Se iniciará otro servidor web y abrirá el navegador en localhost:9001 utilizando browsersync para recargar automáticamente la página con cada cambio. En caso de no ejecutar este último comando se deberá acceder a la aplicación web desde localhost:9000.
 
 ## Posibles problemas
 
