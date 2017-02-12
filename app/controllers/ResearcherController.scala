@@ -13,9 +13,9 @@ import play.api.libs.json._
 import play.api.mvc._
 import services.ResearcherService
 
-class ResearcherController @Inject()(dbConfigProvider: DatabaseConfigProvider) extends Controller {
+class ResearcherController @Inject()(researcherService: ResearcherService) extends Controller {
   def getAll = Action {
-    val researchers = ResearcherService.listAll
+    val researchers = researcherService.listAll
     implicit val userWrites = Json.writes[Researcher]
     val userList = Await.result(researchers, 3 second)
     
@@ -23,7 +23,7 @@ class ResearcherController @Inject()(dbConfigProvider: DatabaseConfigProvider) e
   }
   
   def get(id: Int) = Action {
-    val researcher = ResearcherService.get(id)
+    val researcher = researcherService.get(id)
     implicit val userWrites = Json.writes[Researcher]
     val researcherResult = Await.result(researcher, 3 second)
     
@@ -36,8 +36,8 @@ class ResearcherController @Inject()(dbConfigProvider: DatabaseConfigProvider) e
     // TODO: Mejorar el codigo de conversion de JSON a objetos
     val jsonObject = request.body.asJson
     val res: Researcher = Json.fromJson[Researcher](jsonObject.get).get
-    if (res.id <= 0) ResearcherService.add(res)
-    else ResearcherService.update(res)
+    if (res.id <= 0) researcherService.add(res)
+    else researcherService.update(res)
     
     Ok("OK")
   }

@@ -7,6 +7,7 @@ import slick.driver.JdbcProfile
 import slick.driver.MySQLDriver.api._
 import scala.concurrent.ExecutionContext.Implicits.global
 import models.entities.Researcher
+import com.google.inject.Inject
 
 class ResearcherTable(tag: Tag) extends Table[Researcher](tag, "USER") {
 
@@ -22,10 +23,9 @@ class ResearcherTable(tag: Tag) extends Table[Researcher](tag, "USER") {
     (id, email, firstName, lastName, signatureName, address, phone) <> ((Researcher.apply _).tupled, Researcher.unapply)
 }
 
-object ResearcherRepository {
+class ResearcherRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
 
-  val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
-
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
   val users = TableQuery[ResearcherTable]
 
   def add(user: Researcher): Future[String] = {

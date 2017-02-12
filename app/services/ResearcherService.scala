@@ -4,25 +4,28 @@ import scala.concurrent.Future
 
 import models.entities.Researcher
 import models.repositories.ResearcherRepository
+import models.repositories.ResearcherRepository
+import com.google.inject.Inject
+import models.repositories.ResearcherRepository
 
-object ResearcherService {
+class ResearcherService @Inject()(repo: ResearcherRepository) {
   def add(researcher: Researcher): Future[String] = {
-    ResearcherRepository.add(researcher)
+    repo.add(researcher)
   }
 
   def delete(id: Long): Future[Int] = {
-    ResearcherRepository.delete(id)
+    repo.delete(id)
   }
 
   def get(id: Long): Future[Option[Researcher]] = {
-    ResearcherRepository.get(id)
+    repo.get(id)
   }
   
   def update(researcher: Researcher): Future[String] = {
-    ResearcherRepository.update(researcher)
+    repo.update(researcher)
   }
 
   def listAll: Future[Seq[Researcher]] = {
-    ResearcherRepository.listAll
+    repo.listAll
   }
 }
