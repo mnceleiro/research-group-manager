@@ -1,6 +1,6 @@
 # Research Group Manager
 
-Aplicación web destinada a la gestión de un grupo de investigación y realizada en Scala. Esta aplicación permitirá la gestión de investigadores, publicaciones y calendarios del grupo.
+Como trabajo fin de grado se realiza una aplicación web destinada a la gestión de un grupo de investigación y realizada en Scala. Esta aplicación permitirá la gestión de investigadores, publicaciones y calendarios del grupo.
 
 ## Estado
 
@@ -20,18 +20,25 @@ Está pendiente de dar en este README información adicional sobre las versiones
 
 ### Ejecución
 
-Una vez cumplidos los requisitos anteriores, abrir un terminal, situarse en el directorio del proyecto y ejecutar el siguiente comando:
+Primero, realizaremos la compilación de los ficheros de la vista. Abrir un terminal y ejecutar el siguiente comando:
+
+```
+npm run compile
+```
+
+Posteriormente ejecutamos el servidor web de la aplicación en localhost:9000:
 
 ```
 sbt run
 ```
 
-Opcionalmente se puede ejecutar también el siguiente comando en otro terminal (Es necesario tener instalado NodeJS):
+Si se desea recompilar los ficheros de la vista con cada cambio puede abrirse un nuevo terminal y ejecutar lo siguiente:
+
 ```
 npm run watch
 ```
 
-Se iniciará otro servidor web y abrirá el navegador en localhost:9001 utilizando browsersync para recargar automáticamente la página con cada cambio. En caso de no ejecutar este último comando se deberá acceder a la aplicación web desde localhost:9000.
+Esto, si se dispone de NodeJS instalado, iniciará también un servidor web y abrirá un navegador en localhost:9001 el cuál se recargará automáticamente con cada cambio.
 
 ## Posibles problemas
 
