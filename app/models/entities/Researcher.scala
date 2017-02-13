@@ -1,16 +1,12 @@
 package models.entities
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
-import play.api.Play
-import play.api.db.slick.DatabaseConfigProvider
 import play.api.data.Form
 import play.api.data.Forms._
-import slick.driver.JdbcProfile
-import slick.driver.MySQLDriver.api._
-import play.api.libs.json._ 
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
+import play.api.libs.functional.syntax.unlift
 import play.api.libs.json.Reads._
-import play.api.libs.functional.syntax._
+import play.api.libs.json.Writes
+import play.api.libs.json.__
 
 
 final case class Researcher(id: Long,  email: String, firstName: String, lastName: String, signatureName: String, address: String, phone: String)
