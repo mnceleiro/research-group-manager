@@ -81,6 +81,12 @@ class ResearcherForm extends React.Component {
               </div>
           </div>
           <div className="form-group">
+            <label className="control-label col-xs-3 col-md-2" htmlFor="signatureName">Firma:</label>
+            <div className="col-xs-9 col-md-9">
+                <input type="text" className="form-control" id="signatureName" name="signatureName" placeholder="Firma" value={this.state.signatureName} onChange={this.handleChange} />
+            </div>
+        </div>
+          <div className="form-group">
               <label className="control-label col-xs-3 col-md-2" htmlFor="phone">Telefono:</label>
               <div className="col-xs-9 col-md-9">
                   <input type="tel" className="form-control" id="phone" name="phone" placeholder="Telefono" value={this.state.phone} onChange={this.handleChange} />
@@ -113,7 +119,7 @@ class ResearcherForm extends React.Component {
         "Content-Type": "application/json"
       })
     })
-    
+
     fetch(request, {
       method: "POST",
       body: JSON.stringify(this.state)

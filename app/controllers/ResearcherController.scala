@@ -4,6 +4,7 @@ import scala.concurrent.Await
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
+import play.api.i18n.Messages.Implicits._
 import javax.inject._
 import models.entities.Researcher
 import play.api._
@@ -30,15 +31,21 @@ class ResearcherController @Inject()(researcherService: ResearcherService) exten
     Ok(Json.toJson(researcherResult))
   }
   
-  def addOrUpdate = Action { implicit request => 
+  def add = Action { implicit request => 
     implicit val userReads = Json.reads[Researcher]
     
-    // TODO: Mejorar el codigo de conversion de JSON a objetos
-    val jsonObject = request.body.asJson
-    val res: Researcher = Json.fromJson[Researcher](jsonObject.get).get
-    if (res.id <= 0) researcherService.save(res)
-    else researcherService.update(res)
+//    val jsonObject = request.body.asJson.get
+//    val res: Researcher = Json.fromJson[Researcher](jsonObject).get
+//    if (res.id <= 0) {
+      Researcher.researcherForm.bindFromRequest.fold(
+        errorForm => Future.failed(new Exception), 
+        data => {
+          researcherService.save(data)
+        }
+      )
+//    }
+//    else researcherService.update(res)
     
-    Ok("OK")
+    NoContent
   }
 }

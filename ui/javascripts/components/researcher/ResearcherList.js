@@ -11,6 +11,7 @@ class ResearcherList extends React.Component {
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Correo</th>
+            <th>Firma</th>
             <th>Dirección</th>
             <th>Teléfono</th>
             <th></th>
@@ -23,6 +24,7 @@ class ResearcherList extends React.Component {
                                 id={ r.id }
                                 name={ r.firstName }
                                 surname={ r.lastName }
+                                signaturename={ r.signatureName }
                                 email={ r.email } 
                                 address={ r.address } 
                                 phone={ r.phone } />

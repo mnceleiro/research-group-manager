@@ -1,7 +1,7 @@
 GET     /                           controllers.HomeController.index(any = "none")
 GET     /researchers/all            controllers.ResearcherController.getAll
 GET     /researchers/id/:id         controllers.ResearcherController.get(id: Int)
-POST    /researchers/add            controllers.ResearcherController.addOrUpdate
+POST    /researchers/add            controllers.ResearcherController.add
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

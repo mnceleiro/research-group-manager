@@ -19,7 +19,7 @@ class ResearcherRepositorySpec extends PlaySpec with OneAppPerSuite with BeforeA
   val researcherRepo = app.injector.instanceOf[ResearcherRepository]
   
   before {
-
+  
   }
 
   "ResearcherRepository" should {
@@ -46,29 +46,13 @@ class ResearcherRepositorySpec extends PlaySpec with OneAppPerSuite with BeforeA
         }
         case Failure(e) => throw e
       }
-      
     }
 
     "add Alan Mathison Turing as Researcher" in {
       
       val res = Researcher(0, "aturing@paddington.com", "1234", "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123")
-      researcherRepo.add(res) onSuccess {
-        case r: Researcher => {
-    		  r.id mustBe 6
-    		  r.email mustBe "aturing@paddington.com"
-    		  r.password mustBe "1234"
-        	r.firstName mustBe "Alan"
-        	r.lastName mustBe "Mathison Turing"
-          r.signatureName mustBe "Alan Mathison-Turing"
-          r.address mustBe "Paddington 18"
-          r.phone mustBe "9825312123"
-        }
-      }
-      
-//      researcherRepo.get(6) onComplete {
-//        case Failure(e) => println("ERROR " + e.getMessage); throw e
-//        case Success(resOpt) => {
-//          val r = resOpt.getOrElse(throw new NoSuchElementException)
+//      researcherRepo.save(res) onSuccess {
+//        case r: Researcher => {
 //    		  r.id mustBe 6
 //    		  r.email mustBe "aturing@paddington.com"
 //    		  r.password mustBe "1234"

@@ -209,7 +209,7 @@ a.site-title:hover {
 	border: 1px solid rgba(221, 221, 221, 0.78)
 }
 
-/** BUTTONS **/
+/** FORMS **/
 .rgm-btn-primary {
 	@extend .btn-primary;
 	background-color: $rgm_base_color;
@@ -234,4 +234,8 @@ a.site-title:hover {
     padding-left:20px;
     padding-right:20px;
 	}
+}
+
+.form-control {
+	border-radius: 0px;
 }
