@@ -62,17 +62,17 @@ Con esto debería funcionar correctamente.
 
 ## Gestión de dependencias
 
-* [SBT] (http://www.scala-sbt.org/)
-* [NPM] (https://www.npmjs.com/)
+* [SBT](http://www.scala-sbt.org/)
+* [NPM](https://www.npmjs.com/)
 
 ## Módulos & Librerias
 
-* [React] (https://facebook.github.io/react/)
-* [Webpack] (https://webpack.js.org/)
-* [Babel] (https://babeljs.io/)
-* [BrowserSync] (https://browsersync.io/)
+* [React](https://facebook.github.io/react/)
+* [Webpack](https://webpack.js.org/)
+* [Babel](https://babeljs.io/)
+* [BrowserSync](https://browsersync.io/)
 * [ESLint](http://eslint.org/)
-* [SASS] (http://sass-lang.com/)
-* [jQuery] (https://jquery.com/)
-* [Bootstrap] (http://getbootstrap.com/)
-* [Font Awesome] (http://fontawesome.io/)
+* [SASS](http://sass-lang.com/)
+* [jQuery](https://jquery.com/)
+* [Bootstrap](http://getbootstrap.com/)
+* [Font Awesome](http://fontawesome.io/)

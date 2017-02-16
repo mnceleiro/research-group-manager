@@ -13,6 +13,7 @@ class ResearcherTable(tag: Tag) extends Table[Researcher](tag, "USER") {
 
   def id = column[Long]("id", O.PrimaryKey,O.AutoInc)
   def email = column[String]("email")
+  def password = column[String]("password")
   def firstName = column[String]("first_name")
   def lastName = column[String]("last_name")
   def signatureName = column[String]("signature_name")
@@ -20,7 +21,7 @@ class ResearcherTable(tag: Tag) extends Table[Researcher](tag, "USER") {
   def phone = column[String]("phone")
 
   override def * =
-    (id, email, firstName, lastName, signatureName, address, phone) <> ((Researcher.apply _).tupled, Researcher.unapply)
+    (id, email, password, firstName, lastName, signatureName, address, phone) <> ((Researcher.apply _).tupled, Researcher.unapply)
 }
 
 class ResearcherRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
@@ -28,15 +29,23 @@ class ResearcherRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   val users = TableQuery[ResearcherTable]
 
-  def add(user: Researcher): Future[String] = {
-    dbConfig.db.run(users += user).map(res => "El usuario se ha anhadido correctamente.").recover {
-      case ex: Exception => ex.getCause.getMessage
+  def save(user: Researcher): Future[Researcher] = {
+//    dbConfig.db.run(users += user).map(res => "El usuario se ha anhadido correctamente.").recover {
+//      case ex: Exception => ex.getCause.getMessage
+//    }
+    dbConfig.db.run {
+//      ((users returning users.map(_.id)) += user)
+//      (users returning users.map(_.id) into ((researcher, id) => (id=id)) += user).transactionally
+      (users.returning(users.map(_.id)).into((res,ide) => res.copy(id = ide)) += user).transactionally
     }
   }
   
-  def update(user: Researcher): Future[String] = {
-    dbConfig.db.run(users.insertOrUpdate(user)).map(res => "El usuario se ha actualizado correctamente.").recover {
-      case ex: Exception => ex.getCause.getMessage
+  def update(user: Researcher): Future[Researcher] = {
+//    dbConfig.db.run(users.insertOrUpdate(user)).map(res => "El usuario se ha actualizado correctamente.").recover {
+//      case ex: Exception => ex.getCause.getMessage
+//    }
+    dbConfig.db.run {
+      (users.filter(_.id === user.id).update(user).transactionally).map(x => user)
     }
   }
 

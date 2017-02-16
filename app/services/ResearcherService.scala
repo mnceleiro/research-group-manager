@@ -9,8 +9,8 @@ import com.google.inject.Inject
 import models.repositories.ResearcherRepository
 
 class ResearcherService @Inject()(repo: ResearcherRepository) {
-  def add(researcher: Researcher): Future[String] = {
-    repo.add(researcher)
+  def save(researcher: Researcher): Future[Researcher] = {
+    repo.save(researcher)
   }
 
   def delete(id: Long): Future[Int] = {
@@ -21,7 +21,7 @@ class ResearcherService @Inject()(repo: ResearcherRepository) {
     repo.get(id)
   }
   
-  def update(researcher: Researcher): Future[String] = {
+  def update(researcher: Researcher): Future[Researcher] = {
     repo.update(researcher)
   }
 

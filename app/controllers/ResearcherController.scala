@@ -36,7 +36,7 @@ class ResearcherController @Inject()(researcherService: ResearcherService) exten
     // TODO: Mejorar el codigo de conversion de JSON a objetos
     val jsonObject = request.body.asJson
     val res: Researcher = Json.fromJson[Researcher](jsonObject.get).get
-    if (res.id <= 0) researcherService.add(res)
+    if (res.id <= 0) researcherService.save(res)
     else researcherService.update(res)
     
     Ok("OK")
