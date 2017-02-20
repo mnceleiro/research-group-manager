@@ -38,7 +38,7 @@ class ResearcherController @Inject()(researcherService: ResearcherService) exten
 //    val res: Researcher = Json.fromJson[Researcher](jsonObject).get
 //    if (res.id <= 0) {
       Researcher.researcherForm.bindFromRequest.fold(
-        errorForm => Future.failed(new Exception), 
+        errorForm => Future.failed(new Exception),
         data => {
           researcherService.save(data)
         }

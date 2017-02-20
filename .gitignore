@@ -6,8 +6,8 @@
 /project/target/
 /project/project/target/
 /git-hooks/target/
-/public/compiled/
-/public/compiled/**
+/public/assets/
+/public/assets/**
 tmp/
 test-result
 server.pid

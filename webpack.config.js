@@ -1,23 +1,24 @@
-var webpack = require("webpack");
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var webpack = require("webpack")
+var ExtractTextPlugin = require("extract-text-webpack-plugin")
 var BrowserSyncPlugin = require("browser-sync-webpack-plugin")
+var CopyWebpackPlugin = require("copy-webpack-plugin")
 
 module.exports = {
   entry: "./ui/entry.js",
-  output: { 
-	  path: __dirname + "/public/compiled", 
-	  filename: "bundle.js" 
+  output: {
+    path: __dirname + "/public/assets/compiled",
+    filename: "bundle.js"
   },
   module: {
-//    rules: [{ 
+//    rules: [{
 //      test: /\.jsx?$/,
-//      loader: "eslint-loader", 
+//      loader: "eslint-loader",
 //      exclude: [/\**.scss$/]
 //    }],
-    loaders: [{ 
-  	  test: /\.jsx?$/, 
-  	  loaders: ["babel-loader?presets[]=es2015&presets[]=stage-0&presets[]=react", "eslint-loader"], 
-  	  exclude: /node_modules/
+    loaders: [{
+      test: /\.jsx?$/,
+      loaders: ["babel-loader?presets[]=es2015&presets[]=stage-0&presets[]=react", "eslint-loader"],
+      exclude: /node_modules/
     },
     {
       test: /\.css$/,
@@ -41,18 +42,22 @@ module.exports = {
     {
       test: /\.(png|jpg|gif)$/,
       loader: "file-loader?name=images/img-[hash:6].[ext]"
-  	},
-      {
-  	  test: /\.(png|jpg|gif)$/,
-  	  loader: "url-loader?limit=5000&name=img/img-[hash:6].[ext]"
-  	},
-    { 
-	  test: /\.scss$/,
-	  loader: ExtractTextPlugin.extract({
-		  fallback: "style-loader", 
-		  use: "css-loader!sass-loader"
-	  })
-	}]
+    },
+    {
+      test: /\.(png|jpg|gif)$/,
+      loader: "url-loader?limit=5000&name=img/img-[hash:6].[ext]"
+    },
+    {
+      test: /\.(html)$/,
+      loader: "file-loader"
+    },
+    {
+      test: /\.scss$/,
+      loader: ExtractTextPlugin.extract({
+        fallback: "style-loader",
+        use: "css-loader!sass-loader"
+      })
+    }]
   },
   plugins: [
     new ExtractTextPlugin("styles.css"),
@@ -60,6 +65,20 @@ module.exports = {
       host: "localhost",
       port: 9001,
       proxy: "http://localhost:9000/"
+    }),
+    new CopyWebpackPlugin([{
+      from: "ui/index.html",
+      to: "../index.html"
+    }, {
+      from: "ui/images",
+      to: "../images"
+    }]),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        eslint: {
+          configFile: "ui/.eslintrc.json"
+        }
+      }
     })
   ]
 }
