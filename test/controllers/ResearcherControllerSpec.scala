@@ -7,8 +7,6 @@ import play.api.test._
 import play.api.test.Helpers._
 
 import play.api.libs.concurrent.Execution.Implicits._
-import scala.util.Success
-import scala.util.Failure
 import play.api.libs.json.Json
 import models.entities.Researcher
 

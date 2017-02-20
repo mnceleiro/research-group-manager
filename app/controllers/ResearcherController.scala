@@ -6,46 +6,53 @@ import scala.concurrent.duration._
 
 import play.api.i18n.Messages.Implicits._
 import javax.inject._
-import models.entities.Researcher
 import play.api._
 import play.api.data.Forms._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.json._
 import play.api.mvc._
-import services.ResearcherService
+import play.api.libs.concurrent.Execution.Implicits._
 
-class ResearcherController @Inject()(researcherService: ResearcherService) extends Controller {
-  def getAll = Action {
+import services.ResearcherService
+import models.entities.Researcher
+import scala.util.Success
+import scala.util.Failure
+
+class ResearcherController @Inject()(
+    researcherService: ResearcherService
+    ) extends Controller {
+  implicit val userWrites = Json.writes[Researcher]
+  implicit val userReads = Json.reads[Researcher]
+  
+  def getAll = Action.async {
     val researchers = researcherService.listAll
-    implicit val userWrites = Json.writes[Researcher]
-    val userList = Await.result(researchers, 3 second)
-    
-    Ok(Json.toJson(userList))
+    researchers.map(r => Ok(Json.toJson(r)))
   }
   
-  def get(id: Int) = Action {
+  def get(id: Int) = Action.async {
     val researcher = researcherService.get(id)
-    implicit val userWrites = Json.writes[Researcher]
-    val researcherResult = Await.result(researcher, 3 second)
-    
-    Ok(Json.toJson(researcherResult))
+    researcher.map(r => Ok(Json.toJson(r)))
   }
   
   def add = Action { implicit request => 
-    implicit val userReads = Json.reads[Researcher]
-    
-//    val jsonObject = request.body.asJson.get
-//    val res: Researcher = Json.fromJson[Researcher](jsonObject).get
-//    if (res.id <= 0) {
-      Researcher.researcherForm.bindFromRequest.fold(
+      val x = Researcher.researcherForm.bindFromRequest.fold(
         errorForm => Future.failed(new Exception),
         data => {
           researcherService.save(data)
         }
       )
-//    }
-//    else researcherService.update(res)
-    
+    println(x.value.get)
+    NoContent
+  }
+  
+  def update = Action { implicit request =>
+    val x = Researcher.researcherForm.bindFromRequest.fold(
+      errorForm => Future.failed(new Exception),
+      data => {
+        researcherService.update(data)
+      }
+    )
+    println(x)
     NoContent
   }
 }
