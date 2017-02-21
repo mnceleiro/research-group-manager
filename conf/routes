@@ -1,10 +1,13 @@
 GET     /researchers/all            controllers.ResearcherController.getAll
-GET     /researchers/id/:id         controllers.ResearcherController.get(id: Int)
+GET     /researchers/id/:id         controllers.ResearcherController.get(id: Long)
 POST    /researchers/add            controllers.ResearcherController.add
+POST    /researchers/update/:id     controllers.ResearcherController.update(id: Long)
+DELETE  /researchers/delete/:id     controllers.ResearcherController.delete(id: Long)
 
 GET     /                           controllers.Assets.at(path="/public/assets", file="index.html")
 GET     /index.html                 controllers.Assets.at(path="/public/assets", file="index.html")
 GET     /researchers                controllers.Assets.at(path="/public/assets", file="index.html")
+GET     /researchers/new            controllers.Assets.at(path="/public/assets", file="index.html")
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public/assets", file: Asset)

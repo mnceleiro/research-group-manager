@@ -33,7 +33,7 @@ ReactDOM.render(
       <Route path="/" component={App}>
         <Route path="/researchers">
           <IndexRoute component={ResearcherTable} />
-          <Route path="/researchers/add" component={ResearcherForm} />
+          <Route path="/researchers/new" component={ResearcherForm} />
           <Route path="/researchers/edit/:key" component={ResearcherForm} />
         </Route>
       </Route>

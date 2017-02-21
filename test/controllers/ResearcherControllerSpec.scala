@@ -9,6 +9,7 @@ import play.api.test.Helpers._
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.json.Json
 import models.entities.Researcher
+import play.api.libs.json.JsObject
 
 class ResearcherControllerSpec extends AcceptanceSpec[Researcher] {
   
@@ -58,9 +59,43 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] {
     }
   }
   
-  "Insert new researcher with incorrect email will return an error 500" in {
+  "Insert new researcher with incorrect email will return an error in json response" in {
     val newRes = Researcher(0, "aturingpaddington.com", "1234", "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123")
     
+    val resp = route(
+        app, 
+        FakeRequest(
+            POST, 
+            "/researchers/add",
+            FakeHeaders(Seq(("content-type", "application/json"))),
+            Json.toJson(newRes)
+        )
+    ).get
+      
+    contentType(resp) mustBe Some("application/json")
+    status(resp) mustBe OK
     
+    val json = Json.parse(contentAsString(resp))
+    val resCode = json.as[JsObject].\("res").get
+    resCode.as[String] mustEqual "error"
+  }
+  
+  "Deleting a researcher with an ID 1 will return a response OK" in {
+        val resp = route(
+        app, 
+        FakeRequest(
+            DELETE, 
+            "/researchers/delete/1",
+            FakeHeaders(Seq(("content-type", "application/json"))),
+            Json.toJson("")
+        )
+    ).get
+    
+    contentType(resp) mustBe Some("application/json")
+    status(resp) mustBe OK
+    
+    val json = Json.parse(contentAsString(resp))
+    val resCode = json.as[JsObject].\("res").get
+    resCode.as[String] mustEqual "OK"
   }
 }

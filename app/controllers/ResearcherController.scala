@@ -24,35 +24,47 @@ class ResearcherController @Inject()(
   implicit val userWrites = Json.writes[Researcher]
   implicit val userReads = Json.reads[Researcher]
   
+  def resOK(data: JsValue) = Json.obj("res" -> "OK") ++ Json.obj("data" -> data)
+  def resKO(error: JsValue) = Json.obj("res" -> "error") ++ Json.obj("error" -> error)
+  
   def getAll = Action.async {
     val researchers = researcherService.listAll
     researchers.map(r => Ok(Json.toJson(r)))
   }
   
-  def get(id: Int) = Action.async {
+  def get(id: Long) = Action.async {
     val researcher = researcherService.get(id)
     researcher.map(r => Ok(Json.toJson(r)))
   }
-  
-  def add = Action { implicit request => 
-      val x = Researcher.researcherForm.bindFromRequest.fold(
-        errorForm => Future.failed(new Exception),
-        data => {
-          researcherService.save(data)
-        }
-      )
-    println(x.value.get)
-    NoContent
+
+  def add = Action.async { implicit request =>
+    println("hola")
+    Researcher.researcherForm.bindFromRequest.fold(
+      errorForm => Future.apply(Ok(resKO(JsString("")))),
+      data => {
+        researcherService.save(data)
+          .map(r => Ok(resOK(JsString("Investigador creado"))))
+          .recover {
+            case e => Ok(resKO(JsString(e.getMessage)))
+          }
+      })
   }
   
-  def update = Action { implicit request =>
+  def update(id: Long) = Action { implicit request =>
     val x = Researcher.researcherForm.bindFromRequest.fold(
       errorForm => Future.failed(new Exception),
       data => {
         researcherService.update(data)
+          .map(p => Ok(resOK(JsString("Investigador actualizado."))))
+          .recover{ case e => Ok(resKO(JsString(e.getMessage))) }
       }
     )
+    
     println(x)
     NoContent
+  }
+  
+  def delete(id: Long) = Action.async { implicit request =>
+    researcherService.delete(id).map(x => Ok(resOK(JsString("")))).recover { case e => Ok(resKO(JsString(""))) }
   }
 }

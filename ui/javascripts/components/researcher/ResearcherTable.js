@@ -1,4 +1,4 @@
-import React from "react" 
+import React from "react"
 import { Link } from "react-router"
 import ResearcherList from "./ResearcherList"
 
@@ -7,24 +7,24 @@ class ResearcherTable extends React.Component {
     super(props)
     this.state = { researchers: [] }
   }
-  
+
   componentWillMount() {
     fetch("researchers/all")
       .then(resp => { return resp.json() })
-      .then(researcherList => { 
+      .then(researcherList => {
         this.setState({
           researchers: researcherList
         })
       })
   }
-  
+
   render() {
     if (this.state.researchers.length > 0) {
       return (
         <div className="researcher-table">
           <br />
           <div className="panel-right">
-            <Link to="/researchers/add"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo investigador</button></Link>
+            <Link to="/researchers/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo investigador</button></Link>
           </div>
           <div className="table-responsive">
             <ResearcherList list={this.state.researchers} />

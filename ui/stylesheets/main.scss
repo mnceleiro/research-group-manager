@@ -26,7 +26,7 @@ body {
 		padding-left: 35px !important;
 		text-align:left;
 	}
-	
+
 	td > button {
 	  width: 90%;
 	}
@@ -238,4 +238,9 @@ a.site-title:hover {
 
 .form-control {
 	border-radius: 0px;
+}
+
+#btnRemoveResearcher {
+  float: right;
+  clear: both;
 }

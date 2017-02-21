@@ -15,28 +15,31 @@ class ResearcherForm extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
+    this.handleRemove = this.handleRemove.bind(this)
   }
-    
+
   componentWillMount() {
-    fetch("../../researchers/id/" + this.props.params.key)
-      .then(resp => { return resp.json() })
-      .then(researcher => { 
-        this.setState({
-          id: researcher.id,
-          firstName: researcher.firstName,
-          lastName: researcher.lastName,
-          signatureName: researcher.signatureName,
-          email: researcher.email,
-          address: researcher.address,
-          phone: researcher.phone
+    if (this.props.params.key)
+      fetch("../../researchers/id/" + this.props.params.key)
+        .then(resp => { return resp.json() })
+        .then(researcher => {
+          this.setState({
+            id: researcher.id,
+            firstName: researcher.firstName,
+            lastName: researcher.lastName,
+            signatureName: researcher.signatureName,
+            email: researcher.email,
+            address: researcher.address,
+            phone: researcher.phone
+          })
         })
-      })
 //    var url = "../../researchers/id/" + this.props.params.key
 //    $.get(url, function(resp) {
 //      alert(resp);
 //    });
   }
-  
+
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
@@ -65,7 +68,7 @@ class ResearcherForm extends React.Component {
           <div className="form-group">
               <label className="control-label col-xs-3 col-md-2" htmlFor="confirmPassword">Confirmar contraseña:</label>
               <div className="col-xs-9 col-md-9">
-                  <input type="password" className="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirmar contraseña" value={this.state.password} onChange={this.handleChange} />
+                  <input type="password" className="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirmar contraseña" value={this.state.confirmPassword} onChange={this.handleChange} />
               </div>
           </div>
           <div className="form-group">
@@ -87,7 +90,7 @@ class ResearcherForm extends React.Component {
             </div>
         </div>
           <div className="form-group">
-              <label className="control-label col-xs-3 col-md-2" htmlFor="phone">Telefono:</label>
+              <label className="control-label col-xs-3 col-md-2" htmlFor="phone">Teléfono:</label>
               <div className="col-xs-9 col-md-9">
                   <input type="tel" className="form-control" id="phone" name="phone" placeholder="Telefono" value={this.state.phone} onChange={this.handleChange} />
               </div>
@@ -100,21 +103,32 @@ class ResearcherForm extends React.Component {
           </div>
           <br />
           <div className="form-group">
-              <div className="col-xs-offset-3 col-xs-9 col-md-offset-2 col-md-10">
+              <div className="col-xs-offset-3 col-xs-9 col-md-offset-2 col-md-7">
                   <input type="submit" className="btn rgm-btn-primary rgm-btn-lg" value="Guardar" />
-                  <input type="reset" className="btn rgm-btn-default rgm-btn-lg" value="Cancelar" />
+                  <input type="button" className="btn rgm-btn-default rgm-btn-lg" value="Cancelar" onClick={this.handleCancel} />
+              </div>
+              <div className="col-md-2">
+                <input type="button" id="btnRemoveResearcher" className="btn rgm-btn-default rgm-btn-lg" value="Eliminar investigador" onClick={this.handleRemove} />
               </div>
           </div>
         </form>
       </div>
-    </div>	
+    </div>
   }
-  
+
+  handleCancel() {
+    browserHistory.push("/researchers")
+  }
+
   handleSubmit(event) {
     event.preventDefault()
-    
+
     // Request
-    var request = new Request("../../researchers/add", {
+    var url = null
+    if (this.props.params.key) url = "../../researchers/edit/" + this.props.params.key
+    else url = "../../researchers/add"
+
+    var request = new Request(url, {
       headers: new Headers({
         "Content-Type": "application/json"
       })
@@ -123,11 +137,11 @@ class ResearcherForm extends React.Component {
     fetch(request, {
       method: "POST",
       body: JSON.stringify(this.state)
-      
+
     }).then(response => {
       return response.text()
     }).then(() => {
-        
+
       browserHistory.push("/researchers")
     })
 //    var url = "../../researchers/add"
@@ -135,6 +149,25 @@ class ResearcherForm extends React.Component {
 //      debugger
 //      alert(resp);
 //    });
+  }
+
+  handleRemove() {
+    var request = new Request("../delete/" + this.props.params.key, {
+      headers: new Headers({
+        "Content-Type": "application/json"
+      })
+    })
+
+    fetch(request, {
+      method: "DELETE",
+      body: JSON.stringify(this.state)
+
+    }).then(response => {
+      return response.text()
+    }).then(() => {
+
+      browserHistory.push("/researchers")
+    })
   }
 }
 
@@ -147,7 +180,7 @@ ResearcherForm.propTypes = {
   address: React.PropTypes.string,
   phone: React.PropTypes.string,
   params: React.PropTypes.object
-  
+
 }
 
 export default ResearcherForm
