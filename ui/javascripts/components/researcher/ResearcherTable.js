@@ -1,6 +1,10 @@
 import React from "react"
 import { Link } from "react-router"
 import ResearcherList from "./ResearcherList"
+import { fetchResearchers } from "../../actions"
+
+import { connect } from "react-redux"
+//import { bindActionCreators } from "redux"
 
 class ResearcherTable extends React.Component {
   constructor(props) {
@@ -8,18 +12,24 @@ class ResearcherTable extends React.Component {
     this.state = { researchers: [] }
   }
 
+  componentDidMount() {
+    //this.props.dispatch(fetchResearchers(this.props.dispatch))
+  }
+
   componentWillMount() {
-    fetch("researchers/all")
-      .then(resp => { return resp.json() })
-      .then(researcherList => {
-        this.setState({
-          researchers: researcherList
-        })
-      })
+    this.props.dispatch(fetchResearchers(this.props.dispatch))
+    // fetch("researchers/all")
+    //   .then(resp => { return resp.json() })
+    //   .then(researcherList => {
+    //     this.setState({
+    //       researchers: researcherList
+    //     })
+    //   })
+
   }
 
   render() {
-    if (this.state.researchers.length > 0) {
+    if (this.props.researchers.length > 0) {
       return (
         <div className="researcher-table">
           <br />
@@ -27,7 +37,7 @@ class ResearcherTable extends React.Component {
             <Link to="/researchers/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo investigador</button></Link>
           </div>
           <div className="table-responsive">
-            <ResearcherList list={this.state.researchers} />
+            <ResearcherList list={this.props.researchers} />
           </div>
         </div>
       )
@@ -37,4 +47,8 @@ class ResearcherTable extends React.Component {
   }
 }
 
-export default ResearcherTable
+let mapStateToProps = state => ({
+  researchers: state.researchers
+})
+
+export default connect(mapStateToProps)(ResearcherTable)

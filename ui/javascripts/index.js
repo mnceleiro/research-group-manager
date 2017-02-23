@@ -2,11 +2,15 @@ import ReactDOM from "react-dom"
 import React from "react"
 import { createStore } from "redux"
 import { Provider } from "react-redux"
+// import { createLogger } from "redux-logger"
 
-import reducer from "./reducers"
+import researchers from "./reducers/researchers"
 import App from "./components/App"
 
-const store = createStore(reducer)
+// const logger = createLogger()
+const store = createStore(
+  researchers
+)
 
 ReactDOM.render(
   <Provider store={store}>
