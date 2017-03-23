@@ -59,6 +59,7 @@ Con esto debería funcionar correctamente.
 
 * [Play Framework 2.5](https://www.playframework.com/) - Framework web
 * [Slick](http://slick.lightbend.com/) - Acceso a datos
+* [Redux](http://redux.js.org/) - Frontend
 
 ## Gestión de dependencias
 
@@ -68,6 +69,7 @@ Con esto debería funcionar correctamente.
 ## Módulos & Librerias
 
 * [React](https://facebook.github.io/react/)
+* [Redux Form](http://redux-form.com)
 * [Webpack](https://webpack.js.org/)
 * [Babel](https://babeljs.io/)
 * [BrowserSync](https://browsersync.io/)

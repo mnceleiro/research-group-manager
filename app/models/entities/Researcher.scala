@@ -37,7 +37,7 @@ object Researcher {
       mapping(
           "id" -> longNumber,
           "email" -> email,
-          "password" -> nonEmptyText,
+          "password" -> text,
           "firstName" -> nonEmptyText,
           "lastName" -> nonEmptyText,
           "signatureName" -> nonEmptyText,

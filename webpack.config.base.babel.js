@@ -1,21 +1,20 @@
-var webpack = require("webpack")
+import webpack from "webpack"
+//var webpack = require("webpack")
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
 var BrowserSyncPlugin = require("browser-sync-webpack-plugin")
 var CopyWebpackPlugin = require("copy-webpack-plugin")
 
-module.exports = {
-  entry: "./ui/entry.js",
+const webpackConfig = {
+  entry: {
+    main: "./ui/main/entry.js",
+    test: "./ui/main/javascripts/__tests__/all-tests.js"
+  },
   output: {
     path: __dirname + "/public/assets/compiled",
-    filename: "bundle.js"
+    filename: "[name].bundle.js"
   },
   module: {
-//    rules: [{
-//      test: /\.jsx?$/,
-//      loader: "eslint-loader",
-//      exclude: [/\**.scss$/]
-//    }],
-    loaders: [{
+    rules: [{
       test: /\.jsx?$/,
       loaders: ["babel-loader?presets[]=es2015&presets[]=stage-0&presets[]=react", "eslint-loader"],
       exclude: /node_modules/
@@ -67,10 +66,10 @@ module.exports = {
       proxy: "http://localhost:9000/"
     }),
     new CopyWebpackPlugin([{
-      from: "ui/index.html",
+      from: "ui/main/index.html",
       to: "../index.html"
     }, {
-      from: "ui/images",
+      from: "ui/main/images",
       to: "../images"
     }]),
     new webpack.LoaderOptionsPlugin({
@@ -79,6 +78,15 @@ module.exports = {
           configFile: "ui/.eslintrc.json"
         }
       }
+    }),
+    new webpack.DefinePlugin({
+      ENVI: JSON.stringify("develop"),
+      VERSION: JSON.stringify("5fa3b9"),
+      BROWSER_SUPPORTS_HTML5: true,
+      TWO: "1+1",
+      "typeof window": JSON.stringify("object")
     })
   ]
 }
+
+export default webpackConfig

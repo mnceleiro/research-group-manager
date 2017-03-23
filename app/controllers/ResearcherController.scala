@@ -38,9 +38,11 @@ class ResearcherController @Inject()(
   }
 
   def add = Action.async { implicit request =>
-    println("hola")
     Researcher.researcherForm.bindFromRequest.fold(
-      errorForm => Future.apply(Ok(resKO(JsString("")))),
+      errorForm => {
+        println(errorForm)
+        Future.apply(Ok(resKO(JsString(""))))
+      },
       data => {
         researcherService.save(data)
           .map(r => Ok(resOK(JsString("Investigador creado"))))

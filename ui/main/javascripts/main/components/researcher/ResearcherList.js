@@ -20,13 +20,15 @@ class ResearcherList extends React.Component {
         <tbody>
         {
           this.props.list.map(r => {
-            return <ResearcherRow key={ r.id }
+            return <ResearcherRow
+                                onResearcherEdit={this.props.onResearcherEdit}
+                                key={ r.id }
                                 id={ r.id }
                                 name={ r.firstName }
                                 surname={ r.lastName }
                                 signaturename={ r.signatureName }
-                                email={ r.email } 
-                                address={ r.address } 
+                                email={ r.email }
+                                address={ r.address }
                                 phone={ r.phone } />
           })
         }
@@ -37,7 +39,8 @@ class ResearcherList extends React.Component {
 }
 
 ResearcherList.propTypes = {
-  list: React.PropTypes.array.isRequired
+  list: React.PropTypes.array.isRequired,
+  onResearcherEdit: React.PropTypes.func
 }
 
 export default ResearcherList

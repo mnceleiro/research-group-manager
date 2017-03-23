@@ -29,6 +29,7 @@ class ResearcherRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   val users = TableQuery[ResearcherTable]
 
+  // TODO: Validar password no vacia
   def save(user: Researcher): Future[Researcher] = {
 //    dbConfig.db.run(users += user).map(res => "El usuario se ha anhadido correctamente.").recover {
 //      case ex: Exception => ex.getCause.getMessage
@@ -40,6 +41,7 @@ class ResearcherRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
     }
   }
   
+  // TODO: Validar actualizacion o no de la password
   def update(user: Researcher): Future[Researcher] = {
 //    dbConfig.db.run(users.insertOrUpdate(user)).map(res => "El usuario se ha actualizado correctamente.").recover {
 //      case ex: Exception => ex.getCause.getMessage
