@@ -17,6 +17,7 @@ import services.ResearcherService
 import models.entities.Researcher
 import scala.util.Success
 import scala.util.Failure
+import utils.Password
 
 class ResearcherController @Inject()(
     researcherService: ResearcherService
@@ -44,7 +45,7 @@ class ResearcherController @Inject()(
         Future.apply(Ok(resKO(JsString(""))))
       },
       data => {
-        researcherService.save(data)
+        researcherService.save(data.copy(password=Password.hashPassword(data.password.get)))
           .map(r => Ok(resOK(JsString("Investigador creado"))))
           .recover {
             case e => Ok(resKO(JsString(e.getMessage)))
@@ -52,18 +53,18 @@ class ResearcherController @Inject()(
       })
   }
   
-  def update(id: Long) = Action { implicit request =>
-    val x = Researcher.researcherForm.bindFromRequest.fold(
+  def update(id: Long) = Action.async { implicit request =>
+    Researcher.researcherForm.bindFromRequest.fold(
       errorForm => Future.failed(new Exception),
+//      errorForm => Future.apply(Ok(resKO(JsString("")))),
+      
       data => {
+//        println(data)
         researcherService.update(data)
-          .map(p => Ok(resOK(JsString("Investigador actualizado."))))
-          .recover{ case e => Ok(resKO(JsString(e.getMessage))) }
+          .map(p => {println("OK"); Ok(resOK(JsString("Investigador actualizado.")))})
+          .recover{ case e => {println(e); Ok(resKO(JsString(e.getMessage)))} }
       }
     )
-    
-    println(x)
-    NoContent
   }
   
   def delete(id: Long) = Action.async { implicit request =>

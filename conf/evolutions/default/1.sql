@@ -14,6 +14,14 @@ CREATE TABLE USER (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE SESSIONS (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  sessionId varchar(255) NOT NULL,
+  userId bigint(20) NOT NULL,
+  PRIMARY KEY(id),
+  FOREIGN KEY (userId) REFERENCES USER(id)
+);
+
 INSERT INTO USER (email, password, first_name, last_name, signature_name, address, phone) VALUES ('mnceleiro@esei.uvigo.es','1234','Marcos','Nunez Celeiro', 'Marcos Nunez Celeiro', 'Calle Empanada de Zorza nº5', '9825312121');
 INSERT INTO USER (email, password, first_name, last_name, signature_name, address, phone) VALUES ('ocanellas@gmail.com','1234','Oscar','Cañellas', 'Oscar Mixwell Cañellas', 'Calle Alcantara nº12', '9825312122');
 INSERT INTO USER (email, password, first_name, last_name, signature_name, address, phone) VALUES ('dmritchie@yahoo.es','1234','Dennis','MacAlistair Ritchie', 'Dennis MacAlistair-Ritchie', 'Avenida Curros Enriquez 7', '9825312123');

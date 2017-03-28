@@ -8,13 +8,13 @@ import play.api.libs.json.Writes
 import play.api.libs.json.__
 
 
-final case class Researcher(id: Long,  email: String, password: String, firstName: String, lastName: String, signatureName: String, address: String, phone: String) extends BaseEntity
+final case class Researcher(id: Long,  email: String, password: Option[String], firstName: String, lastName: String, signatureName: String, address: String, phone: String) extends BaseEntity
 
 object Researcher {
       implicit val ResearcherWrites: Writes[Researcher] = (
       (__ \ "id").write[Long] and
       (__ \ "email").write[String] and
-      (__ \ "password").write[String] and
+      (__ \ "password").write[Option[String]] and
       (__ \ "firstName").write[String] and
       (__ \ "lastName").write[String] and
       (__ \ "signatureName").write[String] and
@@ -37,7 +37,7 @@ object Researcher {
       mapping(
           "id" -> longNumber,
           "email" -> email,
-          "password" -> text,
+          "password" -> optional(text),
           "firstName" -> nonEmptyText,
           "lastName" -> nonEmptyText,
           "signatureName" -> nonEmptyText,

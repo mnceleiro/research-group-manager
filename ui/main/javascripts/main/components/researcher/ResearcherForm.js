@@ -45,13 +45,13 @@ class ResearcherForm extends React.Component {
     }
   }
 
-  componentDidMount() {
-
-  }
-
   componentWillUpdate(nextProps) {
     if (nextProps.deletedResearcher) {
       browserHistory.push("/researchers")
+    }
+    
+    if (nextProps.success) {
+      browserHistory.push(`/researchers?success=${nextProps.success}`)
     }
   }
 
@@ -123,8 +123,12 @@ class ResearcherForm extends React.Component {
 
     var toSend = Object.assign({}, res, {id, password})
 
-    if (id > 0) this.props.updateResearcher(toSend)
-    else this.props.addResearcher(toSend)
+    if (id > 0) {
+      this.props.updateResearcher(toSend)
+      
+    } else {
+      this.props.addResearcher(toSend)
+    }
     // // Request
     // var url = null
     // if (this.props.params.key) url = "../../researchers/edit/" + this.props.params.key

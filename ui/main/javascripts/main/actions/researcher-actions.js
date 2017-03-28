@@ -1,5 +1,5 @@
 import * as types from "../constants/actionTypes"
-import apiGet from "../api/api"
+//import apiGet from "../api/api"
 
 export const showAllResearchers = (researcherList) => ({
   type: types.SHOW_ALL_RESEARCHERS,
@@ -84,6 +84,7 @@ export function updateResearcher(r) {
 
     }).then(resp => {return resp.json() })
       .then(researcherJson => {
+        debugger
         if (researcherJson.res === "error") {
           dispatch(updateResearcherError(researcherJson.res))
         } else {
@@ -91,6 +92,7 @@ export function updateResearcher(r) {
         }
 
       }).catch(error => {
+        debugger
         dispatch(updateResearcherError(error))
       })
   }

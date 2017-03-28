@@ -50,7 +50,7 @@ class ResearcherRepositorySpec extends PlaySpec with OneAppPerSuite with BeforeA
 
     "add Alan Mathison Turing as Researcher" in {
       
-      val res = Researcher(0, "aturing@paddington.com", "1234", "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123")
+      val res = Researcher(0, "aturing@paddington.com", Option("1234"), "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123")
 //      researcherRepo.save(res) onSuccess {
 //        case r: Researcher => {
 //    		  r.id mustBe 6
@@ -95,7 +95,7 @@ class ResearcherRepositorySpec extends PlaySpec with OneAppPerSuite with BeforeA
           Researcher(
             1, 
             "markius1@gmail.com", 
-            "1234", 
+            Option("1234"), 
             "Marcos", 
             "Nunez Celeiro", 
             "Marcos Nunez Celeiro", 

@@ -42,7 +42,7 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] {
     }
     
     "Insert new researcher and return a JSON valid response" in {
-      val newRes = Researcher(0, "aturing@paddington.com", "1234", "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123")
+      val newRes = Researcher(0, "aturing@paddington.com", Option("1234"), "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123")
       
       val resp = route(
           app, 
@@ -60,7 +60,7 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] {
   }
   
   "Insert new researcher with incorrect email will return an error in json response" in {
-    val newRes = Researcher(0, "aturingpaddington.com", "1234", "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123")
+    val newRes = Researcher(0, "aturingpaddington.com", Option("1234"), "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123")
     
     val resp = route(
         app, 
