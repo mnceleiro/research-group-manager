@@ -16,4 +16,5 @@ libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "2.0.2"
 libraryDependencies += cache
 libraryDependencies += ws
 libraryDependencies += evolutions
+libraryDependencies += "com.github.t3hnar" %% "scala-bcrypt" % "3.0"
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test

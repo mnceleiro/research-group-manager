@@ -8,7 +8,7 @@ import { fetchResearchers, createResearcher, editResearcher } from "../../action
 
 class ResearcherTable extends React.Component {
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.getAllResearchers()
   }
 
