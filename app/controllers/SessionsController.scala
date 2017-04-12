@@ -1,22 +1,62 @@
 package controllers
 
-import play.api.mvc.Controller
-import javax.inject._
-import play.api.mvc._
 import scala.concurrent.Future
-import play.api.libs.concurrent.Execution.Implicits._
+
+import javax.inject._
+import services.ResearcherService
+import utils.JWTUtils
 import utils.Password
 
-import com.github.t3hnar.bcrypt._
+import play.api.libs.concurrent.Execution.Implicits._
+import play.api.mvc._
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
+import play.api.libs.json.Json
 
-class SessionsController @Inject extends Controller {
-  def login(user: String, password: String) = Action.async {
-    // TODO: Convert to base64
-    Password.hashPassword(password)
+import models.entities.Researcher
+import play.api.libs.json.JsValue
+import java.util.Calendar
+
+class SessionsController @Inject() (researcherService: ResearcherService) extends Controller {
+  def resOK(data: JsValue) = Json.obj("res" -> "OK") ++ Json.obj("data" -> data)
+  def resKO(error: JsValue) = Json.obj("res" -> "error") ++ Json.obj("error" -> error)
+
+  def login = Action.async { request =>
+    val userData = request.body.asJson.get
+
+    researcherService.getByEmail((userData \ "email").as[String]).flatMap { dbUserOpt =>
+//      val dbUser = dbUserOpt.getOrElse(Future.successful(Ok(resKO(JsString("Usuario o contraseña incorrectos")))))
+      dbUserOpt match {
+        case Some(dbUser) => {
+//          val equals = Password.hashPassword((userData \ "password").as[String]).get == dbUser.password.get
+          val equals = Password.checkPassword(
+              (userData \ "password").as[String], dbUser.password.get
+          )
+          
+//          println(Password.hashPassword((userData \ "password").as[String]).get)
+//          println(dbUser.password.get)
+          if (equals) {
+            var toret = Json.obj(
+              "userId" -> dbUser.id,
+              "email" -> dbUser.email,
+              "firstName" -> dbUser.firstName,
+              "lastName" -> dbUser.lastName,
+              "token" -> JWTUtils.createToken(Json.stringify(Json.obj(
+                "userId" -> dbUser.id,
+                "email" -> dbUser.email,
+                "generated" -> Calendar.getInstance().getTime()
+              )))
+            )
     
-    // TODO: Check equals password
+//            println(Json.stringify(toret))
+            Future.successful(Ok(Json.stringify(toret)))
     
-    // TODO: Return OK response with user:password encoded in a cookie
-    Future.apply(Ok("").withCookies(Cookie("token", "token")))
+          } else
+            Future.successful(Ok(resKO(JsString("Usuario o contraseña incorrectos"))))
+        }
+        
+        case None => Future.successful(Ok(resKO(JsString("Usuario o contraseña incorrectos"))))
+      }
+    }
   }
 }

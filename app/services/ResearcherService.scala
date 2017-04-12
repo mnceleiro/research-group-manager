@@ -21,6 +21,10 @@ class ResearcherService @Inject()(repo: ResearcherRepository) {
     repo.get(id)
   }
   
+  def getByEmail(email: String): Future[Option[Researcher]] = {
+    repo.getByEmail(email)
+  }
+  
   def update(researcher: Researcher): Future[Researcher] = {
     repo.update(researcher)
   }

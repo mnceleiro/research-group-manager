@@ -1,4 +1,8 @@
 import * as types from "../constants/actionTypes"
+
+import { sessionUtils } from "../utils/SessionUtils"
+
+// alert(sessionUtils.getAuthString())
 //import apiGet from "../api/api"
 
 export const showAllResearchers = (researcherList) => ({
@@ -20,7 +24,13 @@ export function fetchResearchers() {
     dispatch(requestResearchers())
     // debugger
     // return apiGet("researchers/all", receiveResearchers => { dispatch(receiveResearchers) })
-    return fetch("researchers/all")
+
+    var request = new Request("researchers/all", {
+      headers: new Headers({
+        Authorization: sessionUtils.getAuthString()
+      })
+    })
+    return fetch(request)
       .then(resp => { return resp.json() })
       .then(researchersJson => {
         dispatch(receiveResearchers(researchersJson))
@@ -32,7 +42,12 @@ export function fetchResearcherById(id) {
   return function (dispatch) {
     dispatch(requestResearcherById())
 
-    return fetch(`../../researchers/id/${id}`)
+    var request = new Request(`../../researchers/id/${id}`, {
+      headers: new Headers({
+        Authorization: sessionUtils.getAuthString()
+      })
+    })
+    return fetch(request)
       .then(resp => { return resp.json() })
       .then(researcherJson => {
         dispatch(receiveResearcher(researcherJson))
@@ -46,7 +61,8 @@ export function addResearcher(r) {
 
     var request = new Request("../../researchers/add", {
       headers: new Headers({
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: sessionUtils.getAuthString()
       })
     })
 
@@ -74,7 +90,8 @@ export function updateResearcher(r) {
 
     var request = new Request(`../../researchers/update/${r.id}`, {
       headers: new Headers({
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": sessionUtils.getAuthString()
       })
     })
 
@@ -84,7 +101,6 @@ export function updateResearcher(r) {
 
     }).then(resp => {return resp.json() })
       .then(researcherJson => {
-        debugger
         if (researcherJson.res === "error") {
           dispatch(updateResearcherError(researcherJson.res))
         } else {
@@ -92,7 +108,6 @@ export function updateResearcher(r) {
         }
 
       }).catch(error => {
-        debugger
         dispatch(updateResearcherError(error))
       })
   }
@@ -104,7 +119,8 @@ export function deleteResearcher(r) {
 
     var request = new Request("../delete/" + r.id, {
       headers: new Headers({
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": sessionUtils.getAuthString()
       })
     })
 

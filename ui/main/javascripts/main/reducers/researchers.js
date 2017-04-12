@@ -98,7 +98,6 @@ export default function researchers(state = initialState, action) {
     })
 
   case UPDATE_RESEARCHER_SUCCESS:
-    debugger
     return Object.assign({}, state, {
       isFetching: false,
       success: "El investigador ha sido actualizado correctamente.",

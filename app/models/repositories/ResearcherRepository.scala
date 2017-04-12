@@ -78,6 +78,11 @@ class ResearcherRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
   def get(id: Long): Future[Option[Researcher]] = {
     dbConfig.db.run(users.filter(_.id === id).result.headOption)
   }
+  
+  def getByEmail(email: String): Future[Option[Researcher]] = {
+//    println(email + " es igual que mnceleiro@esei.uvigo.es -> " + email.toLowerCase().equalsIgnoreCase("mnceleiro@esei.uvigo.es"))
+    dbConfig.db.run(users.filter(_.email.toLowerCase === email.toLowerCase).result.headOption)
+  }
 
   def listAll: Future[Seq[Researcher]] = {
     dbConfig.db.run(users.result)

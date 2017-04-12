@@ -7,7 +7,7 @@ object Password {
   
 	def hashPassword(password_plaintext: String) : Option[String] = {
 		var salt = BCrypt.gensalt(workload);
-		Option(BCrypt.hashpw(password_plaintext, salt)) // Hashed passwor
+		Option(BCrypt.hashpw(password_plaintext, salt)) // Hashed password
 	}
   
 	def checkPassword(password_plaintext: String, stored_hash: String): Boolean = {

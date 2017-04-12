@@ -1,9 +1,13 @@
-package actions
+package controllers
 
 import play.api.mvc._
+import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent.Future
 import models.entities.Researcher
 import services.ResearcherService
+import play.api.libs.json.Json
+import javax.inject._
+import utils.JWTUtils
 
 //class BasicAuthAction(username: String, password: String) extends ActionBuilder[Request] with ActionFilter[Request] {
 //
@@ -42,3 +46,36 @@ import services.ResearcherService
 //
 //  }
 //}
+
+case class UserRequest[A](researcher: Researcher, request: Request[A]) extends WrappedRequest(request)
+
+class SecuredAuthenticator @Inject() (researcherService: ResearcherService) extends Controller {
+  implicit val formatUserDetails = Json.format[Researcher]
+
+  object JWTAuthentication extends ActionBuilder[Request] {
+    def invokeBlock[A](request: Request[A], block: (Request[A]) => Future[Result]): Future[Result] = {
+      val jwtToken = request.headers.get("Authorization").getOrElse("").replace("Bearer ", "")
+//      println(jwtToken)
+      if (JWTUtils.isValidToken(jwtToken)) {
+        JWTUtils.decodePayload(jwtToken).fold {
+          Future.successful(Results.Unauthorized("Invalid credential"))
+        } { payload =>
+//          println(payload)
+//          val userCredentials = Json.parse(payload).validate[Researcher].get
+          val id = Json.parse(payload).\("userId").as[Long]
+
+          // Replace this block with data source
+          //          val maybeUserInfo = dataSource.getUser(userCredentials.email, userCredentials.userId)
+          researcherService.get(id).flatMap(res => {
+            //              Future.successful(Unauthorized("Invalid credential"))
+            block(UserRequest(res.get, request))
+          })
+          //            val list = List[Future[Option[Researcher]]](maybeUserInfo)
+          //            maybeUserInfo.fold(Future.successful(Unauthorized("Invalid credential")))(researcher => block(UserRequest(researcher, request)))
+        }
+      } else {
+        Future.successful(Results.Unauthorized("Invalid credential"))
+      }
+    }
+  }
+}

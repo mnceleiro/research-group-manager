@@ -4,7 +4,8 @@ POST    /researchers/add            controllers.ResearcherController.add
 POST    /researchers/update/:id     controllers.ResearcherController.update(id: Long)
 DELETE  /researchers/delete/:id     controllers.ResearcherController.delete(id: Long)
 
-POST    /users/login                controllers.SessionsController.login(user: String, password: String)
+POST    /users/login                controllers.SessionsController.login
+
 
 GET     /                           controllers.Assets.at(path="/public/assets", file="index.html")
 GET     /index.html                 controllers.Assets.at(path="/public/assets", file="index.html")
