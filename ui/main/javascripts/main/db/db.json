@@ -1,0 +1,53 @@
+[{
+  "url": "researchers/all",
+  "data": [{
+    "id": 1,
+    "email": "mnceleiro@esei.uvigo.es",
+    "password": "$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke",
+    "firstName": "Marcos",
+    "lastName": "Nunez Celeiro",
+    "signatureName": "Marcos Nunez Celeiro",
+    "address": "Calle Empanada de Zorza nº5",
+    "phone": "9825312121"
+  },
+  {
+    "id": 2,
+    "email": "ocanellas@gmail.com",
+    "password": "1234",
+    "firstName": "Oscar",
+    "lastName": "Cañellas",
+    "signatureName": "Oscar Mixwell Cañellas",
+    "address": "Calle Alcantara nº12",
+    "phone": "9825312122"
+  },
+  {
+    "id": 3,
+    "email": "dmritchie@yahoo.es MOCK DATA",
+    "password": "1234",
+    "firstName": "MOCKED DATA",
+    "lastName": "MacAlistair Ritchie",
+    "signatureName": "Dennis MacAlistair-Ritchie",
+    "address": "Avenida Curros Enriquez 7",
+    "phone": "9825312123"
+  },
+  {
+    "id": 4,
+    "email": "ltorval@esei.uvigo.es",
+    "password": "1234",
+    "firstName": "Linus",
+    "lastName": "Benedict Torvalds",
+    "signatureName": "Linus Benedict-Torvalds",
+    "address": "Plaza Pontevedra 122",
+    "phone": "9825312124"
+  },
+  {
+    "id": 5,
+    "email": "mrjato@esei.uvigo.es",
+    "password": "1234",
+    "firstName": "Miguel",
+    "lastName": "Reboiro Jato",
+    "signatureName": "Miguel Reboiro-Jato",
+    "address": "Avenida de la Coruña 17",
+    "phone": "9825312125"
+  }]
+}]

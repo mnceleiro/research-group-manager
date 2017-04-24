@@ -9,7 +9,7 @@ const createRoutes = store => ( // eslint-disable-line no-unused-vars
       <IndexRoute component={ResearcherTable} />
       <Route path="/researchers/new" component={ResearcherForm} />
       <Route path="/researchers/edit/:key" component={ResearcherForm} />
-  </Route>
+    </Route>
 )
 
 export default createRoutes

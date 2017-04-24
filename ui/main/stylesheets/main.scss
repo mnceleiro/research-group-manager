@@ -16,7 +16,7 @@ body {
 }
 
 @media (min-width:1024px) {
-	.nav-md > #main-container > .content-column {
+	.nav-md > #main-container .content-column {
 		margin-left: 230px;
 	}
 	.nav-md .rgm-menu-section a {
@@ -33,7 +33,7 @@ body {
 	.nav-md #menu {
 		display: none;
 	}
-	.nav-md>#main-container>.content-column {
+	.nav-md #main-container > .content-column {
 		margin-left: 0px;
 	}
 }
@@ -49,7 +49,7 @@ body {
 	padding-right: 0px;
 }
 
-.nav-md > #main-container > #menu {
+.nav-md > #main-container #menu {
 	width: 230px;
 }
 
@@ -58,6 +58,16 @@ div .panel-right {
 	padding-left: 15px;
 	padding-right: 25px;
 	text-align: right;
+}
+
+.icon-circle {
+  border-radius:50%;
+  border:1px solid #EAEAEA;
+  padding:12px;
+}
+
+.page-sidebar-title {
+  font-size: 1.7em;
 }
 
 /* SIDEBAR MENU STILES */
@@ -91,7 +101,7 @@ div .panel-right {
 }
 
 /* SIDEBAR MENU STYLES FOR MOBILE */
-.nav-sm > #main-container > #menu {
+.nav-sm > #main-container #menu {
 	width: 80px;
 	padding-left: 0px;
 	padding-right: 0px;
@@ -100,10 +110,6 @@ div .panel-right {
 
 .rgm-menu-section {
 	text-align: center;
-}
-
-.rgm-menu-section-title {
-
 }
 
 .rgm-profile-section {
@@ -142,6 +148,7 @@ a.site-title:hover {
 
 .profile_info h2 {
 	font-size: 1.2em;
+  color: $default_font_color;
 	font-weight: bold;
 	float: left;
 	margin-top: 5px;
@@ -173,7 +180,7 @@ a.site-title:hover {
 	padding-left: 0px;
 }
 
-.nav-sm > #main-container > .content-column {
+.nav-sm > #main-container .content-column {
 	margin-left: 80px;
 }
 
@@ -280,13 +287,28 @@ a.site-title:hover {
 }
 
 /** LOGIN FORM CSS **/
-@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+/* NUEVO */
+.login-container {
+  background: $rgm_base_color;
+  width: 100%;
+  height: 100%;
+  padding-top: 100px;
+}
 
 .login-page {
   width: 360px;
   padding: 8% 0 0;
   margin: auto;
 }
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+// .login-page {
+//   width: 360px;
+//   padding: 8% 0 0;
+//   margin: auto;
+// }
 .form {
   position: relative;
   z-index: 1;

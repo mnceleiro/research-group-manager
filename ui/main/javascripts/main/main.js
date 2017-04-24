@@ -25,9 +25,9 @@ import $ from "jquery"
 //
 //        $RIGHT_COL.css("min-height", contentHeight)
 //    }
-//    
+//
 //    setContentHeight()
-//	
+//
 //    // toggle small or large menu
 //    $MENU_TOGGLE.on("click", function() {
 //    	debugger
@@ -51,7 +51,7 @@ $(document).ready(function() {
   var $CONTENT_COLUMN = $(".content-column")
   var $PROFILE = $(".rgm-profile-section")
   var $SECTION_TITLE = $(".rgm-menu-section-title")
-  
+
   $MENU_TOGGLE.on("click", function() {
     $CONTENT_COLUMN.css("min-height", $(window).height())
     // Expand/collapse sidebar

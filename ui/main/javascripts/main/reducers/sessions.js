@@ -4,14 +4,11 @@ import {
 } from "../constants/actionTypes"
 
 import { sessionUtils } from "../utils/SessionUtils"
-// alert(sessionUtils.getAuthString)
-// const sessionUtils = new SessionUtils()
-// alert(sessionUtils.getAuthString())
-
 
 const initialState = {
   isFetching: false,
   isAuthenticated: sessionUtils.isAuthenticated(),
+  user: "",
   error: ""
 }
 

@@ -148,7 +148,7 @@ function requestResearcherById(id) {
   }
 }
 
-function receiveResearchers(json) {
+export function receiveResearchers(json) {
   return {
     type: types.RECEIVE_RESEARCHERS,
     researchers: json,

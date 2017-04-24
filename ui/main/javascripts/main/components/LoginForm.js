@@ -1,15 +1,9 @@
 import React, { Component, PropTypes } from "react"
 import { connect } from "react-redux"
-import ReactModal from "react-modal"
+// import ReactModal from "react-modal"
 import { Field, reduxForm } from "redux-form"
 
 import { doLogin } from "../actions/login-actions"
-
-// const  LoginForm = () => (
-//   <div className="login-page">
-//
-//   </div>
-// )
 
 class LoginForm extends Component {
 
@@ -20,16 +14,9 @@ class LoginForm extends Component {
 
   render() {
     let { handleSubmit, errorMessage } = this.props
+
     return (
-      <div id="modal">
-        <ReactModal
-          ref="mymodal"
-          id="loginModal"
-          closeTimeoutMS={150}
-          contentLabel="Prueba"
-          className="Modal"
-          overlayClassName="Overlay"
-          isOpen={true}>
+      <div className="login-container">
           <div className="login-page">asdasdsd
             <div className="form">
               <div>
@@ -43,9 +30,34 @@ class LoginForm extends Component {
               </form>
             </div>
           </div>
-      </ReactModal>
-    </div>
+      </div>
     )
+    // return (
+    //   <div id="modal">
+    //     <ReactModal
+    //       ref="mymodal"
+    //       id="loginModal"
+    //       closeTimeoutMS={150}
+    //       contentLabel="Prueba"
+    //       className="Modal"
+    //       overlayClassName="Overlay"
+    //       isOpen={true}>
+    //       <div className="login-page">asdasdsd
+    //         <div className="form">
+    //           <div>
+    //             <h2>Accede a tu cuenta</h2>
+    //           </div>
+    //           <form className="login-form" onSubmit={handleSubmit(this.onSubmit)}>
+    //             <Field name="email" id="email" component="input" type="text" placeholder="email"/>
+    //             <Field name="password" component="input" type="password" placeholder="password"/>
+    //             <button className="login-btn">login</button>
+    //             {errorMessage && <div className="form-alert alert-danger">{errorMessage}</div> }
+    //           </form>
+    //         </div>
+    //       </div>
+    //   </ReactModal>
+    // </div>
+    // )
   }
 
   onSubmit(values) {
@@ -58,12 +70,6 @@ LoginForm.propTypes = {
   handleSubmit: PropTypes.func,
   errorMessage: PropTypes.string
 }
-
-// let mapStateToProps = store => {
-//   return {
-//     error: store.sessionState.error
-//   }
-// }
 
 let mapDispatchToProps = dispatch => {
   return {

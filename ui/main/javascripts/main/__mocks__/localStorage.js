@@ -1,20 +1,4 @@
-// var localStorageMock = (function() {
-//   var store = {}
-//   return {
-//     getItem: function(key) {
-//       return store[key]
-//     },
-//     setItem: function(key, value) {
-//       store[key] = value.toString()
-//     },
-//     clear: function() {
-//       store = {}
-//     }
-//   }
-// })()
-// Object.defineProperty(window, "localStorage", { value: localStorageMock })
-
-class LocalStorageMock {
+export default class LocalStorageMock {
   constructor() {
     this.store = {}
   }
@@ -29,7 +13,10 @@ class LocalStorageMock {
 
   setItem(key, value) {
     this.store[key] = value.toString()
+    // console.log(this.store[key])
   }
 }
 
-global.localStorage = new LocalStorageMock
+// global.localStorage = new LocalStorageMock
+
+// localStorage.setItem("current_user", '{"userId":1,"email":"mnceleiro@esei.uvigo.es","firstName":"Marcos","lastName":"Nunez Celeiro","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoibW5jZWxlaXJvQGVzZWkudXZpZ28uZXMiLCJnZW5lcmF0ZWQiOjE0OTI1MDcwNTc4NzF9.tIP1bv_0g1q8gXH9IMf34mtEEsdbpiB5DxYfEMLm8i8"}') // eslint-disable-line

@@ -6,8 +6,8 @@ var CopyWebpackPlugin = require("copy-webpack-plugin")
 
 const webpackConfig = {
   entry: {
-    main: "./ui/main/entry.js",
-    test: "./ui/main/javascripts/__tests__/all-tests.js"
+    main: "./ui/main/entry.js"
+//    test: "./ui/main/javascripts/__tests__/all-tests.js"
   },
   output: {
     path: __dirname + "/public/assets/compiled",
@@ -87,6 +87,13 @@ const webpackConfig = {
       "typeof window": JSON.stringify("object")
     })
   ]
+//  externals: {
+//    'Config': JSON.stringify(process.env.NODE_ENV === undefined ? {
+//      serverUrl: "https://myserver.com"
+//    } : {
+//      serverUrl: "http://localhost:8090"
+//    })
+//  }
 }
 
 export default webpackConfig

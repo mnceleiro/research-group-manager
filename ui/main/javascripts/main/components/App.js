@@ -2,20 +2,43 @@ import React, { PropTypes, Component } from "react"
 import { Router } from "react-router"
 import { connect } from "react-redux"
 
+// import config from "config"
+
 import createRoutes from "../createRoutes"
 
 import LoginForm from "./LoginForm"
+
+import { SidebarMenu } from "./SidebarMenu"
+import { UpperMenu } from "./UpperMenu"
 
 class App extends Component {
   render() {
     let {store, history, isAuthenticated, errorMessage} = this.props
 
-    return (
-      <div className="prueba">
-        { isAuthenticated && <Router history={history} routes={createRoutes(store)}></Router> }
-        { !isAuthenticated && <LoginForm auth={isAuthenticated} errorMessage={errorMessage} /> }
-      </div>
-    )
+    // return (
+    //   <div>
+    //     <Router history={history} routes={createRoutes(store)}></Router>
+    //     { !isAuthenticated && <LoginForm auth={isAuthenticated} errorMessage={errorMessage} /> }
+    //   </div>
+    // )
+    if (!isAuthenticated) {
+      return (
+        <LoginForm auth={isAuthenticated} errorMessage={errorMessage} />
+      )
+
+    } else {
+      return (
+        <div>
+          <SidebarMenu />
+          <div className="content-column">
+            <UpperMenu />
+            <div id="rgmApp" className="content">
+              <Router history={history} routes={createRoutes(store)}></Router>
+            </div>
+          </div>
+        </div>
+      )
+    }
   }
 }
 

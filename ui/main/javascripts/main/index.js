@@ -16,5 +16,5 @@ ReactDOM.render(
   <Provider store={store}>
     <App store={store} history={history} />
   </Provider>,
-  document.getElementById("rgmApp")
+  document.getElementById("main-container")
 )

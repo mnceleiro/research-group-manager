@@ -14,7 +14,7 @@ class SessionUtils {
   }
 
   setData(value) {
-    sessionStorage.setItem("current_user", value)
+    localStorage.setItem("current_user", value)
   }
 
   isAuthenticated() {

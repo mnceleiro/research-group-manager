@@ -6,4 +6,4 @@
 // import "../main/index.js"
 // import "../main/main.js"
 //import "./acceptance/researcher.spec.js"
-import "./acceptance/session.spec.js"
+// import "./acceptance/session.spec.js"

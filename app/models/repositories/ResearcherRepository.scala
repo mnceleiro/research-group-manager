@@ -20,8 +20,9 @@ class ResearcherTable(tag: Tag) extends Table[Researcher](tag, "USER") {
   def signatureName = column[String]("signature_name")
   def address = column[String]("address")
   def phone = column[String]("phone")
-
-  override def * = (id, email, password, firstName, lastName, signatureName, address, phone) <> ((Researcher.apply _).tupled, Researcher.unapply)
+  def role = column[Long]("role")
+  
+  override def * = (id, email, password, firstName, lastName, signatureName, address, phone, role) <> ((Researcher.apply _).tupled, Researcher.unapply)
 }
 
 class ResearcherRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
