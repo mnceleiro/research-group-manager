@@ -4,7 +4,6 @@ import play.api.mvc._
 import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent.Future
 import models.entities.Researcher
-import services.ResearcherService
 import play.api.libs.json.Json
 import javax.inject._
 import utils.JWTUtils
@@ -31,7 +30,7 @@ import utils.JWTUtils
 //}
 //case class AuthorizedRequest[A](request: Request[A], user: Researcher) extends WrappedRequest(request)
 //
-//class AuthorizedAction(userService: ResearcherService) extends ActionBuilder[AuthorizedRequest] {
+//class AuthorizedAction(userService: ResearcherRepository) extends ActionBuilder[AuthorizedRequest] {
 //
 //  override def invokeBlock[A](request: Request[A], block: (AuthorizedRequest[A]) ⇒ Future[Result]): Future[Result] = {
 //    request.headers.get(AuthTokenHeader).orElse(request.getQueryString(AuthTokenUrlKey)) match {
@@ -49,7 +48,7 @@ import utils.JWTUtils
 
 case class UserRequest[A](researcher: Researcher, request: Request[A]) extends WrappedRequest(request)
 
-class SecuredAuthenticator @Inject() (researcherService: ResearcherService) extends Controller {
+class SecuredAuthenticator @Inject() (userRepo: UserRepository) extends Controller {
   implicit val formatUserDetails = Json.format[Researcher]
 
   object JWTAuthentication extends ActionBuilder[Request] {
@@ -66,7 +65,7 @@ class SecuredAuthenticator @Inject() (researcherService: ResearcherService) exte
 
           // Replace this block with data source
           //          val maybeUserInfo = dataSource.getUser(userCredentials.email, userCredentials.userId)
-          researcherService.get(id).flatMap(res => {
+          userRepo.get(id).flatMap(res => {
             //              Future.successful(Unauthorized("Invalid credential"))
             block(UserRequest(res.get, request))
           })

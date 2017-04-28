@@ -1,41 +1,51 @@
 package controllers
 
-import scala.concurrent.Await
 import scala.concurrent.Future
-import scala.concurrent.duration._
 
-import play.api.i18n.Messages.Implicits._
-import javax.inject._
-import play.api._
-import play.api.data.Forms._
-import play.api.db.slick.DatabaseConfigProvider
-import play.api.libs.json._
-import play.api.mvc._
-import play.api.libs.concurrent.Execution.Implicits._
-
-import services.ResearcherService
+import javax.inject.Inject
 import models.entities.Researcher
-import scala.util.Success
-import scala.util.Failure
+import models.entities.Role
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import play.api.libs.json.JsString
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+import play.api.libs.json.Json.toJsFieldJsValueWrapper
+import play.api.mvc.Controller
 import utils.Password
+import models.repositories.ResearcherRepository
+import models.repositories.RoleRepository
+import models.repositories.ResearcherRepository
 
 class ResearcherController @Inject()(
-    researcherService: ResearcherService,
+    researcherRepo: ResearcherRepository,
+    rolesService: RoleRepository,
     auth: SecuredAuthenticator
     ) extends Controller {
+  
   implicit val userWrites = Json.writes[Researcher]
   implicit val userReads = Json.reads[Researcher]
+  implicit val roleReads = Json.reads[Role]
+  implicit val roleWrites = Json.writes[Role]
   
   def resOK(data: JsValue) = Json.obj("res" -> "OK") ++ Json.obj("data" -> data)
   def resKO(error: JsValue) = Json.obj("res" -> "error") ++ Json.obj("error" -> error)
   
   def getAll = auth.JWTAuthentication.async {
-    val researchers = researcherService.listAll
-    researchers.map(r => Ok(Json.toJson(r)))
+    val researchers = researcherRepo.listAll
+    researchers.map(r => {
+      Ok(Json.toJson(r))
+    })
+  }
+  
+  def getUserRoles = auth.JWTAuthentication.async {
+    val roles = rolesService.listAll
+    roles.map(r => {
+      Ok(Json.toJson(r))
+    })
   }
   
   def get(id: Long) = auth.JWTAuthentication.async {
-    val researcher = researcherService.get(id)
+    val researcher = researcherRepo.get(id)
     researcher.map(r => Ok(Json.toJson(r)))
   }
 
@@ -46,7 +56,7 @@ class ResearcherController @Inject()(
         Future.apply(Ok(resKO(JsString(""))))
       },
       data => {
-        researcherService.save(data.copy(password=Password.hashPassword(data.password.get)))
+        researcherRepo.save(data.copy(password=Password.hashPassword(data.password.get)))
           .map(r => Ok(resOK(JsString("Investigador creado"))))
           .recover {
             case e => Ok(resKO(JsString(e.getMessage)))
@@ -61,7 +71,7 @@ class ResearcherController @Inject()(
       
       data => {
 //        println(data)
-        researcherService.update(data)
+        researcherRepo.update(data)
           .map(p => {println("OK"); Ok(resOK(JsString("Investigador actualizado.")))})
           .recover{ case e => {println(e); Ok(resKO(JsString(e.getMessage)))} }
       }
@@ -69,6 +79,6 @@ class ResearcherController @Inject()(
   }
   
   def delete(id: Long) = auth.JWTAuthentication.async { implicit request =>
-    researcherService.delete(id).map(x => Ok(resOK(JsString("Investigador eliminado")))).recover { case e => Ok(resKO(JsString(e.getMessage))) }
+    researcherRepo.delete(id).map(x => Ok(resOK(JsString("Investigador eliminado")))).recover { case e => Ok(resKO(JsString(e.getMessage))) }
   }
 }

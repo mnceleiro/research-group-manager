@@ -10,12 +10,15 @@ import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.json.Json
 import models.entities.Researcher
 import play.api.libs.json.JsObject
+import models.entities.Role
 
 class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAndAfter {
 
   implicit var userReads = Json.reads[Researcher]
   implicit var userWrites = Json.writes[Researcher]
   implicit var userFormat = Json.format[Researcher]
+  
+  implicit var roleReads = Json.reads[Role]
 
   var tokenString: String = null
   var fakeTextHeaders: FakeHeaders = null
@@ -45,6 +48,22 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
   }
 
   "Researcher controller" should {
+    
+    "Return 6 user roles" in {
+      val resp = route(app, FakeRequest(
+        GET,
+        "/researchers/roles/all",
+        fakeJsonHeaders,
+        "")).get
+        
+        status(resp) mustBe OK
+        contentType(resp) mustBe Some("application/json")
+      
+        val roles = Json.parse(contentAsString(resp)).validate[List[Role]].get
+        
+        roles.length mustBe 6
+
+    }
 
     "return 5 researchers" in {
       val resp = route(app, FakeRequest(
@@ -76,7 +95,7 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
     }
 
     "Insert new researcher and return a JSON valid response" in {
-      val newRes = Researcher(0, "aturing@paddington.com", Option("1234"), "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123")
+      val newRes = Researcher(0, "aturing@paddington.com", Option("1234"), "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123", 1)
 
       val resp = route(
         app,
@@ -88,10 +107,13 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
 
       contentType(resp) mustBe Some("application/json")
       status(resp) mustBe OK
+      
+      val json = Json.parse(contentAsString(resp))
+      assert(json.\("res").as[String] !== "error")
     }
 
     "Insert new researcher with incorrect email will return an error in json response" in {
-      val newRes = Researcher(0, "aturingpaddington.com", Option("1234"), "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123")
+      val newRes = Researcher(0, "aturingpaddington.com", Option("1234"), "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123", 1L)
 
       val resp = route(
         app,
@@ -109,12 +131,12 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
       resCode.as[String] mustEqual "error"
     }
 
-    "Deleting a researcher with an ID 1 will return a response OK" in {
+    "Deleting a researcher with an ID 6 will return a response OK" in {
       val resp = route(
         app,
         FakeRequest(
           DELETE,
-          "/researchers/delete/4",
+          "/researchers/delete/6",
           fakeJsonHeaders,
           Json.toJson(""))).get
 

@@ -32,7 +32,6 @@ class UserAuthenticationSpec extends AcceptanceSpec[Researcher] with BeforeAndAf
   }
   
   "UserAuthentication" should {
-    
     "authenticate with an user/password" in {
       val resp = route(app, FakeRequest(
           POST, "/users/login", 
@@ -51,7 +50,6 @@ class UserAuthenticationSpec extends AcceptanceSpec[Researcher] with BeforeAndAf
       json.\("firstName").get.as[String] mustEqual "Marcos"
       json.\("lastName").get.as[String] mustEqual "Nunez Celeiro"
       JWTUtils.isValidToken(token.as[String]) mustBe true
-      
     }
     
     "return bad email/password response message" in {
@@ -64,7 +62,6 @@ class UserAuthenticationSpec extends AcceptanceSpec[Researcher] with BeforeAndAf
       status(resp) mustBe OK
       
       val json = Json.parse(contentAsString(resp)).as[JsObject]
-      println(json.\("res").get)
       json.\("res").get.as[String] mustEqual "error"
       
     }

@@ -3,9 +3,9 @@ GET     /researchers/id/:id         controllers.ResearcherController.get(id: Lon
 POST    /researchers/add            controllers.ResearcherController.add
 POST    /researchers/update/:id     controllers.ResearcherController.update(id: Long)
 DELETE  /researchers/delete/:id     controllers.ResearcherController.delete(id: Long)
+GET     /researchers/roles/all      controllers.ResearcherController.getUserRoles
 
 POST    /users/login                controllers.SessionsController.login
-
 
 GET     /                           controllers.Assets.at(path="/public/assets", file="index.html")
 GET     /index.html                 controllers.Assets.at(path="/public/assets", file="index.html")

@@ -9,17 +9,24 @@ import scala.util.Success
 import scala.util.Failure
 import models.entities.Researcher
 
+import play.api.db.DBApi
+import play.api.db.evolutions.Evolutions
+import org.scalatest.BeforeAndAfterAll
 
-class ResearcherRepositorySpec extends PlaySpec with OneAppPerSuite with BeforeAndAfter {
- 
-//  implicit override lazy val app: Application = new GuiceApplicationBuilder()
-//    .configure("db.default.url" -> sys.env.getOrElse("DB_TEST_URL", "jdbc:mysql://localhost:3306/my_test_db?useSSL=false"))
-//    .build
-  
+
+class ResearcherRepositorySpec extends PlaySpec with OneAppPerSuite with BeforeAndAfterAll {
+
   val researcherRepo = app.injector.instanceOf[ResearcherRepository]
+  val dbApi = app.injector.instanceOf[DBApi]
+
   
-  before {
+  override def beforeAll = {
+    Evolutions.cleanupEvolutions(dbApi.database("default"))
+    Evolutions.applyEvolutions(dbApi.database("default"))
+  }
   
+  override def afterAll = {
+//    Evolutions.cleanupEvolutions(dbApi.database("default"))
   }
 
   "ResearcherRepository" should {
@@ -50,7 +57,7 @@ class ResearcherRepositorySpec extends PlaySpec with OneAppPerSuite with BeforeA
 
     "add Alan Mathison Turing as Researcher" in {
       
-      val res = Researcher(0, "aturing@paddington.com", Option("1234"), "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123")
+      val res = Researcher(0, "aturing@paddington.com", Option("1234"), "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123", 1)
 //      researcherRepo.save(res) onSuccess {
 //        case r: Researcher => {
 //    		  r.id mustBe 6
@@ -100,7 +107,8 @@ class ResearcherRepositorySpec extends PlaySpec with OneAppPerSuite with BeforeA
             "Nunez Celeiro", 
             "Marcos Nunez Celeiro", 
             "C/ Curros Enriquez 1211, Sarria (Lugo)", 
-            "9825312123"
+            "9825312123",
+            1
         )
       ).onSuccess({
         case r: Researcher => {
@@ -109,9 +117,5 @@ class ResearcherRepositorySpec extends PlaySpec with OneAppPerSuite with BeforeA
         }
       })
     }
-  }
- 
-  after {
-
   }
 }
