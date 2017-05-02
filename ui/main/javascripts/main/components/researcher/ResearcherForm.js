@@ -15,7 +15,6 @@ class ResearcherForm extends React.Component {
         "email": researcher.email,
         "firstName": researcher.firstName,
         "lastName": researcher.lastName,
-        "signatureName": researcher.signatureName,
         "phone": researcher.phone,
         "address": researcher.address
       }
@@ -49,13 +48,15 @@ class ResearcherForm extends React.Component {
     if (nextProps.deletedResearcher) {
       browserHistory.push("/researchers")
     }
-    
+
     if (nextProps.success) {
       browserHistory.push(`/researchers?success=${nextProps.success}`)
     }
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.errorHappened) alert(nextProps.errorHappened)
+
     if (this.props.activeResearcher === 0 && nextProps.activeResearcher > 0) {
       this.handleInitialize(nextProps.researcher)
     }
@@ -99,9 +100,21 @@ class ResearcherForm extends React.Component {
             <Field component={InputRow} type="password" label="Confirmar contraseña" name="confirmPassword" />
             <Field component={InputRow} type="text" label="Nombre" name="firstName" />
             <Field component={InputRow} type="text" label="Apellidos" name="lastName" />
-            <Field component={InputRow} type="text" label="Firma" name="signatureName" />
-            <Field component={InputRow} type="text" label="Telefono" name="phone" />
             <Field component={InputRow} type="text" label="Direccion" name="address" />
+            <Field component={InputRow} type="text" label="Telefono" name="phone" />
+
+            <div className="form-group">
+              <div className="checkbox col-xs-offset-2 col-md-offset-2 col-xs-3 col-md-2">
+                <label className="control-label">
+                  <Field type="checkbox" id="access" name="access" component="input" />Acceso usuario
+                </label>
+              </div>
+              <div className="checkbox col-xs-3 col-md-2">
+                <label className="control-label">
+                  <Field type="checkbox" id="admin" name="admin" component="input" />Administrador
+                </label>
+              </div>
+            </div>
 
             <div className="form-group">
               {saveCancel}
@@ -118,14 +131,22 @@ class ResearcherForm extends React.Component {
   }
 
   onSubmit(res) {
-    var id = !this.props.params.key ? 0 : this.props.params.key
+    let id = 0
+    let resId = 0
+    let usId = 0
+    if (this.props.params.key) {
+      id = this.props.params.key
+      resId = this.props.params.key
+      usId = this.props.params.key
+    }
+    // var id = !this.props.params.key ? 0 : this.props.params.key
     var password = !res.password ? null : res.password
 
-    var toSend = Object.assign({}, res, {id, password})
+    var toSend = Object.assign({}, res, {id, usId, resId, password})
 
     if (id > 0) {
       this.props.updateResearcher(toSend)
-      
+
     } else {
       this.props.addResearcher(toSend)
     }
@@ -169,6 +190,7 @@ ResearcherForm.propTypes = {
   dispatch: React.PropTypes.func,
   initialize: React.PropTypes.func,
   success: React.PropTypes.string,
+  errorHappened: React.PropTypes.string
 }
 
 let mapStateToProps = store => {
@@ -178,7 +200,7 @@ let mapStateToProps = store => {
       return r.id === store.researcherState.activeResearcher
     }),
     success: store.researcherState.success,
-    error: store.researcherState.error,
+    errorHappened: store.researcherState.error,
     deletedResearcher: store.researcherState.deletedResearcher
   }
 }

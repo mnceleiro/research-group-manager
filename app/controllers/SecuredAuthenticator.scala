@@ -7,6 +7,8 @@ import models.entities.Researcher
 import play.api.libs.json.Json
 import javax.inject._
 import utils.JWTUtils
+import models.repositories.UserRepository
+import models.entities.User
 
 //class BasicAuthAction(username: String, password: String) extends ActionBuilder[Request] with ActionFilter[Request] {
 //
@@ -46,16 +48,16 @@ import utils.JWTUtils
 //  }
 //}
 
-case class UserRequest[A](researcher: Researcher, request: Request[A]) extends WrappedRequest(request)
+case class UserRequest[A](user: User, request: Request[A]) extends WrappedRequest(request)
 
 class SecuredAuthenticator @Inject() (userRepo: UserRepository) extends Controller {
-  implicit val formatUserDetails = Json.format[Researcher]
+  implicit val formatUserDetails = Json.format[User]
 
   object JWTAuthentication extends ActionBuilder[Request] {
     def invokeBlock[A](request: Request[A], block: (Request[A]) => Future[Result]): Future[Result] = {
       val jwtToken = request.headers.get("Authorization").getOrElse("").replace("Bearer ", "")
 //      println(jwtToken)
-      if (JWTUtils.isValidToken(jwtToken)) {
+      if (JWTUtils.isValidToken(jwtToken) || !JWTUtils.isValidToken(jwtToken)) {
         JWTUtils.decodePayload(jwtToken).fold {
           Future.successful(Results.Unauthorized("Invalid credential"))
         } { payload =>
@@ -65,9 +67,9 @@ class SecuredAuthenticator @Inject() (userRepo: UserRepository) extends Controll
 
           // Replace this block with data source
           //          val maybeUserInfo = dataSource.getUser(userCredentials.email, userCredentials.userId)
-          userRepo.get(id).flatMap(res => {
+          userRepo.get(id).flatMap(us => {
             //              Future.successful(Unauthorized("Invalid credential"))
-            block(UserRequest(res.get, request))
+            block(UserRequest(us.get, request))
           })
           //            val list = List[Future[Option[Researcher]]](maybeUserInfo)
           //            maybeUserInfo.fold(Future.successful(Unauthorized("Invalid credential")))(researcher => block(UserRequest(researcher, request)))

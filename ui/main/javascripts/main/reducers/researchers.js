@@ -32,12 +32,14 @@ export default function researchers(state = initialState, action) {
   case REQUEST_RESEARCHERS:
     return Object.assign({}, state, {
       isFetching: true,
-      didInvalidate: false
+      didInvalidate: false,
+      error: null,
     })
 
   case REQUEST_RESEARCHER:
     return Object.assign({}, state, {
       isFetching: true,
+      error: null,
     })
 
   case RECEIVE_RESEARCHERS:
@@ -76,6 +78,7 @@ export default function researchers(state = initialState, action) {
   case REQUEST_ADD_RESEARCHER:
     return Object.assign({}, state, {
       isFetching: true,
+      error: null,
     })
 
   case ADD_RESEARCHER_SUCCESS:
@@ -95,6 +98,7 @@ export default function researchers(state = initialState, action) {
   case REQUEST_UPDATE_RESEARCHER:
     return Object.assign({}, state, {
       isFetching: true,
+      error: null,
     })
 
   case UPDATE_RESEARCHER_SUCCESS:
@@ -114,6 +118,7 @@ export default function researchers(state = initialState, action) {
   case REQUEST_DELETE_RESEARCHER:
     return Object.assign({}, state, {
       isFetching: true,
+      error: null,
     })
 
   case DELETE_RESEARCHER_SUCCESS:

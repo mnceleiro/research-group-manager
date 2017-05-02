@@ -3,8 +3,6 @@ package controllers
 import scala.concurrent.Future
 
 import javax.inject.Inject
-import models.entities.Researcher
-import models.entities.Role
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.JsString
 import play.api.libs.json.JsValue
@@ -15,48 +13,63 @@ import utils.Password
 import models.repositories.ResearcherRepository
 import models.repositories.RoleRepository
 import models.repositories.ResearcherRepository
+import models.entities.Researcher
+import models.entities.ResearcherWithUser
+import models.entities.User
+import vos.ResearcherVO
 
 class ResearcherController @Inject()(
     researcherRepo: ResearcherRepository,
-    rolesService: RoleRepository,
     auth: SecuredAuthenticator
     ) extends Controller {
   
   implicit val userWrites = Json.writes[Researcher]
   implicit val userReads = Json.reads[Researcher]
-  implicit val roleReads = Json.reads[Role]
-  implicit val roleWrites = Json.writes[Role]
+  implicit val userResFormat = Json.format[User]
+  implicit val userResWrites = Json.writes[ResearcherWithUser]
+  implicit val userResReads = Json.reads[ResearcherWithUser]
+  implicit val resVOWrites = Json.writes[ResearcherVO]
+  implicit val resVOReads = Json.reads[ResearcherVO]
   
   def resOK(data: JsValue) = Json.obj("res" -> "OK") ++ Json.obj("data" -> data)
   def resKO(error: JsValue) = Json.obj("res" -> "error") ++ Json.obj("error" -> error)
-  
+
   def getAll = auth.JWTAuthentication.async {
     val researchers = researcherRepo.listAll
-    researchers.map(r => {
-      Ok(Json.toJson(r))
+    researchers.map(researcherList => {
+      Ok(Json.toJson(
+        researcherList.map(r => {
+//          println(r)
+          ResearcherVO.fromResearcherUser(r)
+        })))
     })
   }
-  
-  def getUserRoles = auth.JWTAuthentication.async {
-    val roles = rolesService.listAll
-    roles.map(r => {
-      Ok(Json.toJson(r))
-    })
-  }
-  
+
+  //  def getUserRoles = auth.JWTAuthentication.async {
+  //    val roles = rolesService.listAll
+  //    roles.map(r => {
+  //      Ok(Json.toJson(r))
+  //    })
+  //  }
+
   def get(id: Long) = auth.JWTAuthentication.async {
     val researcher = researcherRepo.get(id)
-    researcher.map(r => Ok(Json.toJson(r)))
+
+    researcher.map(r => {
+      println(Json.toJson(ResearcherVO.fromResearcherUser(r.get)))
+      Ok(Json.toJson(ResearcherVO.fromResearcherUser(r.get)))
+    })
   }
 
   def add = auth.JWTAuthentication.async { implicit request =>
-    Researcher.researcherForm.bindFromRequest.fold(
+    ResearcherVO.researcherForm.bindFromRequest.fold(
       errorForm => {
-//        println(errorForm)
+        println(errorForm)
         Future.apply(Ok(resKO(JsString(""))))
       },
       data => {
-        researcherRepo.save(data.copy(password=Password.hashPassword(data.password.get)))
+        println(ResearcherVO.toResearcherUser(data))
+        researcherRepo.save(ResearcherVO.toResearcherUser(data))
           .map(r => Ok(resOK(JsString("Investigador creado"))))
           .recover {
             case e => Ok(resKO(JsString(e.getMessage)))

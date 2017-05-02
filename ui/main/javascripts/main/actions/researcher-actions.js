@@ -65,7 +65,7 @@ export function addResearcher(r) {
         Authorization: sessionUtils.getAuthString()
       })
     })
-
+    alert(JSON.stringify(r))
     return fetch(request, {
       method: "POST",
       body: JSON.stringify(r)
@@ -73,6 +73,7 @@ export function addResearcher(r) {
     }).then(resp => {return resp.json() })
       .then(researcherJson => {
         if (researcherJson.res === "error") {
+          alert(JSON.stringify(researcherJson))
           dispatch(addResearcherError(researcherJson.res))
         } else {
           dispatch(addResearcherSuccess(researcherJson))

@@ -10,10 +10,9 @@ class ResearcherList extends React.Component {
           <tr>
             <th>Nombre</th>
             <th>Apellidos</th>
-            <th>Correo</th>
-            <th>Firma</th>
             <th>Dirección</th>
             <th>Teléfono</th>
+            <th>Correo</th>
             <th></th>
           </tr>
         </thead>
@@ -22,11 +21,11 @@ class ResearcherList extends React.Component {
           this.props.list.map(r => {
             return <ResearcherRow
                                 onResearcherEdit={this.props.onResearcherEdit}
-                                key={ r.id }
-                                id={ r.id }
+                                key={ r.resId }
+                                id={ r.resId }
+                                usId={ r.userId }
                                 name={ r.firstName }
                                 surname={ r.lastName }
-                                signaturename={ r.signatureName }
                                 email={ r.email }
                                 address={ r.address }
                                 phone={ r.phone } />

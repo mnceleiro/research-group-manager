@@ -25,7 +25,9 @@ class SessionsController @Inject() (userRepo: UserRepository, auth: SecuredAuthe
   implicit val userReads = Json.reads[User]
   
   def login = Action.async { request =>
-    val userData = request.body.asJson.get
+    val userData = request.body.asJson.getOrElse(null)
+    
+    if (userData == null) Future.successful(Ok(resKO(JsString("Usuario o contraseña incorrectos."))))
 
     userRepo.getByEmail((userData \ "email").as[String]).flatMap { dbUserOpt =>
       dbUserOpt match {

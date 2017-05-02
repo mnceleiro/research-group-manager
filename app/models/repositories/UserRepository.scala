@@ -28,14 +28,14 @@ class UserRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   val users = TableQuery[UserTable]
 
-//  def save(user: User): Future[User] = {
-//    user.password match {
-//      case None => throw new Exception()
-//      case Some(_) => dbConfig.db.run {
-//        (users.returning(users.map(_.id)).into((res,ide) => res.copy(id = ide)) += user).transactionally
-//      }
-//    }
-//  }
+  def save(user: User): Future[User] = {
+    user.password match {
+      case None => throw new Exception()
+      case Some(_) => dbConfig.db.run {
+        (users.returning(users.map(_.id)).into((res,ide) => res.copy(id = ide)) += user).transactionally
+      }
+    }
+  }
 //  
 //  def update(user: User): Future[User] = {
 //    dbConfig.db.run(users.insertOrUpdate(user)).map(res => "El usuario se ha actualizado correctamente.").recover {
