@@ -12,7 +12,6 @@ import play.api.mvc.Controller
 import utils.Password
 import models.repositories.ResearcherRepository
 import models.repositories.RoleRepository
-import models.repositories.ResearcherRepository
 import models.entities.Researcher
 import models.entities.ResearcherWithUser
 import models.entities.User

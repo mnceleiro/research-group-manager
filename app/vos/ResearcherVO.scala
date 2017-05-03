@@ -32,7 +32,7 @@ object ResearcherVO {
   val researcherVOMapping: Mapping[ResearcherVO] = mapping(
     "id" -> longNumber,
     "usId" -> longNumber,
-    "email" -> nonEmptyText,
+    "email" -> email,
     "password" -> optional(text),
     "confirmPassword" -> optional(text),
     "admin" -> boolean,

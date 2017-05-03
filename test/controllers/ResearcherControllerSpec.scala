@@ -11,12 +11,17 @@ import play.api.libs.json.Json
 import models.entities.Researcher
 import play.api.libs.json.JsObject
 import models.entities.Role
+import vos.ResearcherVO
 
 class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAndAfter {
 
   implicit var userReads = Json.reads[Researcher]
   implicit var userWrites = Json.writes[Researcher]
   implicit var userFormat = Json.format[Researcher]
+  
+  implicit var userReadsVO = Json.reads[ResearcherVO]
+  implicit var userWritesVO = Json.writes[ResearcherVO]
+  implicit var userFormatVO = Json.format[ResearcherVO]
   
   implicit var roleReads = Json.reads[Role]
 
@@ -31,8 +36,6 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
       Json.parse("""{"email":"mnceleiro@esei.uvigo.es", "password":"1234"}"""))).get
 
     this.tokenString = "Bearer " + Json.parse(contentAsString(resp)).as[JsObject].\("token").get.as[String]
-
-    //    println(tokenString)
 
     this.fakeJsonHeaders = FakeHeaders(Seq(
       ("content-type" -> "text/plain"),
@@ -49,21 +52,21 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
 
   "Researcher controller" should {
     
-    "Return 6 user roles" in {
-      val resp = route(app, FakeRequest(
-        GET,
-        "/researchers/roles/all",
-        fakeJsonHeaders,
-        "")).get
-        
-        status(resp) mustBe OK
-        contentType(resp) mustBe Some("application/json")
-      
-        val roles = Json.parse(contentAsString(resp)).validate[List[Role]].get
-        
-        roles.length mustBe 6
-
-    }
+//    "Return 6 user roles" in {
+//      val resp = route(app, FakeRequest(
+//        GET,
+//        "/researchers/roles/all",
+//        fakeJsonHeaders,
+//        "")).get
+//        
+//        status(resp) mustBe OK
+//        contentType(resp) mustBe Some("application/json")
+//      
+//        val roles = Json.parse(contentAsString(resp)).validate[List[Role]].get
+//        
+//        roles.length mustBe 6
+//
+//    }
 
     "return 5 researchers" in {
       val resp = route(app, FakeRequest(
@@ -78,8 +81,7 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
 
       status(resp) mustBe OK
       contentType(resp) mustBe Some("application/json")
-
-      val researcherList = Json.parse(contentAsString(resp)).validate[List[Researcher]].get
+      val researcherList = Json.parse(contentAsString(resp)).validate[List[ResearcherVO]].get
       researcherList.length mustBe 5
     }
 
@@ -90,12 +92,12 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
       contentType(resp) mustBe Some("application/json")
 
       val jsonRes = Json.parse(contentAsString(resp))
-      val bindForm = Researcher.researcherForm.bind(jsonRes)
-      val res = jsonRes.validate[Researcher].get
+      val bindForm = ResearcherVO.researcherForm.bind(jsonRes)
+      val res = jsonRes.validate[ResearcherVO].get
     }
 
     "Insert new researcher and return a JSON valid response" in {
-      val newRes = Researcher(0, "aturing@paddington.com", Option("1234"), "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123", 1)
+      val newRes = ResearcherVO(0, 0, "aturing@paddington.com", Option("1234"), Option("1234"), true, true, 0, "Alan", "Mathison Turing", "Paddington 18", "9825312123")
 
       val resp = route(
         app,
@@ -113,7 +115,7 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
     }
 
     "Insert new researcher with incorrect email will return an error in json response" in {
-      val newRes = Researcher(0, "aturingpaddington.com", Option("1234"), "Alan", "Mathison Turing", "Alan Mathison-Turing", "Paddington 18", "9825312123", 1L)
+      val newRes = ResearcherVO(0, 0, "aturingpaddington.com", Option("1234"), Option("1234"), true, true, 0, "Alan", "Mathison Turing", "Paddington 18", "9825312123")
 
       val resp = route(
         app,
@@ -128,6 +130,7 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
 
       val json = Json.parse(contentAsString(resp))
       val resCode = json.as[JsObject].\("res").get
+      println(json)
       resCode.as[String] mustEqual "error"
     }
 
@@ -157,8 +160,8 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
 
       status(resp) mustBe OK
       contentType(resp) mustBe Some("application/json")
-
-      val researcherList = Json.parse(contentAsString(resp)).validate[List[Researcher]].get
+      
+      val researcherList = Json.parse(contentAsString(resp)).validate[List[ResearcherVO]].get
       researcherList.length mustBe 5
     }
   }
