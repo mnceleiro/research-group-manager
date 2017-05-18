@@ -4,6 +4,20 @@ POST    /researchers/add            controllers.ResearcherController.add
 POST    /researchers/update/:id     controllers.ResearcherController.update(id: Long)
 DELETE  /researchers/delete/:id     controllers.ResearcherController.delete(id: Long)
 
+GET     /projects/all               controllers.ProjectController.getAll
+GET     /projects/id/:id            controllers.ProjectController.get(id: Long)
+POST    /projects/add               controllers.ProjectController.add
+POST    /projects/update/:id        controllers.ProjectController.update(id: Long)
+DELETE  /projects/delete/:id        controllers.ProjectController.delete(id: Long)
+
+GET     /congresses/all             controllers.CongressController.getAll
+GET     /congresses/id/:id          controllers.CongressController.get(id: Long)
+POST    /congresses/add             controllers.CongressController.add
+POST    /congresses/update/:id      controllers.CongressController.update(id: Long)
+DELETE  /congresses/delete/:id      controllers.CongressController.delete(id: Long)
+
+GET     /projects-with-authors/all  controllers.AuthorProjectController.getAll
+
 POST    /users/login                controllers.SessionsController.login
 #GET     /assets/*file         controllers.AssetsController.at(path="/public/assets", file="index.html")
 

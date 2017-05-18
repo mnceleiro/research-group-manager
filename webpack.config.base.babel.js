@@ -21,7 +21,7 @@ const webpackConfig = {
     },
     {
       test: /\.css$/,
-      loader: "style-loader!css-loader?sourceMap"
+      loader: "css-to-string-loader!style-loader!css-loader!?sourceMap"
     }, {
       test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
       loader: "url-loader?limit=10000&mimetype=application/font-woff"
@@ -71,7 +71,11 @@ const webpackConfig = {
     }, {
       from: "ui/main/images",
       to: "../images"
-    }]),
+    }, {
+      from: "node_modules/react-datepicker/dist",
+      to: "../lib/react-datepicker"
+    }
+    ]),
     new webpack.LoaderOptionsPlugin({
       options: {
         eslint: {

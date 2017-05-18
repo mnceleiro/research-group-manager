@@ -2,4 +2,23 @@ package models.entities
 
 import java.util.Date
 
-case class Project(id: Long, code: String, public: Boolean, financier: String, startDate: Date, endDate: Date, price: BigDecimal)
+import play.api.data.Form
+import play.api.data.Forms._
+import play.api.data.Mapping
+
+
+case class Project(
+    id: Long, code: String, title: String, 
+    public: Boolean, startDate: String, endDate: String, budget: Long, 
+    researcherCount: Option[Long]
+) extends BaseEntity
+
+//case class WithAuthor(authorId: Long, role: Long)
+
+case class ProjectWithAuthors(
+    p: Project, withAuthors: Option[Seq[Option[AuthorProject]]]
+)
+
+case class ProjectFull(
+    project: Project, authors: Seq[AuthorFull]
+)

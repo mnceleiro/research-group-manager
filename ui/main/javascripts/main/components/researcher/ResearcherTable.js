@@ -3,7 +3,7 @@ import { Link } from "react-router"
 import { connect } from "react-redux"
 
 import ResearcherList from "./ResearcherList"
-import FlashMessage from "../FlashMessage"
+import FlashMessage from "../html_extended/FlashMessage"
 import { fetchResearchers, createResearcher, editResearcher } from "../../actions/researcher-actions"
 
 class ResearcherTable extends React.Component {

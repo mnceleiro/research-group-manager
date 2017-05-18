@@ -25,9 +25,11 @@
   ],
   "dependencies": {
     "bootstrap-sass": "^3.3.7",
+    "css-to-string-loader": "^0.1.2",
     "font-awesome": "^4.7.0",
     "jquery": "^3.1.1",
     "react": "^15.4.2",
+    "react-datepicker": "^0.46.0",
     "react-dom": "^15.4.2",
     "react-modal": "^1.7.3",
     "react-redux": "^5.0.2",

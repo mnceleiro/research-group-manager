@@ -57,7 +57,7 @@ class SecuredAuthenticator @Inject() (userRepo: UserRepository) extends Controll
     def invokeBlock[A](request: Request[A], block: (Request[A]) => Future[Result]): Future[Result] = {
       val jwtToken = request.headers.get("Authorization").getOrElse("").replace("Bearer ", "")
 //      println(jwtToken)
-      if (JWTUtils.isValidToken(jwtToken) || !JWTUtils.isValidToken(jwtToken)) {
+      if (JWTUtils.isValidToken(jwtToken)) {
         JWTUtils.decodePayload(jwtToken).fold {
           Future.successful(Results.Unauthorized("Invalid credential"))
         } { payload =>

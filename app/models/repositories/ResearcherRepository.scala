@@ -59,12 +59,34 @@ class ResearcherRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
 //      }
   }
   
-  def update(user: Researcher): Future[Researcher] = {
-    dbConfig.db.run {
-      (researchers.filter(_.id === user.id)
+  def update(resUser: ResearcherWithUser): Future[ResearcherWithUser] = {
+    var user = resUser.user
+    var researcher = resUser.researcher
+    
+    val resAction = (researchers.filter(_.id === researcher.id)
           .map(u => (u.id, u.firstName, u.lastName, u.address, u.phone))
-          .update((user.id, user.firstName, user.lastName, user.address, user.phone)).transactionally).map(x => user)
-    }
+          .update((researcher.id, researcher.firstName, researcher.lastName, researcher.address, researcher.phone)).transactionally).map(x => researcher)
+          
+    val userAction = (users.filter(_.id === user.id)
+          .map(u => (u.id, u.email, u.password, u.admin, u.access))
+          .update((user.id, user.email, user.password, user.admin, user.access)).transactionally).map(x => user)
+              
+    val trans = (for {
+      us <- userAction
+      res <- resAction
+    } yield ResearcherWithUser(res, us)).transactionally
+    
+    dbConfig.db.run(trans)
+    
+//    dbConfig.db.run {
+//      val resFut = (researchers.filter(_.id === researcher.id)
+//          .map(u => (u.id, u.firstName, u.lastName, u.address, u.phone))
+//          .update((researcher.id, researcher.firstName, researcher.lastName, researcher.address, researcher.phone)).transactionally).map(x => researcher)
+//          
+//      val usFut = (users.filter(_.id === user.id)
+//          .map(u => (u.id, u.email, u.password, u.admin, u.access))
+//          .update((user.id, user.email, user.password, user.admin, user.access)).transactionally).map(x => user)
+//    }
   }
 
   def delete(id: Long): Future[Int] = {

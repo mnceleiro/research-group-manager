@@ -95,7 +95,7 @@ export function updateResearcher(r) {
         "Authorization": sessionUtils.getAuthString()
       })
     })
-
+    
     return fetch(request, {
       method: "POST",
       body: JSON.stringify(r)

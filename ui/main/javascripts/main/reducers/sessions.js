@@ -1,6 +1,6 @@
 import {
   REQUEST_LOGIN, LOGIN_SUCCESS, LOGIN_ERROR,
-  LOGOUT_SUCCESS
+  LOGOUT_SUCCESS, SET_SESSION_DATA
 } from "../constants/actionTypes"
 
 import { sessionUtils } from "../utils/SessionUtils"
@@ -8,7 +8,7 @@ import { sessionUtils } from "../utils/SessionUtils"
 const initialState = {
   isFetching: false,
   isAuthenticated: sessionUtils.isAuthenticated(),
-  user: "",
+  user: {},
   error: ""
 }
 
@@ -25,6 +25,7 @@ export default function authentication(state = initialState, action) {
     return Object.assign({}, state, {
       isFetching: action.isFetching,
       isAuthenticated: action.isAuthenticated,
+      user: sessionUtils.getUser(),
       error: ""
     })
 
@@ -39,6 +40,12 @@ export default function authentication(state = initialState, action) {
     return Object.assign({}, state, {
       isFetching: false,
       isAuthenticated: false
+    })
+
+  case SET_SESSION_DATA:
+    if (!state.isAuthenticated) return state
+    else return Object.assign({}, state, {
+      user: sessionUtils.getUser()
     })
   }
 

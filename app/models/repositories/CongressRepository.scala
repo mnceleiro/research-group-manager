@@ -11,15 +11,14 @@ import slick.driver.JdbcProfile
 class CongressTable(tag: Tag) extends Table[Congress](tag, "CONGRESS") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def title = column[String]("title")
-  def name = column[String]("password")
-  def minute = column[String]("first_name")
-  def place = column[String]("last_name")
-  def country = column[String]("signature_name")
-  def start = column[String]("address")
-  def end = column[String]("phone")
-  def public = column[Boolean]("public")
+  def name = column[String]("name")
+  def place = column[String]("place")
+  def country = column[String]("country")
+  def start = column[String]("start")
+  def end = column[String]("end")
+  def international = column[Boolean]("international")
 
-  override def * = (id, title, name, minute, place, country, start, end, public) <> ((Congress.apply _).tupled, Congress.unapply)
+  override def * = (id, title, name, place, country, start, end, international) <> ((Congress.apply _).tupled, Congress.unapply)
 }
 
 class CongressRepository @Inject() (dbConfigProvider: DatabaseConfigProvider) {
@@ -40,8 +39,8 @@ class CongressRepository @Inject() (dbConfigProvider: DatabaseConfigProvider) {
 
     dbConfig.db.run {
       (congresses.filter(_.id === congress.id)
-          .map(c => (c.id, c.title, c.name, c.minute, c.place, c.country, c.start, c.end, c.public))
-          .update((congress.id, congress.title, congress.name, congress.minute, congress.place, congress.country, congress.start, congress.end, congress.public)).transactionally).map(x => congress)
+          .map(c => (c.id, c.title, c.name, c.place, c.country, c.start, c.end, c.international))
+          .update((congress.id, congress.title, congress.name, congress.place, congress.country, congress.start, congress.end, congress.international)).transactionally).map(x => congress)
     }
   }
 

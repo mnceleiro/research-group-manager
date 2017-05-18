@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import { Field, reduxForm } from "redux-form"
 
 import { fetchResearcherById, addResearcher, updateResearcher, deleteResearcher } from "../../actions/researcher-actions"
-import { InputRow } from "../InputRow"
+import { InputRow } from "../html_extended/InputRow"
 import { validate } from "./ResearcherValidation"
 
 class ResearcherForm extends React.Component {

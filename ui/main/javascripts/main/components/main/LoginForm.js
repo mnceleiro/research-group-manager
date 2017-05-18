@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 // import ReactModal from "react-modal"
 import { Field, reduxForm } from "redux-form"
 
-import { doLogin } from "../actions/login-actions"
+import { doLogin } from "../../actions/login-actions"
 
 class LoginForm extends Component {
 

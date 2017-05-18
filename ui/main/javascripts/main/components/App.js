@@ -6,12 +6,17 @@ import { connect } from "react-redux"
 
 import createRoutes from "../createRoutes"
 
-import LoginForm from "./LoginForm"
+import LoginForm from "./main/LoginForm"
 
-import { SidebarMenu } from "./SidebarMenu"
-import { UpperMenu } from "./UpperMenu"
+import { SidebarMenu } from "./main/SidebarMenu"
+import { UpperMenu } from "./main/UpperMenu"
+import { setSessionData } from "../actions/login-actions"
 
 class App extends Component {
+  componentWillMount() {
+    this.props.setSessionData()
+  }
+
   render() {
     let {store, history, isAuthenticated, errorMessage} = this.props
 
@@ -29,9 +34,9 @@ class App extends Component {
     } else {
       return (
         <div>
-          <SidebarMenu />
+          <SidebarMenu user={this.props.currentUser} />
           <div className="content-column">
-            <UpperMenu />
+            <UpperMenu user={this.props.currentUser} />
             <div id="rgmApp" className="content">
               <Router history={history} routes={createRoutes(store)}></Router>
             </div>
@@ -46,14 +51,26 @@ App.propTypes = {
   store: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  errorMessage: PropTypes.string
+  errorMessage: PropTypes.string,
+  currentUser: PropTypes.object,
+
+  setSessionData: PropTypes.func
 }
 
 let mapStateToProps = store => {
   return {
     isAuthenticated: store.sessionState.isAuthenticated,
-    errorMessage: store.sessionState.error
+    errorMessage: store.sessionState.error,
+    currentUser: store.sessionState.user
   }
 }
 
-export default connect(mapStateToProps, null)(App)
+let mapDispatchToProps = dispatch => {
+  return {
+    setSessionData: () => {
+      dispatch(setSessionData())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

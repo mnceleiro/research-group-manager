@@ -55,7 +55,7 @@ class ResearcherController @Inject()(
     val researcher = researcherRepo.get(id)
 
     researcher.map(r => {
-      println(Json.toJson(ResearcherVO.fromResearcherUser(r.get)))
+//      println(Json.toJson(ResearcherVO.fromResearcherUser(r.get)))
       Ok(Json.toJson(ResearcherVO.fromResearcherUser(r.get)))
     })
   }
@@ -77,13 +77,13 @@ class ResearcherController @Inject()(
   }
   
   def update(id: Long) = auth.JWTAuthentication.async { implicit request =>
-    Researcher.researcherForm.bindFromRequest.fold(
-      errorForm => Future.failed(new Exception),
-//      errorForm => Future.apply(Ok(resKO(JsString("")))),
+    ResearcherVO.researcherForm.bindFromRequest.fold(
+      //errorForm => Future.failed(new Exception),
+      errorForm => Future.apply(Ok(resKO(JsString("")))),
       
       data => {
-//        println(data)
-        researcherRepo.update(data)
+        println(data)
+        researcherRepo.update(ResearcherVO.toResearcherUser(data))
           .map(p => {println("OK"); Ok(resOK(JsString("Investigador actualizado.")))})
           .recover{ case e => {println(e); Ok(resKO(JsString(e.getMessage)))} }
       }

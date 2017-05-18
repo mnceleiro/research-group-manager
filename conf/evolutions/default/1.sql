@@ -52,8 +52,8 @@ CREATE TABLE RESEARCHER (
 
 CREATE TABLE AUTHOR (
     id bigint(20) NOT NULL AUTO_INCREMENT,
-    email varchar(255),
-    signature_name varchar(200) NOT NULL,
+    email varchar(255) NOT NULL,
+    signature varchar(200) NOT NULL,
     res_id bigint(20),
     
     FOREIGN KEY (res_id) REFERENCES RESEARCHER(id)
@@ -71,14 +71,13 @@ CREATE TABLE ENTITY (
 -- Investigadores e Investigador principal y contratado
 CREATE TABLE PROJECT (
     id bigint(20) NOT NULL AUTO_INCREMENT,
-    title varchar(255) NOT NULL,
-
     code varchar(255) NOT NULL,
+    title varchar(255) NOT NULL,
     public BIT,
-    start_date Date,
-    end_date Date,
+    start_date varchar(255),
+    end_date varchar(255),
     budget bigint(20),
-    researcherCount bigint(20),
+    researcher_count bigint(20) NOT NULL DEFAULT 0,
     
     PRIMARY KEY (id)
 );
@@ -111,10 +110,10 @@ CREATE TABLE AUTHOR_PROJECT (
   role_id bigint(20) NOT NULL,
   
   PRIMARY KEY (id),
-  FOREIGN KEY (author_id) REFERENCES USER(id),
   FOREIGN KEY (project_id) REFERENCES PROJECT(id),
   FOREIGN KEY (role_id) REFERENCES ROLE(id)
 );
+  --FOREIGN KEY (author_id) REFERENCES USER(id),
 
 CREATE TABLE CONGRESS (
   id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -257,15 +256,21 @@ INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES (
 INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Linus', 'Benedict Torvalds', 'Plaza Pontevedra 122', '9825312124', 4);
 INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Miguel', 'Reboiro Jato', 'Avenida de la Coruña 17', '9825312125', 5);
 
-INSERT INTO AUTHOR (email, signature_name, res_id) VALUES ('mnceleiro@esei.uvigo.es', 'Marcos Nunez-Celeiro', 1);
-INSERT INTO AUTHOR (email, signature_name, res_id) VALUES ('ocanellas@gmail.com', 'Oscar Mixwell Cañellas', 2);
-INSERT INTO AUTHOR (email, signature_name, res_id) VALUES ('dmritchie@yahoo.es', 'Dennis MacAlistair-Ritchie', 3);
-INSERT INTO AUTHOR (email, signature_name, res_id) VALUES ('ltorval@esei.uvigo.es', 'Linus Benedict-Torvalds', 4);
-INSERT INTO AUTHOR (email, signature_name, res_id) VALUES ('mrjato@esei.uvigo.es', 'Miguel Reboiro-Jato', 5);
-INSERT INTO AUTHOR (email, signature_name) VALUES ('mfowler@gmail.com', 'Martin Fowler');
+INSERT INTO AUTHOR (email, signature, res_id) VALUES ('mnceleiro@esei.uvigo.es', 'Marcos Nunez-Celeiro', 1);
+INSERT INTO AUTHOR (email, signature, res_id) VALUES ('ocanellas@gmail.com', 'Oscar Mixwell Cañellas', 2);
+INSERT INTO AUTHOR (email, signature, res_id) VALUES ('dmritchie@yahoo.es', 'Dennis MacAlistair-Ritchie', 3);
+INSERT INTO AUTHOR (email, signature, res_id) VALUES ('ltorval@esei.uvigo.es', 'Linus Benedict-Torvalds', 4);
+INSERT INTO AUTHOR (email, signature, res_id) VALUES ('mrjato@esei.uvigo.es', 'Miguel Reboiro-Jato', 5);
+INSERT INTO AUTHOR (email, signature) VALUES ('mfowler@gmail.com', 'Martin Fowler');
 
-INSERT INTO PROJECT (code, public, start_date, end_date, budget) VALUES ('2323', 1, '2016-10-08', '2017-10-08', 3000);
+INSERT INTO PROJECT (code, public, title, start_date, end_date, budget, researcher_count) VALUES ('2323', 1, 'title1', '08/10/2016', '08/10/2017', 3000, 4);
+INSERT INTO PROJECT (code, public, title, start_date, end_date, budget, researcher_count) VALUES ('2324', 1, 'title2', '09/10/2016', '09/10/2017', 4000, 5);
+INSERT INTO PROJECT (code, public, title, start_date, end_date, budget, researcher_count) VALUES ('1212', 1, 'Proyecto de prueba', '08/11/2015', '21/12/2015', 2122, 5);
+
 INSERT INTO AUTHOR_PROJECT (author_id, project_id, role_id) VALUES (1, 1, 1);
+INSERT INTO AUTHOR_PROJECT (author_id, project_id, role_id) VALUES (2, 1, 1);
+INSERT INTO AUTHOR_PROJECT (author_id, project_id, role_id) VALUES (1, 2, 1);
+
 
 INSERT INTO CONGRESS (title, name, place, country, start, end, international, type, status) VALUES ('TITULO CONGRESO 1', 'NOMBRE CONGRESO 1', 'OURENSE', 'ESPAÑA', '08/10/2016', '08/10/2017', 1, 1, 1);
 INSERT INTO AUTHOR_CONGRESS (author_id, congress_id) VALUES (1, 1);

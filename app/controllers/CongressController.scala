@@ -11,6 +11,8 @@ import scala.concurrent.Future
 
 import models.entities.Congress
 import models.repositories.CongressRepository
+import vos.CongressVO
+import models.entities.Author
 
 class CongressController @Inject() (
     congressRepo: CongressRepository,
@@ -21,22 +23,36 @@ class CongressController @Inject() (
 
   implicit val comgressWrites = Json.writes[Congress]
   implicit val comgressReads = Json.reads[Congress]
+  
+  implicit var authorReads = Json.reads[Author]
+  implicit var authorWrites = Json.writes[Author]
+  implicit var authorFormat = Json.format[Author]
+  
+  implicit var congressFormatVO = Json.format[CongressVO]
+  implicit val comgressVOWrites = Json.writes[CongressVO]
+  implicit val comgressVOReads = Json.reads[CongressVO]
 
   def getAll = auth.JWTAuthentication.async {
-    congressRepo.listAll.map(cs => Ok(Json.toJson(cs)))
+    congressRepo.listAll.map(cs => Ok(Json.toJson(cs.map(c => {
+      CongressVO.toVO(c)
+    }))))
   }
 
   def get(id: Long) = auth.JWTAuthentication.async {
-    congressRepo.get(id).map(r => Ok(Json.toJson(r)))
+    congressRepo.get(id).map(c => 
+      Ok(Json.toJson(CongressVO.toVO(
+          c.getOrElse(throw new Exception("No encontrado"))
+      )))
+    )
   }
 
   def add = auth.JWTAuthentication.async { implicit request =>
-    Congress.congressForm.bindFromRequest.fold(
+    CongressVO.congressVOForm.bindFromRequest.fold(
       errorForm => {
         Future.apply(Ok(resKO(JsString(""))))
       },
       data => {
-        congressRepo.save(data)
+        congressRepo.save(CongressVO.fromVO(data))
           .map(r => Ok(resOK(JsString("Congreso creado"))))
           .recover {
             case e => Ok(resKO(JsString(e.getMessage)))
@@ -45,11 +61,11 @@ class CongressController @Inject() (
   }
 
   def update(id: Long) = auth.JWTAuthentication.async { implicit request =>
-    Congress.congressForm.bindFromRequest.fold(
+    CongressVO.congressVOForm.bindFromRequest.fold(
       errorForm => Future.failed(new Exception),
 
       data => {
-        congressRepo.update(data)
+        congressRepo.update(CongressVO.fromVO(data))
           .map(p => { println("OK"); Ok(resOK(JsString("Congreso actualizado."))) })
           .recover { case e => { println(e); Ok(resKO(JsString(e.getMessage))) } }
       })

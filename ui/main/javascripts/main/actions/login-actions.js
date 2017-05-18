@@ -1,6 +1,6 @@
 import {
   REQUEST_LOGIN, LOGIN_SUCCESS, LOGIN_ERROR,
-  REQUEST_LOGOUT, LOGOUT_SUCCESS
+  REQUEST_LOGOUT, LOGOUT_SUCCESS, SET_SESSION_DATA
 } from "../constants/actionTypes"
 
 export function doLogin(credentials) {
@@ -87,5 +87,11 @@ function receiveLogout() {
     type: LOGOUT_SUCCESS,
     isFetching: false,
     isAuthenticated: false
+  }
+}
+
+export function setSessionData() {
+  return {
+    type: SET_SESSION_DATA
   }
 }

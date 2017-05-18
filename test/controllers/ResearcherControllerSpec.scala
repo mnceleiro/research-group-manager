@@ -37,7 +37,7 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
 
     this.tokenString = "Bearer " + Json.parse(contentAsString(resp)).as[JsObject].\("token").get.as[String]
 
-    this.fakeJsonHeaders = FakeHeaders(Seq(
+    this.fakeTextHeaders = FakeHeaders(Seq(
       ("content-type" -> "text/plain"),
       ("Authorization", this.tokenString)))
 
