@@ -16,9 +16,5 @@ case class Project(
 //case class WithAuthor(authorId: Long, role: Long)
 
 case class ProjectWithAuthors(
-    p: Project, withAuthors: Option[Seq[Option[AuthorProject]]]
-)
-
-case class ProjectFull(
-    project: Project, authors: Seq[AuthorFull]
+    p: Project, withAuthors: Option[Seq[AuthorProject]]
 )

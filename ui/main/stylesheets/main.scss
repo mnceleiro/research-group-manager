@@ -254,38 +254,6 @@ a.site-title:hover {
   padding: 5px
 }
 
-/** REACT MODAL **/
-.Modal {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  // width: 360px;
-  padding: 8% 0 0;
-  margin: auto;
-  background-color: #2A3F54;
-    // background: #76b852; /* fallback for old browsers */
-    // background: -webkit-linear-gradient(right, #2A3F54, #8DC26F);
-    // background: -moz-linear-gradient(right, #2A3F54, #8DC26F);
-    // background: -o-linear-gradient(right, #2A3F54, #8DC26F);
-    // background: linear-gradient(to left, #2A3F54, #8DC26F);
-    // font-family: "Roboto", sans-serif;
-    // -webkit-font-smoothing: antialiased;
-    // -moz-osx-font-smoothing: grayscale;
-  // background-color: papayawhip;
-}
-
-.Overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  // background-color: rebeccapurple;
-  background: white;
-}
-
 /** LOGIN FORM CSS **/
 
 /* NUEVO */

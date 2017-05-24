@@ -23,7 +23,7 @@ export function fetchProjectById(id) {
   return function (dispatch) {
     dispatch(requestProjectById())
 
-    var request = new Request(`../../projects/id/${id}`, {
+    var request = new Request(`../../projects/with-authors/id/${id}`, {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
       })
@@ -46,7 +46,7 @@ export function addProject(r) {
         Authorization: sessionUtils.getAuthString()
       })
     })
-    alert(JSON.stringify(r))
+
     return fetch(request, {
       method: "POST",
       body: JSON.stringify(r)
@@ -113,6 +113,27 @@ export function deleteProject(r) {
     }).then(response => {
       dispatch(deleteProjectSuccess(response, r))
     })
+  }
+}
+
+export function addAuthorToCurrentProject(o) {
+  return {
+    type: types.ADD_AUTHOR_TO_CURRENT_PROJECT,
+    object: o
+  }
+}
+
+export function editAuthorFromProject(o) {
+  return {
+    type: types.EDIT_AUTHOR_FROM_CURRENT_PROJECT,
+    object: o
+  }
+}
+
+export function deleteAuthorFromProject(i) {
+  return {
+    type: types.DELETE_AUTHOR_FROM_CURRENT_PROJECT,
+    index: i,
   }
 }
 

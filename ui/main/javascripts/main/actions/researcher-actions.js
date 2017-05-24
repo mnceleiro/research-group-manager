@@ -2,6 +2,8 @@ import * as types from "../constants/actionTypes"
 
 import { sessionUtils } from "../utils/SessionUtils"
 
+import { BASE_URL } from "../constants/config"
+
 // alert(sessionUtils.getAuthString())
 //import apiGet from "../api/api"
 
@@ -25,7 +27,7 @@ export function fetchResearchers() {
     // debugger
     // return apiGet("researchers/all", receiveResearchers => { dispatch(receiveResearchers) })
 
-    var request = new Request("researchers/all", {
+    var request = new Request(BASE_URL + "researchers/all", {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
       })
@@ -95,7 +97,7 @@ export function updateResearcher(r) {
         "Authorization": sessionUtils.getAuthString()
       })
     })
-    
+
     return fetch(request, {
       method: "POST",
       body: JSON.stringify(r)

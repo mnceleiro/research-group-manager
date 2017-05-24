@@ -1,24 +1,36 @@
-GET     /researchers/all            controllers.ResearcherController.getAll
-GET     /researchers/id/:id         controllers.ResearcherController.get(id: Long)
-POST    /researchers/add            controllers.ResearcherController.add
-POST    /researchers/update/:id     controllers.ResearcherController.update(id: Long)
-DELETE  /researchers/delete/:id     controllers.ResearcherController.delete(id: Long)
+GET     /researchers/all                    controllers.ResearcherController.getAll
+GET     /researchers/id/:id                 controllers.ResearcherController.get(id: Long)
+POST    /researchers/add                    controllers.ResearcherController.add
+POST    /researchers/update/:id             controllers.ResearcherController.update(id: Long)
+DELETE  /researchers/delete/:id             controllers.ResearcherController.delete(id: Long)
 
-GET     /projects/all               controllers.ProjectController.getAll
-GET     /projects/id/:id            controllers.ProjectController.get(id: Long)
-POST    /projects/add               controllers.ProjectController.add
-POST    /projects/update/:id        controllers.ProjectController.update(id: Long)
-DELETE  /projects/delete/:id        controllers.ProjectController.delete(id: Long)
+GET     /projects/all                       controllers.ProjectController.getAll
+GET     /projects/id/:id                    controllers.ProjectController.get(id: Long)
+POST    /projects/add                       controllers.ProjectController.add
+POST    /projects/update/:id                controllers.ProjectController.update(id: Long)
+DELETE  /projects/delete/:id                controllers.ProjectController.delete(id: Long)
 
-GET     /congresses/all             controllers.CongressController.getAll
-GET     /congresses/id/:id          controllers.CongressController.get(id: Long)
-POST    /congresses/add             controllers.CongressController.add
-POST    /congresses/update/:id      controllers.CongressController.update(id: Long)
-DELETE  /congresses/delete/:id      controllers.CongressController.delete(id: Long)
+GET     /congresses/all                     controllers.CongressController.getAll
+GET     /congresses/id/:id                  controllers.CongressController.get(id: Long)
+GET     /congresses/with-authors/id/:id     controllers.CongressController.getWithAuthors(id: Long)
+POST    /congresses/add                     controllers.CongressController.add
+POST    /congresses/update/:id              controllers.CongressController.update(id: Long)
+DELETE  /congresses/delete/:id              controllers.CongressController.delete(id: Long)
 
-GET     /projects-with-authors/all  controllers.AuthorProjectController.getAll
+GET     /authors/all                        controllers.AuthorController.getAll
+GET     /authors/id/:id                     controllers.AuthorController.get(id: Long)
+POST    /authors/add                        controllers.AuthorController.add
+POST    /authors/update/:id                 controllers.AuthorController.update(id: Long)
+DELETE  /authors/delete/:id                 controllers.AuthorController.delete(id: Long)
 
-POST    /users/login                controllers.SessionsController.login
+
+
+GET     /projects/with-authors/id/:id       controllers.ProjectController.getWithAuthors(id: Long)
+GET     /projects-authors/all               controllers.AuthorProjectController.getAllProjectsAuthors
+
+GET     /roles/all                          controllers.HelperController.getAllRoles
+
+POST    /users/login                        controllers.SessionsController.login
 #GET     /assets/*file         controllers.AssetsController.at(path="/public/assets", file="index.html")
 
 GET     /                           controllers.Assets.at(path="/public/assets", file="index.html")

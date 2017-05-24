@@ -1,10 +1,18 @@
 import { REQUEST_PROJECTS, RECEIVE_PROJECTS, RECEIVE_PROJECT,
-  ADD_PROJECT_SUCCESS, ADD_PROJECT_ERROR
+  ADD_PROJECT_SUCCESS, ADD_PROJECT_ERROR, UPDATE_PROJECT_SUCCESS, UPDATE_PROJECT_ERROR, DELETE_PROJECT_SUCCESS,
+  EDIT_AUTHOR_FROM_CURRENT_PROJECT, DELETE_AUTHOR_FROM_CURRENT_PROJECT, ADD_AUTHOR_TO_CURRENT_PROJECT
  } from "../constants/actionTypes"
 
 const initialState = {
   projects: [],
-  activeProject: 0,
+  activeProject: {
+    id: 0,
+    obj: null
+  },
+  activeAuthor: {
+    id: 0,
+    obj: null
+  },
   deletedProject: null,
   isFetching: false,
   error: null,
@@ -29,7 +37,10 @@ export default function projects(state = initialState, action) {
   case RECEIVE_PROJECTS:
     return Object.assign({}, state, {
       isFetching: false,
-      activeProject: 0,
+      activeProject: {
+        id: 0,
+        obj: null
+      },
       deletedProject: null,
       error: null,
       success: null,
@@ -51,7 +62,10 @@ export default function projects(state = initialState, action) {
 
     return Object.assign({}, state, {
       projects: projects,
-      activeProject: action.project.id
+      activeProject: {
+        id: action.project.id,
+        obj: action.project
+      }
     })
 
   case ADD_PROJECT_SUCCESS:
@@ -67,8 +81,70 @@ export default function projects(state = initialState, action) {
       error: action.message
     })
 
+  case UPDATE_PROJECT_SUCCESS:
+    return Object.assign({}, state, {
+      isFetching: false,
+      error: null,
+      success: "El proyecto ha sido actualizado correctamente."
+    })
+
+  case DELETE_PROJECT_SUCCESS:
+    return Object.assign({}, state, {
+      isFetching: false,
+      error: null,
+      success: "El proyecto ha sido eliminado correctamente.",
+      deletedProject: action.project
+    })
+
+  case UPDATE_PROJECT_ERROR:
+    return Object.assign({}, state, {
+      isFetching: false,
+      error: action.message
+    })
+
+  case ADD_AUTHOR_TO_CURRENT_PROJECT: {
+    let auths = state.activeProject.obj.authors.slice()
+
+    auths.push(action.object)
+    let obj = Object.assign({}, state.activeProject.obj, {authors: auths})
+
+    return Object.assign({}, state, {
+      activeProject: {
+        id: state.activeProject.id,
+        obj
+      }
+    })
   }
 
+  case EDIT_AUTHOR_FROM_CURRENT_PROJECT: {
+    let auths = state.activeProject.obj.authors.slice()
+
+    let index = auths.findIndex(x => x.id === action.object.id)
+    auths[index] = action.object
+
+    let obj = Object.assign({}, state.activeProject.obj, {authors: auths})
+    return Object.assign({}, state, {
+      activeProject: {
+        id: state.activeProject.id,
+        obj
+      }
+    })
+  }
+
+  case DELETE_AUTHOR_FROM_CURRENT_PROJECT: {
+    let auths = state.activeProject.obj.authors.slice()
+    auths.splice(action.index, 1)
+    let obj = Object.assign({}, state.activeProject.obj, {authors: auths})
+
+    return Object.assign({}, state, {
+      activeProject: {
+        id: state.activeProject.id,
+        obj: obj
+      }
+    })
+  }
+
+  }
 
   return state
 }

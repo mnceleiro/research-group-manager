@@ -16,19 +16,25 @@ class AuthorProjectController @Inject() (
 	implicit val projectWithAuthorsFormat = Json.format[AuthorProject]
 	implicit val projectWithAuthorsWrites = Json.writes[AuthorProject]
 	implicit val projectWithAuthorsReads = Json.reads[AuthorProject]
+//			implicit val projectWrites = Json.writes[ProjectVO]
 	
-  implicit val projectWrites = Json.writes[ProjectVO]
 //  implicit val projectReads = Json.reads[ProjectVO]
 //  implicit val projectFormat = Json.format[ProjectVO]
   
-  def getAll = auth.JWTAuthentication.async {
-//    repo.projectsWithAuthors.map(ps => {
-//      println(ps)
-//      Ok("")
+//  def getAll = auth.JWTAuthentication.async {
+////    repo.projectsWithAuthors.map(ps => {
+////      println(ps)
+////      Ok("")
+////    })
+//    repo.listProjectsWithAuthors.map(els => {
+//      println(els)
+//      Ok(Json.toJson(els.map(el => ProjectVO.toVOWithAuthors(el))))
 //    })
-    repo.listProjectsWithAuthors.map(els => {
-      println(els)
-      Ok(Json.toJson(els.map(el => ProjectVO.toVOWithAuthors(el))))
-    })
-  }
+//  }
+	
+	def getAllProjectsAuthors = auth.JWTAuthentication.async {
+	  repo.listAll.map(els => {
+	    Ok(Json.toJson(els))
+	  })
+	}
 }

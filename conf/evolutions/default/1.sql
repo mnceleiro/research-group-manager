@@ -29,12 +29,21 @@ CREATE TABLE FIELD (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE ENTITY (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE USER (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     email varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
     admin BIT NOT NULL DEFAULT 0,
-    access BIT NOT NULL DEFAULT 0
+    access BIT NOT NULL DEFAULT 0,
+    
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE RESEARCHER (
@@ -56,13 +65,9 @@ CREATE TABLE AUTHOR (
     signature varchar(200) NOT NULL,
     res_id bigint(20),
     
+    UNIQUE(email),
+    PRIMARY KEY (id),
     FOREIGN KEY (res_id) REFERENCES RESEARCHER(id)
-);
-
-
-CREATE TABLE ENTITY (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
-    name varchar(255) NOT NULL
 );
 
 -- Participantes? varios? tipo_participacion iría en tabla user_project?
@@ -109,11 +114,12 @@ CREATE TABLE AUTHOR_PROJECT (
   
   role_id bigint(20) NOT NULL,
   
+  UNIQUE (author_id, project_id),
   PRIMARY KEY (id),
   FOREIGN KEY (project_id) REFERENCES PROJECT(id),
   FOREIGN KEY (role_id) REFERENCES ROLE(id)
 );
-  --FOREIGN KEY (author_id) REFERENCES USER(id),
+-- FOREIGN KEY (author_id) REFERENCES USER(id),
 
 CREATE TABLE CONGRESS (
   id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -127,7 +133,7 @@ CREATE TABLE CONGRESS (
   
   type bigint(20),
   status bigint(20),
-  --status ENUM('justificado, 'aceptado', 'enviado'),
+-- status ENUM('justificado, 'aceptado', 'enviado'),
   
   PRIMARY KEY (id),
   FOREIGN KEY (type) REFERENCES CONGRESS_TYPE(id),
@@ -139,6 +145,7 @@ CREATE TABLE AUTHOR_CONGRESS (
   author_id bigint(20) NOT NULL,
   congress_id bigint(20) NOT NULL,
   
+  UNIQUE(author_id, congress_id),
   PRIMARY KEY (id),
   FOREIGN KEY (author_id) REFERENCES USER(id),
   FOREIGN KEY (congress_id) REFERENCES CONGRESS(id)
@@ -164,7 +171,7 @@ CREATE TABLE BOOK (
   FOREIGN KEY (status) REFERENCES PUBLICATION_STATUS(id)
 );
 
-CREATE TABLE BOOK_AUTHOR (
+CREATE TABLE AUTHOR_BOOK (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   book_id bigint(20) NOT NULL,
   author_id bigint(20) NOT NULL,
@@ -213,7 +220,7 @@ CREATE TABLE JOURNAL (
   FOREIGN KEY (status) REFERENCES PUBLICATION_STATUS(id)
 );
 
-CREATE TABLE JOURNAL_AUTHOR (
+CREATE TABLE AUTHOR_JOURNAL (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   journal_id bigint(20) NOT NULL,
   author_id bigint(20) NOT NULL,
@@ -272,15 +279,20 @@ INSERT INTO AUTHOR_PROJECT (author_id, project_id, role_id) VALUES (2, 1, 1);
 INSERT INTO AUTHOR_PROJECT (author_id, project_id, role_id) VALUES (1, 2, 1);
 
 
-INSERT INTO CONGRESS (title, name, place, country, start, end, international, type, status) VALUES ('TITULO CONGRESO 1', 'NOMBRE CONGRESO 1', 'OURENSE', 'ESPAÑA', '08/10/2016', '08/10/2017', 1, 1, 1);
+INSERT INTO CONGRESS (title, name, place, country, start, end, international, type, status) VALUES ('TITULO CONGRESO 1', 'NOMBRE CONGRESO 1', 'OURENSE', 'ESPAÑA', '05/11/2016', '08/11/2016', 1, 1, 1);
+INSERT INTO CONGRESS (title, name, place, country, start, end, international, type, status) VALUES ('TITULO CONGRESO 2', 'NOMBRE CONGRESO 2', 'OURENSE', 'ESPAÑA', '07/10/2017', '08/10/2017', 1, 2, 3);
+INSERT INTO CONGRESS (title, name, place, country, start, end, international, type, status) VALUES ('TITULO CONGRESO 3', 'NOMBRE CONGRESO 3', 'OURENSE', 'ESPAÑA', '01/12/2017', '08/12/2017', 0, 2, 1);
+
 INSERT INTO AUTHOR_CONGRESS (author_id, congress_id) VALUES (1, 1);
+INSERT INTO AUTHOR_CONGRESS (author_id, congress_id) VALUES (2, 1);
+INSERT INTO AUTHOR_CONGRESS (author_id, congress_id) VALUES (1, 2);
 
 INSERT INTO BOOK 
   (code, title, book, volume, start_page, end_page, year, editorial, place, isbn, status) 
 VALUES 
   ('39887L', 'SOFTWARE FOR BIOIMAGING', 'BOOK OF SOFTWARE FOR BIOIMAGING', '3:12', '0', '0', '2016', '', '', '1758-2946', 1);
   
-INSERT INTO BOOK_AUTHOR (book_id, author_id) VALUES (1, 1);
+INSERT INTO AUTHOR_BOOK (book_id, author_id) VALUES (1, 1);
 
 INSERT INTO QUARTILE (field_id, number) VALUES (1, 2);
 INSERT INTO JCR (year, impact_factor, quartile_id) VALUES (2016, 7928, 1);
@@ -289,31 +301,33 @@ INSERT INTO JOURNAL
 VALUES 
   ('2983AO9E', 'SOFTWARE FOR BIOIMAGING', 'MAGAZINE OF SOFTWARE FOR BIOIMAGING', '8:22', '0', '0', '2016-02-12', '', '', '1758-2946', 1);
   
-INSERT INTO JOURNAL_AUTHOR (journal_id, author_id) VALUES (1, 1);
+INSERT INTO AUTHOR_JOURNAL (journal_id, author_id) VALUES (1, 1);
 
 # --- !Downs
 
 DROP TABLE AUTHOR_PROJECT;
 DROP TABLE AUTHOR_CONGRESS;
-DROP TABLE BOOK_AUTHOR;
-DROP TABLE JOURNAL_AUTHOR;
+DROP TABLE AUTHOR_BOOK;
+DROP TABLE AUTHOR_JOURNAL;
+
+DROP TABLE PROJECT_ENTITY;
+DROP TABLE PROJECT_FINANCE_ENTITY;
 
 DROP TABLE CONGRESS;
 DROP TABLE PROJECT;
-DROP TABLE AUTHOR;
-DROP TABLE RESEARCHER;
-DROP TABLE USER;
+
 DROP TABLE BOOK;
 
 DROP TABLE JOURNAL;
 DROP TABLE JCR;
 DROP TABLE QUARTILE;
 
-DROP TABLE PROJECT_ENTITY;
-DROP TABLE PROJECT_FINANCE_ENTITY;
+DROP TABLE AUTHOR;
+DROP TABLE RESEARCHER;
+DROP TABLE USER;
 
 DROP TABLE ENTITY;
-DROP TABLE CONGRESS_TYPE;
 DROP TABLE FIELD;
-DROP TABLE ROLE;
 DROP TABLE PUBLICATION_STATUS;
+DROP TABLE CONGRESS_TYPE;
+DROP TABLE ROLE;

@@ -74,8 +74,10 @@ const webpackConfig = {
     }, {
       from: "node_modules/react-datepicker/dist",
       to: "../lib/react-datepicker"
-    }
-    ]),
+    }, {
+      from: "node_modules/react-select/dist",
+      to: "../lib/react-select"
+    }]),
     new webpack.LoaderOptionsPlugin({
       options: {
         eslint: {

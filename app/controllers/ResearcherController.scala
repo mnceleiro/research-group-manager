@@ -36,9 +36,9 @@ class ResearcherController @Inject()(
   def getAll = auth.JWTAuthentication.async {
     val researchers = researcherRepo.listAll
     researchers.map(researcherList => {
+//      println(researcherList)
       Ok(Json.toJson(
         researcherList.map(r => {
-//          println(r)
           ResearcherVO.fromResearcherUser(r)
         })))
     })

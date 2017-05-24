@@ -33,15 +33,15 @@ class CongressTable extends Component {
   render() {
     let { headers, fields, editable } = this.props.table
 
-    if (this.props.congresses.length > 0) {
+    if (!this.props.isFetching) {
       return (
         <div className="project-table">
           {this.renderFlashMessage()}
           <br />
           <div className="panel-right">
-            <Link to="/projects/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo congreso</button></Link>
+            <Link to="/congresses/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo congreso</button></Link>
           </div>
-          <RGMDefaultTable headers={headers} fields={fields} data={this.props.congresses} editable={editable} onEdit={this.props.onCongressEdit} />
+          <RGMDefaultTable headers={headers} fields={fields} data={this.props.congresses} editable={editable} onEdit={this.props.onCongressEdit} editLink="congresses/edit/" />
         </div>
       )
     } else {
@@ -57,13 +57,16 @@ CongressTable.propTypes = {
   getAllCongresses: React.PropTypes.func,
 
   location: React.PropTypes.object,
-  table: React.PropTypes.object
+  table: React.PropTypes.object,
+
+  isFetching: React.PropTypes.bool
 }
 
 let mapStateToProps = store => {
   return {
     congresses: store.congressState.congresses,
-    table: store.congressState.table
+    table: store.congressState.table,
+    isFetching: store.congressState.isFetching
   }
 }
 

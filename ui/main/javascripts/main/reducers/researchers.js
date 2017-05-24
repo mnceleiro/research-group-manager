@@ -11,7 +11,7 @@ const initialState = {
   isFetching: false,
   error: null,
   success: null,
-  lastUpdated: 1439478405547
+  lastUpdated: Math.floor(Date.now() / 1000)
 }
 
 

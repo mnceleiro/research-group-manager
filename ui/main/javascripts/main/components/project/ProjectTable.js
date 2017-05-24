@@ -9,8 +9,7 @@ import FlashMessage from "../html_extended/FlashMessage"
 import { fetchProjects, createProject, editProject } from "../../actions/project-actions"
 
 class ProjectTable extends React.Component {
-
-  componentWillMount() {
+  componentDidMount() {
     this.props.getAllProjects()
   }
 
@@ -38,7 +37,7 @@ class ProjectTable extends React.Component {
     // let data = this.props.projects
     let { headers, fields, editable } = this.props.table
 
-    if (this.props.projects.length > 0) {
+    if (!this.props.isFetching) {
       // return (
       //   <div className="project-table">
       //     {this.renderFlashMessage()}
@@ -59,7 +58,7 @@ class ProjectTable extends React.Component {
           <div className="panel-right">
             <Link to="/projects/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo Proyecto</button></Link>
           </div>
-          <RGMDefaultTable headers={headers} fields={fields} data={this.props.projects} editable={editable} onEdit={this.props.onProjectEdit} />
+          <RGMDefaultTable headers={headers} fields={fields} data={this.props.projects} editable={editable} onEdit={this.props.onProjectEdit} editLink="/projects/edit/" />
         </div>
       )
     } else {
@@ -75,13 +74,15 @@ ProjectTable.propTypes = {
   getAllProjects: React.PropTypes.func,
 
   location: React.PropTypes.object,
-  table: React.PropTypes.object
+  table: React.PropTypes.object,
+  isFetching: React.PropTypes.bool
 }
 
 let mapStateToProps = store => {
   return {
     projects: store.projectState.projects,
-    table: store.projectState.table
+    table: store.projectState.table,
+    isFetching: store.projectState.isFetching
   }
 }
 

@@ -24,9 +24,9 @@ class AuthorProjectTable(tag: Tag) extends Table[AuthorProject](tag, "AUTHOR_PRO
   def projectId = column[Long]("project_id")
   def roleId = column[Long]("role_id")
   
-  def author = foreignKey("AUTHOR_FK", authorId, authors)(_.id, onUpdate=ForeignKeyAction.Restrict, onDelete=ForeignKeyAction.Cascade)
-  def project = foreignKey("PROJECT_FK", projectId, projects)(_.id, onUpdate=ForeignKeyAction.Restrict, onDelete=ForeignKeyAction.Cascade)
-  def role = foreignKey("ROLE_FK", roleId, roles)(_.id, onUpdate=ForeignKeyAction.Restrict, onDelete=ForeignKeyAction.Cascade)
+  def author = foreignKey("AUTHOR_FK", authorId, authors)(_.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+  def project = foreignKey("PROJECT_FK", projectId, projects)(_.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+  def role = foreignKey("ROLE_FK", roleId, roles)(_.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
 
   override def * = (id, authorId, projectId, roleId) <> ((AuthorProject.apply _).tupled, AuthorProject.unapply)
 }
@@ -41,6 +41,12 @@ class AuthorProjectRepository @Inject()(dbConfigProvider: DatabaseConfigProvider
 	val users = TableQuery[UserTable]
   
   val dbConfig = dbConfigProvider.get[JdbcProfile]
+	
+	def authorsProjectsTableAutoIncWithObject = (authorsProjects returning authorsProjects.map(_.id)).into((authorProject, id) => authorProject.copy(id = id))
+	
+  def listAll: Future[Seq[AuthorProject]] = {
+    dbConfig.db.run(authorsProjects.result)
+  }
   
   def listCompleteProjects: Future[Seq[(Project, Option[AuthorProject], Option[Author], Option[Researcher])]] = {
     val applicativeJoin = for {
@@ -58,30 +64,70 @@ class AuthorProjectRepository @Inject()(dbConfigProvider: DatabaseConfigProvider
     
     return mappedQuery
   }
-	
-  def listProjectsWithAuthors: Future[Seq[ProjectWithAuthors]] = {
-    val join = (for {
-      (project, authorsProject) <- projects joinLeft authorsProjects on (_.id === _.projectId)
+  
+  def getProjectWithAuthors(id: Long): Future[Seq[(Project, Option[AuthorProject], Option[Author])]] = {
+    val applicativeJoin = for {
+      ((p, ap), a) <- projects.filter(_.id === id) joinLeft authorsProjects on (_.id === _.projectId) joinLeft authors on (_._2.map(_.authorId) === _.id)
+    } yield (p, ap, a)
+    
+	  
+    val executeJoin = for {
+      tuples  <- applicativeJoin.result
+    } yield (tuples)
+    
+    val mappedQuery = for {
+      tuples <- dbConfig.db.run(executeJoin).map(x => x.map(y => (y._1, y._2, y._3)))
+    } yield (tuples)
+    
+    return mappedQuery
+  }
+  
+    def save(project: Project, aps: Seq[AuthorProject], as: Seq[Author]) = {
+//      val query = (for {
+//        insertProject <- projects.returning(projects.map(_.id)).into((c, ide) => c.copy(id = ide)) += project
+//        insertAps <- authorsProjects.returning(authorsProjects.map(_.id)).into((c, ide) => c.copy(id = ide)) ++= aps
+//      } yield()).transactionally
       
-    } yield (project, authorsProject)).result
     
-    dbConfig.db.run(join).map(x => println(x))
+//    projects.returning(projects.map(_.id)) += project
+      
+//      projects.returning(projects.map(_.id)).into((c, ide) => c.copy(id = ide))
+      val authorIds = as.map(x => x.id)
+//      println(authorIds)
+//      println(aps)
+      val query = (for {
+        pId <- projects.returning(projects.map(_.id)) += project
+        insertAps <- authorsProjects ++= aps.map(x => x.copy(projectId = pId))
+      } yield ()).transactionally
     
-    dbConfig.db.run(join).map(x => x.groupBy(x => x._1.id).map {
-      case (k,v) => (v.head._1,v.map(_._2))
-    }).map(o => o.map(fo => ProjectWithAuthors(fo._1, Option(fo._2))) toSeq)
+    dbConfig.db.run(query)
+  }
+  
+  def update(project: Project, aps: Seq[AuthorProject], as: Seq[Author]) = {
+    val query = (for {
+      updateProjects <- (projects.filter(_.id === project.id)
+          .map(p => (p.id, p.code, p.title, p.public, p.startDate, p.endDate, p.budget))
+          .update((project.id, project.code, project.title, project.public, project.startDate, project.endDate, project.budget)))
+      deleteAps <- authorsProjects.filter(_.projectId === project.id).delete
+      insertAps <- authorsProjects.returning(authorsProjects.map(_.id)).into((c, ide) => c.copy(id = ide)) ++= aps
+      
+//      updateAuthors <- DBIO.sequence(as.map(author=> {
+//        (authors.filter(_.id === author.id)
+//          .map(a => (a.id, a.email, a.signature, a.resId))
+//          .update((author.id, author.email, author.signature, author.researcherId)))
+//      }))
+      
+    } yield()).transactionally
     
+    dbConfig.db.run(query)
+  }
+  
+  def delete(id: Long) = {
+    val query = (for {
+    	ap <- authorsProjects.filter(_.projectId === id).delete
+      p <- projects.filter(_.id === id).delete
+    } yield ())
     
-    
-//    val monadicJoin = (for {
-//      p <- projects
-//      ap <- authorsProjects if (ap.projectId === p.id)
-//    } yield (p, ap)).result
-//    
-////    dbConfig.db.run(monadicJoin).map(x => println(x))
-//    
-//    dbConfig.db.run(monadicJoin).map(x => x.groupBy(x => x._2.projectId).map {
-//      case (k,v) => (v.head._1,v.map(_._2))
-//    }).map(o => o.map(fo => ProjectWithAuthors(fo._1, Option(fo._2))) toSeq)
+    dbConfig.db.run(query.transactionally)
   }
 }

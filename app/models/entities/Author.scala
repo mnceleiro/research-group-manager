@@ -8,10 +8,6 @@ case class Author(
   signature: String, researcherId: Option[Long]
 )
 
-case class AuthorFull(
-  author: Author, researcher: Option[Researcher]
-)
-
 object Author {
   val authorMapping = mapping(
     "id" -> longNumber,
@@ -20,5 +16,5 @@ object Author {
     "researcherId" -> optional(longNumber)
   )(Author.apply)(x => Some(x.id, x.email, x.signature, x.researcherId))
   
-  val congressForm: Form[Author] = Form(authorMapping)
+  val authorForm: Form[Author] = Form(authorMapping)
 }

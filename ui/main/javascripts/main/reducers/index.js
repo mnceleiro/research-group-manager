@@ -9,12 +9,20 @@ import projects from "./projects"
 import authors from "./authors"
 import congresses from "./congresses"
 
+import roles from "./roles"
+import projectsAuthors from "./projects-authors"
+
 const rootReducer = combineReducers({
   routing,
+
   researcherState: researchers,
   projectState: projects,
   authorState: authors,
   congressState: congresses,
+
+  projectsAuthorsState: projectsAuthors,
+
+  rolesState: roles,
   sessionState: session,
   flashState: messageReducer,
   form: formReducer

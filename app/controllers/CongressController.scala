@@ -13,20 +13,25 @@ import models.entities.Congress
 import models.repositories.CongressRepository
 import vos.CongressVO
 import models.entities.Author
+import models.repositories.AuthorCongressRepository
+import vos.AuthorOfCongressVO
+import vos.ResearcherVO
+import models.entities.AuthorCongress
 
 class CongressController @Inject() (
     congressRepo: CongressRepository,
+    authorCongressRepo: AuthorCongressRepository,
     auth: SecuredAuthenticator) extends Controller {
 
   def resOK(data: JsValue) = Json.obj("res" -> "OK") ++ Json.obj("data" -> data)
   def resKO(error: JsValue) = Json.obj("res" -> "error") ++ Json.obj("error" -> error)
 
-  implicit val comgressWrites = Json.writes[Congress]
-  implicit val comgressReads = Json.reads[Congress]
-  
-  implicit var authorReads = Json.reads[Author]
-  implicit var authorWrites = Json.writes[Author]
-  implicit var authorFormat = Json.format[Author]
+  implicit val researcherFormat = Json.format[ResearcherVO]
+  implicit val researcherWrites = Json.writes[ResearcherVO]
+  implicit val researcherReads = Json.reads[ResearcherVO]
+
+  implicit val comgressWrites = Json.writes[AuthorOfCongressVO]
+  implicit val comgressReads = Json.reads[AuthorOfCongressVO]
   
   implicit var congressFormatVO = Json.format[CongressVO]
   implicit val comgressVOWrites = Json.writes[CongressVO]
@@ -45,6 +50,17 @@ class CongressController @Inject() (
       )))
     )
   }
+  
+  def getWithAuthors(id: Long) = auth.JWTAuthentication.async {
+    val promise = authorCongressRepo.getCongressWithAuthors(id)
+    
+    promise.map(o => {
+      if (o == None) Ok(resKO(JsString("El congreso buscado no existe")))
+      else {
+        Ok(Json.toJson(CongressVO.toCongressVOWithAuthors(o)))
+      }
+    })
+  }
 
   def add = auth.JWTAuthentication.async { implicit request =>
     CongressVO.congressVOForm.bindFromRequest.fold(
@@ -52,27 +68,31 @@ class CongressController @Inject() (
         Future.apply(Ok(resKO(JsString(""))))
       },
       data => {
-        congressRepo.save(CongressVO.fromVO(data))
+        val (congress , authorCongresses, authors) = CongressVO.toTuples(data) 
+        authorCongressRepo.save(congress, authorCongresses, authors)
           .map(r => Ok(resOK(JsString("Congreso creado"))))
           .recover {
             case e => Ok(resKO(JsString(e.getMessage)))
           }
       })
   }
-
+  
   def update(id: Long) = auth.JWTAuthentication.async { implicit request =>
     CongressVO.congressVOForm.bindFromRequest.fold(
-      errorForm => Future.failed(new Exception),
-
+      errorForm => {
+        println(errorForm)
+        Future.failed(new Exception)
+      },
       data => {
-        congressRepo.update(CongressVO.fromVO(data))
-          .map(p => { println("OK"); Ok(resOK(JsString("Congreso actualizado."))) })
+        val (congress , authorCongresses, authors) = CongressVO.toTuples(data) 
+        authorCongressRepo.update(congress, authorCongresses, authors).map(p => { println("OK"); Ok(resOK(JsString("Congreso actualizado."))) })
           .recover { case e => { println(e); Ok(resKO(JsString(e.getMessage))) } }
       })
   }
 
   def delete(id: Long) = auth.JWTAuthentication.async { implicit request =>
-    congressRepo.delete(id).map(x => Ok(resOK(JsString("Congreso eliminado")))).recover { case e => Ok(resKO(JsString(e.getMessage))) }
+    println(id)
+    authorCongressRepo.deleteCongress(id).map(x => Ok(resOK(JsString("Congreso eliminado")))).recover { case e => Ok(resKO(JsString(e.getMessage))) }
   }
 
 }

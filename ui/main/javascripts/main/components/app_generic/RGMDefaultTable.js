@@ -15,7 +15,7 @@ export default class RGMDefaultTable extends React.Component {
     let htmlFields = editable ? [...fields, "html_editable"] : [...fields]
 
     let htmlData = data.map(o => {
-      if (editable) o.html_editable = <Link to={"/projects/edit/" + o.id}><button className="btn rgm-btn-primary">Editar</button></Link>
+      if (editable) o.html_editable = <Link to={this.props.editLink + o.id}><button className="btn rgm-btn-primary">Editar</button></Link>
       return (
         <tr key={o.id}>
           {
@@ -55,5 +55,6 @@ RGMDefaultTable.propTypes = {
   fields: PropTypes.array,
   data: PropTypes.array,
   editable: PropTypes.bool,
+  editLink: PropTypes.string,
   onEdit: PropTypes.func
 }

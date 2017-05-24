@@ -15,7 +15,7 @@ object Congress {
           "country" -> text,
           "start" -> text,
           "end" -> text,
-          "public" -> boolean
+          "international" -> boolean
       )(Congress.apply)(x => Some(x.id, x.title, x.name, x.place, x.country, x.start, x.end, x.international))
   )
 }

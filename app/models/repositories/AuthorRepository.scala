@@ -59,7 +59,7 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
     dbConfig.db.run(authors.filter(_.id === id).result.headOption)
   }
 
-  def listAll: Future[Seq[(Author, Option[Researcher], Option[User])]] = {
+  def listCompleteAuthorsProjects: Future[Seq[(Author, Option[Researcher], Option[User])]] = {
 //    dbConfig.db.run(researchers.result)
 //    val monadicJoin = for {
 //      u <- users
@@ -95,6 +95,10 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
 //      wat.map(a => ResearcherWithUser(wat.get, a))
 //    }
     
+  }
+
+  def listAll: Future[Seq[Author]] = {
+    dbConfig.db.run(authors.result)
   }
 
 }
