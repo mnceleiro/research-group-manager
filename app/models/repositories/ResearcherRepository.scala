@@ -63,6 +63,7 @@ class ResearcherRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
     var user = resUser.user
     var researcher = resUser.researcher
     
+//    val usGet = (users.filter(_.id === user.id).map(x => x.password)
     val resAction = (researchers.filter(_.id === researcher.id)
           .map(u => (u.id, u.firstName, u.lastName, u.address, u.phone))
           .update((researcher.id, researcher.firstName, researcher.lastName, researcher.address, researcher.phone)).transactionally).map(x => researcher)
@@ -70,9 +71,13 @@ class ResearcherRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
     val userAction = (users.filter(_.id === user.id)
           .map(u => (u.id, u.email, u.password, u.admin, u.access))
           .update((user.id, user.email, user.password, user.admin, user.access)).transactionally).map(x => user)
+          
+    val userAction2 = (users.filter(_.id === user.id)
+      .map(u => (u.id, u.email, u.admin, u.access))
+      .update((user.id, user.email, user.admin, user.access)).transactionally).map(x => user)
               
     val trans = (for {
-      us <- userAction
+      us <- if (user.password == None) userAction2 else userAction
       res <- resAction
     } yield ResearcherWithUser(res, us)).transactionally
     

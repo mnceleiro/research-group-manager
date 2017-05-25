@@ -32,16 +32,8 @@ class AuthorCongressRepository @Inject()(dbConfigProvider: DatabaseConfigProvide
 
 	val authors = TableQuery[AuthorTable]
   val congresses = TableQuery[CongressTable]
-	val researchers = TableQuery[ResearcherTable]
-	val users = TableQuery[UserTable]
   
   val dbConfig = dbConfigProvider.get[JdbcProfile]
-	
-	def authorsCongressesTableAutoIncWithObject = (authorsCongresses returning authorsCongresses.map(_.id)).into((authorCongress, id) => authorCongress.copy(id = id))
-	
-  def listAll: Future[Seq[AuthorCongress]] = {
-    dbConfig.db.run(authorsCongresses.result)
-  }
   
   def getCongressWithAuthors(id: Long): Future[Seq[(Congress, Option[AuthorCongress], Option[Author])]] = {
     val applicativeJoin = for {
