@@ -72,7 +72,7 @@ class AuthorCongressRepository @Inject()(dbConfigProvider: DatabaseConfigProvide
       insertAps <- authorsCongresses.returning(authorsCongresses.map(_.id)).into((c, ide) => c.copy(id = ide)) ++= aps
       
 //      updateAuthors <- DBIO.sequence(as.map(author=> {
-//        (authors.filter(_.id === author.id)
+//        (authors.filter(_.id === author.id) 
 //          .map(a => (a.id, a.email, a.signature, a.resId))
 //          .update((author.id, author.email, author.signature, author.researcherId)))
 //      }))
