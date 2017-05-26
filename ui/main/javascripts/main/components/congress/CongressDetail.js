@@ -7,14 +7,19 @@ import { InputRow } from "../html_extended/InputRow"
 import { CheckBox } from "../html_extended/CheckBox"
 import { RGMDefaultDatePicker } from "../html_extended/DatePicker"
 import { FormButtons } from "../html_extended/FormButtons"
-// import RGMInlineTable from "../app_generic/RGMInlineTable"
-import RGMAuthorsTable from "../app_generic/RGMAuthorsTable"
+import { RGMDefaultSelect } from "../html_extended/Select"
+
 import { validate } from "./CongressValidation"
+
+import RGMAuthorsTable from "../app_generic/RGMAuthorsTable"
 
 // Operaciones asíncronas
 import { fetchCongressById, addCongress, updateCongress, deleteCongress } from "../../actions/congress-actions"
 import { fetchAuthors } from "../../actions/author-actions"
 import { fetchResearchers } from "../../actions/researcher-actions"
+
+import { fetchCongressTypes } from "../../actions/congressType-actions"
+import { fetchPublicationStates } from "../../actions/publicationState-actions"
 
 
 class CongressDetail extends Component {
@@ -29,7 +34,10 @@ class CongressDetail extends Component {
 
     this.state = {
       authors: [],
-      selectedAuthor: null
+      selectedAuthor: null,
+
+      selectedState: null,
+      selectedType: null
     }
   }
 
@@ -41,6 +49,8 @@ class CongressDetail extends Component {
     this.props.fetchAuthors()
     this.props.fetchResearchers()
 
+    this.props.fetchCongressTypes()
+    this.props.fetchPublicationStates()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,7 +68,9 @@ class CongressDetail extends Component {
 
       this.setState({
         ...this.state,
-        authors: nextProps.congress.authors || []
+        authors: nextProps.congress.authors || [],
+        selectedState: nextProps.congress.statusId,
+        selectedType: nextProps.congress.typeId
       })
     }
   }
@@ -77,7 +89,9 @@ class CongressDetail extends Component {
         "country": congress.country,
         "start": congress.start,
         "end": congress.end,
-        "international": congress.international
+        "international": congress.international,
+        "typeId": {},
+        "statusId": {}
       }
 
       this.props.initialize(initData)
@@ -85,12 +99,11 @@ class CongressDetail extends Component {
   }
 
   onSubmit(congress) {
-
     if (this.isUpdate()) {
-      let toSend = Object.assign({}, congress, { id: this.props.params.key, authors: this.state.authors })
+      let toSend = Object.assign({}, congress, { id: this.props.params.key, authors: this.state.authors, typeId: this.state.selectedType, statusId: this.state.selectedState })
       this.props.updateCongress(toSend)
     } else {
-      let toSend = Object.assign({}, congress, { id: 0, authors: this.state.authors })
+      let toSend = Object.assign({}, congress, { id: 0, authors: this.state.authors, typeId: this.state.selectedType, statusId: this.state.selectedState })
       this.props.addCongress(toSend)
     }
   }
@@ -132,12 +145,27 @@ class CongressDetail extends Component {
 
   onDeleteRow(index) {
     this.setState({
+      ...this.state,
       authors: this.state.authors.filter((o,i) => index !== i)
     })
   }
 
+  onStateChange(v) {
+    this.setState({
+      ...this.state,
+      selectedState: v.value
+    })
+  }
+
+  onTypeChange(v) {
+    this.setState({
+      ...this.state,
+      selectedType: v.value
+    })
+  }
+
   render() {
-    const { handleSubmit, isFetching } = this.props
+    const { handleSubmit, isFetching, publicationStates, congressTypes } = this.props
 
     const headers = ["Email", "Autor", "Investigador asociado"]
     const fields = ["email", "signature", "researcherEmail"]
@@ -147,6 +175,9 @@ class CongressDetail extends Component {
         <div>Cargando...</div>
       )
     } else {
+      const stateValue = publicationStates.find(x => x.id === this.state.selectedState)
+      const typeValue = congressTypes.find(x => x.id === this.state.selectedType)
+
       return (
         <div className="congress-form">
           <legend>
@@ -160,6 +191,8 @@ class CongressDetail extends Component {
               <Field component={InputRow} type="text" label="País" name="country" />
               <Field component={RGMDefaultDatePicker} type="text" label="Fecha de inicio" name="start" />
               <Field component={RGMDefaultDatePicker} type="text" label="Fecha de fin" name="end" />
+              <Field component={RGMDefaultSelect} onChange={this.onStateChange.bind(this)} dataSelected={stateValue} selectableData={publicationStates} type="select" label="Estado" name="status" />
+              <Field component={RGMDefaultSelect} onChange={this.onTypeChange.bind(this)} dataSelected={typeValue} selectableData={congressTypes} type="select" label="Tipo" name="type" />
               <div className="form-group">
                 <CheckBox name="international" text="Internacional" />
               </div>
@@ -184,6 +217,8 @@ class CongressDetail extends Component {
     }
   }
 }
+// <Field component={RGMDefaultSelect} dataSelected={publicationValue} selectableData={publicationStates} type="text" label="Estado" name="publicationStatus" />
+// <Field component={RGMDefaultSelect} dataSelected={congressValue} selectableData={congressTypes} type="select" label="Tipo" name="congressType" />
 
 // { congress && this.state.authors &&
 //   <div className="row">
@@ -196,8 +231,10 @@ class CongressDetail extends Component {
 CongressDetail.propTypes = {
   // Datos
   congress: PropTypes.object,
-  researchers: PropTypes.array,
   authors: PropTypes.array,
+  researchers: PropTypes.array,
+  publicationStates: PropTypes.array,
+  congressTypes: PropTypes.array,
 
   // Variables de control
   isFetching: PropTypes.bool,
@@ -218,6 +255,9 @@ CongressDetail.propTypes = {
   fetchAuthors: PropTypes.func,
   fetchResearchers: PropTypes.func,
 
+  fetchCongressTypes: PropTypes.func,
+  fetchPublicationStates: PropTypes.func,
+
   // Acciones
   handleSubmit: PropTypes.func
 }
@@ -230,6 +270,7 @@ var form = reduxForm({
 let mapStateToProps = store => {
   return {
     // Datos
+    congress: store.congressState.activeCongress,
     authors: store.researcherState.researchers.length === 0 ? store.authorState.authors : store.authorState.authors.map(a => {
       if (a.researcherId) {
         const res = store.researcherState.researchers.find(r => r.id === a.researcherId)
@@ -237,12 +278,14 @@ let mapStateToProps = store => {
       }
       return a
     }),
+
     researchers: store.researcherState.researchers,
-    congress: store.congressState.activeCongress,
+    publicationStates: store.publicationStateState.publicationStates,
+    congressTypes: store.congressTypeState.congressTypes,
 
     // Variables de control
-    isFetching: store.congressState.isFetching && store.authorState.isFetching,
-    errorHeppened: store.congressState.error,
+    isFetching: store.congressState.isFetching || store.authorState.isFetching || store.publicationStateState.isFetching || store.congressTypeState.isFetching,
+    errorHappened: store.congressState.error,
     success: store.congressState.success
   }
 }
@@ -258,7 +301,10 @@ let mapDispatchToProps = dispatch => {
 
     // Otros
     fetchAuthors: () => dispatch(fetchAuthors()),
-    fetchResearchers: () => dispatch(fetchResearchers())
+    fetchResearchers: () => dispatch(fetchResearchers()),
+
+    fetchCongressTypes: () => dispatch(fetchCongressTypes()),
+    fetchPublicationStates: () => dispatch(fetchPublicationStates())
   }
 }
 

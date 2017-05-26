@@ -5,7 +5,7 @@ POST    /researchers/update/:id             controllers.ResearcherController.upd
 DELETE  /researchers/delete/:id             controllers.ResearcherController.delete(id: Long)
 
 GET     /projects/all                       controllers.ProjectController.getAll
-GET     /projects/id/:id                    controllers.ProjectController.get(id: Long)
+GET     /projects/with-authors/id/:id       controllers.ProjectController.getWithAuthors(id: Long)
 POST    /projects/add                       controllers.ProjectController.add
 POST    /projects/update/:id                controllers.ProjectController.update(id: Long)
 DELETE  /projects/delete/:id                controllers.ProjectController.delete(id: Long)
@@ -23,12 +23,9 @@ POST    /authors/add                        controllers.AuthorController.add
 POST    /authors/update/:id                 controllers.AuthorController.update(id: Long)
 DELETE  /authors/delete/:id                 controllers.AuthorController.delete(id: Long)
 
-
-
-GET     /projects/with-authors/id/:id       controllers.ProjectController.getWithAuthors(id: Long)
-GET     /projects-authors/all               controllers.AuthorProjectController.getAllProjectsAuthors
-
 GET     /roles/all                          controllers.HelperController.getAllRoles
+GET     /congress-types/all                 controllers.HelperController.getAllCongressTypes
+GET     /publication-status/all             controllers.HelperController.getAllPublicationStatus
 
 POST    /users/login                        controllers.SessionsController.login
 #GET     /assets/*file         controllers.AssetsController.at(path="/public/assets", file="index.html")

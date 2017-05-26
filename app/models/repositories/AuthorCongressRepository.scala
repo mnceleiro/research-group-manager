@@ -35,7 +35,7 @@ class AuthorCongressRepository @Inject()(dbConfigProvider: DatabaseConfigProvide
   
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   
-  def getCongressWithAuthors(id: Long): Future[Seq[(Congress, Option[AuthorCongress], Option[Author])]] = {
+  def getCongress(id: Long): Future[Seq[(Congress, Option[AuthorCongress], Option[Author])]] = {
     val applicativeJoin = for {
       ((c, ac), a) <- congresses.filter(_.id === id) joinLeft authorsCongresses on (_.id === _.congressId) joinLeft authors on (_._2.map(_.authorId) === _.id)
     } yield (c, ac, a)
@@ -52,7 +52,7 @@ class AuthorCongressRepository @Inject()(dbConfigProvider: DatabaseConfigProvide
     return mappedQuery
   }
 
-  def save(congress: Congress, aps: Seq[AuthorCongress], as: Seq[Author]) = {
+  def saveCongress(congress: Congress, aps: Seq[AuthorCongress], as: Seq[Author]) = {
     val authorIds = as.map(x => x.id)
     val query = (for {
       pId <- congresses.returning(congresses.map(_.id)) += congress
@@ -63,19 +63,13 @@ class AuthorCongressRepository @Inject()(dbConfigProvider: DatabaseConfigProvide
     dbConfig.db.run(query)
   }
   
-  def update(congress: Congress, aps: Seq[AuthorCongress], as: Seq[Author]) = {
+  def updateCongress(congress: Congress, aps: Seq[AuthorCongress], as: Seq[Author]) = {
     val query = (for {
       updateCongresses <- (congresses.filter(_.id === congress.id)
-          .map(p => (p.id, p.title, p.name, p.place, p.country, p.start, p.end, p.international))
-          .update((congress.id, congress.title, congress.name, congress.place, congress.country, congress.start, congress.end, congress.international)))
+          .map(c => (c.id, c.title, c.name, c.place, c.country, c.start, c.end, c.international, c.typeId, c.statusId))
+          .update((congress.id, congress.title, congress.name, congress.place, congress.country, congress.start, congress.end, congress.international, congress.typeId, congress.statusId)))
       deleteAps <- authorsCongresses.filter(_.congressId === congress.id).delete
       insertAps <- authorsCongresses.returning(authorsCongresses.map(_.id)).into((c, ide) => c.copy(id = ide)) ++= aps
-      
-//      updateAuthors <- DBIO.sequence(as.map(author=> {
-//        (authors.filter(_.id === author.id) 
-//          .map(a => (a.id, a.email, a.signature, a.resId))
-//          .update((author.id, author.email, author.signature, author.researcherId)))
-//      }))
       
     } yield()).transactionally
     

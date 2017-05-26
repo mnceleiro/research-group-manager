@@ -5,51 +5,81 @@ export class RGMDefaultSelect extends React.Component {
   constructor(props) {
     super(props)
 
-    this.handleChange = this.handleChange.bind(this)
+    // this.handleChange = this.handleChange.bind(this)
+
     this.state = {
       data: this.props.selectableData.map(x => { return { value: x.id, label: x.description } }),
-      value: this.props.selectableData[0]
+      // dataSelected: this.props.dataSelected ? { "value": this.props.dataSelected.id, "label": this.props.dataSelected.description } : null
     }
   }
 
-  handleChange(value) {
-    let found = this.state.data.find(x => { return x.value === value.value })
-    // console.log(value)
-    if (found) {
-      this.props.input.onChange(value.label)
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectableData && nextProps.selectableData.length > 0 && !this.state.selectableData) {
       this.setState({
-        data: this.state.data,
-        value
+        ...this.state,
+        data: this.props.selectableData.map(x => { return { value: x.id, label: x.description } }),
       })
     }
 
+    // if (nextProps.dataSelected && !this.state.dataSelected) {
+    //   this.setState({
+    //     ...this.state,
+    //     value: { "value": nextProps.dataSelected, "label": nextProps.description }
+    //   })
+    // }
   }
 
   render() {
-    let field = this.props
-    // let data = field.selectableData
 
-    // data = data.map(x => { return { value: x.id, label: x.description } })
+    let { input, label, name, dataSelected } = this.props
 
-
-    return (
-      <div className="form-group">
-        <label className="control-label col-xs-3 col-md-2" htmlFor={field.input.name}>{field.label}:</label>
-        <div className="col-xs-9 col-md-9">
-          <Select
-            id={field.name}
-            name={field.input.name}
-            options={this.state.data}
-            value={this.state.value}
-            onChange={this.handleChange}
-          />
+    if (!dataSelected) return (<div></div>)
+    else {
+      let currentValue =  { "value": dataSelected.id, "label": dataSelected.description }
+      return (
+        <div className="form-group">
+          <label className="control-label col-xs-3 col-md-2" htmlFor={input.name}>{label}:</label>
+          <div className="col-xs-9 col-md-9">
+            <Select {...input}
+              id={name}
+              options={this.state.data}
+              clearable={false}
+              value={currentValue}
+            />
+          </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
 
 RGMDefaultSelect.propTypes = {
   input: React.PropTypes.object,
-  selectableData: React.PropTypes.array
+  selectableData: React.PropTypes.array,
+  dataSelected: React.PropTypes.object,
+  label: React.PropTypes.string,
+  name: React.PropTypes.string
 }
+
+
+// import React from "react"
+// import Select from "react-select"
+//
+// export const RGMDefaultSelect = (field) => {
+//   debugger
+//   return (
+//     <div className="form-group">
+//       <label className="control-label col-xs-3 col-md-2" htmlFor={field.input.name}>{field.label}:</label>
+//       <div className="col-xs-9 col-md-9">
+//         <Select {...field.input}
+//           id={field.name}
+//           name={field.input.name}
+//           options={this.state.data}
+//           clearable={false}
+//           value={this.state.dataSelected}
+//           onChange={this.handleChange}
+//         />
+//       </div>
+//     </div>
+//   )
+// }

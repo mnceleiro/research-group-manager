@@ -2,6 +2,7 @@ package models.entities
 
 import play.api.data.Form
 import play.api.data.Forms._
+import play.api.libs.json.Json
 
 case class Author(
   id: Long, email: String, 
@@ -16,5 +17,7 @@ object Author {
     "researcherId" -> optional(longNumber)
   )(Author.apply)(x => Some(x.id, x.email, x.signature, x.researcherId))
   
-  val authorForm: Form[Author] = Form(authorMapping)
+  implicit val authorForm: Form[Author] = Form(authorMapping)
+  implicit val authorReads = Json.reads[Author]
+  implicit val authorWrites = Json.writes[Author]
 }

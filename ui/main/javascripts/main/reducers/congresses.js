@@ -85,7 +85,7 @@ export default function congresses(state = initialState, action) {
   case UPDATE_CONGRESS_ERROR:
     return Object.assign({}, state, {
       isFetching: false,
-      error: action.message
+      error: JSON.stringify(action.message)
     })
 
   case DELETE_CONGRESS_SUCCESS:

@@ -1,6 +1,6 @@
 import {
   REQUEST_LOGIN, LOGIN_SUCCESS, LOGIN_ERROR,
-  REQUEST_LOGOUT, LOGOUT_SUCCESS, SET_SESSION_DATA
+  LOGOUT_SUCCESS, SET_SESSION_DATA
 } from "../constants/actionTypes"
 
 export function doLogin(credentials) {
@@ -17,14 +17,15 @@ export function doLogin(credentials) {
       .then(response =>
         response.json().then(user => ({ user, response }))
       ).then(({ user, response }) =>  {
-        if (!response.ok || user.error) {
+        debugger
+        if (!response.ok || user.res) {
           // If there was a problem, we want to
           // dispatch the error condition
           if (!response.ok) {
             dispatch(loginError(user.message))
             return Promise.reject(user)
 
-          } else if (user.error) dispatch(loginError(user.error))
+          } else if (user.res) dispatch(loginError(user.description))
 
 
         } else {
@@ -41,9 +42,8 @@ export function doLogin(credentials) {
 
 export function logoutUser() {
   return dispatch => {
-    dispatch(requestLogout())
     localStorage.removeItem("id_token")
-    dispatch(receiveLogout())
+    dispatch(doLogout())
   }
 }
 
@@ -74,15 +74,7 @@ function loginError(message) {
   }
 }
 
-function requestLogout() {
-  return {
-    type: REQUEST_LOGOUT,
-    isFetching: true,
-    isAuthenticated: true
-  }
-}
-
-function receiveLogout() {
+function doLogout() {
   return {
     type: LOGOUT_SUCCESS,
     isFetching: false,

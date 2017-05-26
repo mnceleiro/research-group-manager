@@ -9,6 +9,8 @@ import models.entities.Congress
 import models.entities.Journal
 import models.entities.Researcher
 import models.entities.Project
+import models.entities.Author
+import play.api.libs.json.Json
 
 case class AuthorVO(
     id: Long, email: String, signature: String, researcher: Option[Researcher], 
@@ -29,6 +31,12 @@ case class AuthorOfBookVO(id: Long, email: String, signature: String, researcher
 case class AuthorOfJournalVO(id: Long, email: String, signature: String, researcherId: Option[Long], res: Option[ResearcherVO]) extends AuthorOfAbstractVO
 
 object AuthorOfProjectVO {
+  
+  def toAuthor(vo: AuthorVO) = {
+    val resId = if (vo.researcher.isDefined) Option(vo.researcher.get.id) else None
+    Author(vo.id, vo.email, vo.signature, resId)
+  }
+  
   val authorMapping: Mapping[AuthorOfProjectVO] = mapping(
     "id" -> longNumber,
     "email" -> text,
@@ -38,7 +46,9 @@ object AuthorOfProjectVO {
     "res" -> optional(ResearcherVO.researcherVOMapping)
   )(AuthorOfProjectVO.apply)(x => Some(x.id, x.email, x.signature, x.researcherId, x.role, x.res))
 
-  val authorForm: Form[AuthorOfProjectVO] = Form(authorMapping)
+  implicit val authorForm: Form[AuthorOfProjectVO] = Form(authorMapping)
+	implicit val authorOfProjectWrites = Json.writes[AuthorOfProjectVO]
+	implicit val authorOfProjectReads = Json.reads[AuthorOfProjectVO]
 }
 
 object AuthorOfCongressVO {
@@ -51,5 +61,7 @@ object AuthorOfCongressVO {
   )(AuthorOfCongressVO.apply)(x => Some(x.id, x.email, x.signature, x.researcherId, x.res))
 
   val authorForm: Form[AuthorOfCongressVO] = Form(authorMapping)
+	implicit val authorOfCongressWrites = Json.writes[AuthorOfCongressVO]
+	implicit val authorOfCongressReads = Json.reads[AuthorOfCongressVO]
 }
 

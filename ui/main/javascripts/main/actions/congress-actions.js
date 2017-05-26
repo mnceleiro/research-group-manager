@@ -4,7 +4,6 @@ import { sessionUtils } from "../utils/SessionUtils"
 export function fetchCongresses() {
   return function (dispatch) {
     dispatch(requestCongresss())
-    // debugger
     // return apiGet("congresses/all", receiveCongresss => { dispatch(receiveCongresss) })
     var request = new Request("congresses/all", {
       headers: new Headers({
@@ -84,7 +83,7 @@ export function updateCongress(r) {
     }).then(resp => {return resp.json() })
       .then(congressJson => {
         if (congressJson.res === "error") {
-          dispatch(updateCongressError(congressJson.res))
+          dispatch(updateCongressError(congressJson))
         } else {
           dispatch(updateCongressSuccess(congressJson))
         }
@@ -186,8 +185,8 @@ function updateCongressSuccess(res) {
 
 function updateCongressError(err) {
   return {
-    type: types.ADD_CONGRESS_ERROR,
-    message: err.msg || "Ha ocurrido un error inesperado."
+    type: types.UPDATE_CONGRESS_ERROR,
+    message: err.description || "Ha ocurrido un error inesperado."
   }
 }
 

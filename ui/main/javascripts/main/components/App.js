@@ -10,15 +10,19 @@ import LoginForm from "./main/LoginForm"
 
 import { SidebarMenu } from "./main/SidebarMenu"
 import { UpperMenu } from "./main/UpperMenu"
-import { setSessionData } from "../actions/login-actions"
+import { setSessionData, logoutUser } from "../actions/login-actions"
 
 class App extends Component {
   componentWillMount() {
     this.props.setSessionData()
   }
 
+  logout() {
+    this.props.logoutUser()
+  }
+
   render() {
-    let {store, history, isAuthenticated, errorMessage} = this.props
+    let {store, history, isAuthenticated, errorMessage, logoutUser } = this.props
 
     // return (
     //   <div>
@@ -36,7 +40,7 @@ class App extends Component {
         <div>
           <SidebarMenu user={this.props.currentUser} />
           <div className="content-column">
-            <UpperMenu user={this.props.currentUser} />
+            <UpperMenu user={this.props.currentUser} logout={this.logout.bind(this)} />
             <div id="rgmApp" className="content">
               <Router history={history} routes={createRoutes(store)}></Router>
             </div>
@@ -54,7 +58,8 @@ App.propTypes = {
   errorMessage: PropTypes.string,
   currentUser: PropTypes.object,
 
-  setSessionData: PropTypes.func
+  setSessionData: PropTypes.func,
+  logoutUser: PropTypes.func
 }
 
 let mapStateToProps = store => {
@@ -69,6 +74,9 @@ let mapDispatchToProps = dispatch => {
   return {
     setSessionData: () => {
       dispatch(setSessionData())
+    },
+    logoutUser: () => {
+      dispatch(logoutUser())
     }
   }
 }

@@ -17,8 +17,11 @@ class CongressTable(tag: Tag) extends Table[Congress](tag, "CONGRESS") {
   def start = column[String]("start")
   def end = column[String]("end")
   def international = column[Boolean]("international")
+  
+  def typeId = column[Long]("type")
+  def statusId = column[Long]("status")
 
-  override def * = (id, title, name, place, country, start, end, international) <> ((Congress.apply _).tupled, Congress.unapply)
+  override def * = (id, title, name, place, country, start, end, international, typeId, statusId) <> ((Congress.apply _).tupled, Congress.unapply)
 }
 
 class CongressRepository @Inject() (dbConfigProvider: DatabaseConfigProvider) {
@@ -28,24 +31,6 @@ class CongressRepository @Inject() (dbConfigProvider: DatabaseConfigProvider) {
   def save(congress: Congress): Future[Congress] = {
     dbConfig.db.run((
       congresses.returning(congresses.map(_.id)).into((c, ide) => c.copy(id = ide)) += congress).transactionally)
-  }
-
-  def update(congress: Congress): Future[Congress] = {
-    dbConfig.db.run(
-      
-    congresses.insertOrUpdate(congress)).map(res => "El usuario se ha actualizado correctamente.").recover {
-      case ex: Exception => ex.getCause.getMessage
-    }
-
-    dbConfig.db.run {
-      (congresses.filter(_.id === congress.id)
-          .map(c => (c.id, c.title, c.name, c.place, c.country, c.start, c.end, c.international))
-          .update((congress.id, congress.title, congress.name, congress.place, congress.country, congress.start, congress.end, congress.international)).transactionally).map(x => congress)
-    }
-  }
-
-  def delete(id: Long): Future[Int] = {
-    dbConfig.db.run(congresses.filter(_.id === id).delete)
   }
 
   def get(id: Long): Future[Option[Congress]] = {

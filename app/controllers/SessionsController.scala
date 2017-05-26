@@ -16,18 +16,12 @@ import models.entities.User
 import play.api.libs.json.JsValue
 import java.util.Calendar
 import models.repositories.UserRepository
+import models.entities.JsonMessage
 
 class SessionsController @Inject() (userRepo: UserRepository, auth: SecuredAuthenticator) extends Controller {
-  def resOK(data: JsValue) = Json.obj("res" -> "OK") ++ Json.obj("data" -> data)
-  def resKO(error: JsValue) = Json.obj("res" -> "error") ++ Json.obj("error" -> error)
-
-  implicit val userWrites = Json.writes[User]
-  implicit val userReads = Json.reads[User]
-  
   def login = Action.async { request =>
     val userData = request.body.asJson.getOrElse(null)
-    
-    if (userData == null) Future.successful(Ok(resKO(JsString("Usuario o contraseña incorrectos."))))
+    if (userData == null) Future.successful(Ok(JsonMessage.resKO(JsString("Usuario o contraseña incorrectos."))))
 
     userRepo.getByEmail((userData \ "email").as[String]).flatMap { dbUserOpt =>
       dbUserOpt match {
@@ -47,26 +41,11 @@ class SessionsController @Inject() (userRepo: UserRepository, auth: SecuredAuthe
             Future.successful(Ok(Json.stringify(toret)))
 
           } else
-            Future.successful(Ok(resKO(JsString("Usuario o contraseña incorrectos"))))
+            Future.successful(Ok(JsonMessage.resKO(JsString("Usuario o contraseña incorrectos"))))
         }
 
-        case None => Future.successful(Ok(resKO(JsString("Usuario o contraseña incorrectos"))))
+        case None => Future.successful(Ok(JsonMessage.resKO(JsString("Usuario o contraseña incorrectos"))))
       }
     }
-  }
-
-  def add = auth.JWTAuthentication.async { implicit request =>
-    User.userForm.bindFromRequest.fold(
-      errorForm => {
-        //        println(errorForm)
-        Future.apply(Ok(resKO(JsString(""))))
-      },
-      data => {
-        userRepo.save(data.copy(password = Password.hashPassword(data.password.get)))
-          .map(r => Ok(resOK(JsString("Investigador creado"))))
-          .recover {
-            case e => Ok(resKO(JsString(e.getMessage)))
-          }
-      })
   }
 }

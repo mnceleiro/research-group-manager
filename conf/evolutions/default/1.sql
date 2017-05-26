@@ -5,6 +5,7 @@
 CREATE TABLE ROLE (
   id bigint(20) NOT NULL,
   description varchar(100) NOT NULL,
+  
   PRIMARY KEY (id)
 );
 
@@ -43,6 +44,7 @@ CREATE TABLE USER (
     admin BIT NOT NULL DEFAULT 0,
     access BIT NOT NULL DEFAULT 0,
     
+    UNIQUE(email),
     PRIMARY KEY (id)
 );
 
@@ -131,9 +133,9 @@ CREATE TABLE CONGRESS (
   end varchar(255),
   international BIT NOT NULL DEFAULT 0,
   
-  type bigint(20),
-  status bigint(20),
--- status ENUM('justificado, 'aceptado', 'enviado'),
+  type bigint(20) NOT NULL,
+  status bigint(20) NOT NULL,
+-- status ENUM('JUSTIFICADO, 'ACEPTADO', 'ENVIADO'),
   
   PRIMARY KEY (id),
   FOREIGN KEY (type) REFERENCES CONGRESS_TYPE(id),
@@ -238,12 +240,12 @@ INSERT INTO ROLE (id, description) VALUES (4, 'DOC');
 INSERT INTO ROLE (id, description) VALUES (5, 'BECARIO');
 INSERT INTO ROLE (id, description) VALUES (6, 'OTROS');
 
-INSERT INTO CONGRESS_TYPE (id, description) VALUES (1, 'Ponencia');
-INSERT INTO CONGRESS_TYPE (id, description) VALUES (2, 'Póster');
+INSERT INTO CONGRESS_TYPE (id, description) VALUES (1, 'PONENCIA');
+INSERT INTO CONGRESS_TYPE (id, description) VALUES (2, 'POSTER');
 
-INSERT INTO PUBLICATION_STATUS (id, description) VALUES (1, 'justificado');
-INSERT INTO PUBLICATION_STATUS (id, description) VALUES (2, 'aceptado');
-INSERT INTO PUBLICATION_STATUS (id, description) VALUES (3, 'enviado');
+INSERT INTO PUBLICATION_STATUS (id, description) VALUES (1, 'JUSTIFICADO');
+INSERT INTO PUBLICATION_STATUS (id, description) VALUES (2, 'ACEPTADO');
+INSERT INTO PUBLICATION_STATUS (id, description) VALUES (3, 'ENVIADO');
 
 INSERT INTO FIELD (id, description) VALUES (1, 'CIENCIAS DE LA COMPUTACIÓN');
 INSERT INTO FIELD (id, description) VALUES (2, 'BIOLOGÍA');
@@ -252,10 +254,10 @@ INSERT INTO FIELD (id, description) VALUES (4, 'INTELIGENCIA ARTIFICIAL');
 INSERT INTO FIELD (id, description) VALUES (5, 'INGENIERÍA CIVIL');
 
 INSERT INTO USER (email, password, admin, access) VALUES ('mnceleiro@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 1, 1);
-INSERT INTO USER (email, password, admin, access) VALUES ('ocanellas@gmail.com','1234', 1, 1);
-INSERT INTO USER (email, password, admin, access) VALUES ('dmritchie@yahoo.es','1234', 1, 1);
-INSERT INTO USER (email, password, admin, access) VALUES ('ltorval@esei.uvigo.es','1234', 1, 1);
-INSERT INTO USER (email, password, admin, access) VALUES ('mrjato@esei.uvigo.es','1234', 1, 1);
+INSERT INTO USER (email, password, admin, access) VALUES ('ocanellas@gmail.com','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 0, 0);
+INSERT INTO USER (email, password, admin, access) VALUES ('dmritchie@yahoo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 1, 1);
+INSERT INTO USER (email, password, admin, access) VALUES ('ltorval@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 1, 1);
+INSERT INTO USER (email, password, admin, access) VALUES ('mrjato@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 0, 1);
 
 INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Marcos', 'Núñez Celeiro', 'Calle Empanada de Zorza nº5', '9825312121', 1);
 INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Oscar', 'Mixwell Cañellas', 'Calle Alcantara nº12', '9825312122', 2);

@@ -17,6 +17,7 @@ import models.entities.AuthorProject
 import models.repositories.AuthorProjectRepository
 import vos.AuthorOfProjectVO
 import models.entities.Author
+import models.entities.JsonMessage
 
 class ProjectController @Inject()(
     projectRepo: ProjectRepository,
@@ -24,23 +25,6 @@ class ProjectController @Inject()(
     auth: SecuredAuthenticator
   ) extends Controller {
   
-	implicit val researcherVOFormat = Json.format[ResearcherVO]
-	
-	implicit val authorOfProjectFormat = Json.format[AuthorOfProjectVO]
-	implicit val authorOfProjectWrites = Json.writes[AuthorOfProjectVO]
-	implicit val authorOfProjectReads = Json.reads[AuthorOfProjectVO]
-
-	implicit val projectFormat = Json.format[ProjectVO]
-	implicit val projectWrites = Json.writes[ProjectVO]
-	implicit val projectReads = Json.reads[ProjectVO]
-	
-//	implicit val projectWithAuthorsFormat = Json.format[ProjectWithAuthorsVO]
-//	implicit val projectWithAuthorsWrites = Json.writes[ProjectWithAuthorsVO]
-//	implicit val projectWithAuthorsReads = Json.reads[ProjectWithAuthorsVO]
-  
-  def resOK(data: JsValue) = Json.obj("res" -> "OK") ++ Json.obj("data" -> data)
-  def resKO(error: JsValue) = Json.obj("res" -> "error") ++ Json.obj("error" -> error)
-
   def getAll = auth.JWTAuthentication.async {
     val projects = projectRepo.listAll
     projects.map(projectList => {
@@ -51,25 +35,13 @@ class ProjectController @Inject()(
     })
   }
   
-  def get(id: Long) = auth.JWTAuthentication.async {
-    val projectFuture = projectRepo.get(id)
-
-    projectFuture.map(p => {
-      if (p == None) Ok(resKO(JsString("El proyecto buscado no existe")))
-      else {
-//        println(Json.toJson(ProjectVO.toVO(p.get)))
-        Ok(Json.toJson(ProjectVO.toVO(p.get)))
-      }
-    })
-  }
-  
   def getWithAuthors(id: Long) = auth.JWTAuthentication.async {
-    val projectFuture = authorProjectRepo.getProjectWithAuthors(id)
+    val projectFuture = authorProjectRepo.getProject(id)
     
     projectFuture.map(p => {
-      if (p == None) Ok(resKO(JsString("El proyecto buscado no existe")))
+      if (p == None) Ok(JsonMessage.resKO(JsString("El proyecto buscado no existe")))
       else {
-        Ok(Json.toJson(ProjectVO.toProjectVOWithAuthors(p)))
+        Ok(Json.toJson(ProjectVO.toVO(p)))
       }
     })
   }
@@ -77,27 +49,15 @@ class ProjectController @Inject()(
   def add = auth.JWTAuthentication.async { implicit request =>
     ProjectVO.projectVOForm.bindFromRequest.fold(
       errorForm => {
-        println(errorForm)
-        Future.apply(Ok(resKO(JsString(""))))
+        Future.apply(Ok(JsonMessage.resKO(JsString(""))))
       },
       data => {
-//        println("PROYECTO a AÑADIR: " + ProjectVO.toProject(data))
-        var p1 = ProjectVO.toProject(data)
-        var aps = data.authors.map(a => {
-          var ap = AuthorProject(None, a.id, p1.id, a.role)
-          ap
-        })
-        var as = data.authors.map(a => {
-          Author(a.id, a.email, a.signature, a.researcherId)
-        })
-        
-//        println(p1, aps, as)
-        authorProjectRepo.save(p1, aps, as).map(r => {
-//            println(r)
-            Ok(resOK(JsString("Proyecto creado")))
+        val (p1, aps, as) = ProjectVO.toTuples(data)
+        authorProjectRepo.saveProject(p1, aps, as).map(r => {
+            Ok(JsonMessage.resOK(JsString("Proyecto creado")))
             
           }).recover {
-            case e => { println(e); Ok(resKO(JsString(e.getMessage))) }
+            case e => { Ok(JsonMessage.resKO(JsString(e.getMessage))) }
           }
     })
   }
@@ -105,18 +65,15 @@ class ProjectController @Inject()(
   def addWithAuthors = auth.JWTAuthentication.async { implicit request =>
     ProjectVO.projectVOForm.bindFromRequest.fold(
       errorForm => {
-//        println(errorForm)
-        Future.apply(Ok(resKO(JsString(""))))
+        Future.apply(Ok(JsonMessage.resKO(JsString(""))))
       },
       data => {
-//        println("PROYECTO a AÑADIR: " + data)
         projectRepo.save(ProjectVO.toProject(data))
           .map(r => {
-//            println(r)
-            Ok(resOK(JsString("Proyecto creado")))
+            Ok(JsonMessage.resOK(JsString("Proyecto creado")))
             
           }).recover {
-            case e => { Ok(resKO(JsString(e.getMessage))) }
+            case e => { Ok(JsonMessage.resKO(JsString(e.getMessage))) }
           }
     })
   }
@@ -124,38 +81,19 @@ class ProjectController @Inject()(
     def update(id: Long) = auth.JWTAuthentication.async { implicit request =>
     ProjectVO.projectVOForm.bindFromRequest.fold(
       errorForm => Future.failed(new Exception),
-//      errorForm => Future.apply(Ok(resKO(JsString("")))),
+      
       data => {
-        var p1 = ProjectVO.toProject(data)
-        var aps = data.authors.map(a => {
-          var ap = AuthorProject(None, a.id, p1.id, a.role)
-          ap
-        })
-        var as = data.authors.map(a => {
-          Author(a.id, a.email, a.signature, a.researcherId)
-        })
-//        println(p1, aps, as)
-//        var toUpdate = (p1, aps, as)
-        authorProjectRepo.update(p1, aps, as).map(_ => 
-          Ok(resOK(JsString("Proyecto actualizado.")))
+        val (p1, aps, as) = ProjectVO.toTuples(data)
+        authorProjectRepo.updateProject(p1, aps, as).map(_ => 
+          Ok(JsonMessage.resOK(JsString("Proyecto actualizado.")))
         ).recover { case e => {
-          println(e)
-          Ok(resKO(JsString(e.getMessage)))
+          Ok(JsonMessage.resKO(JsString(e.getMessage)))
         }}
-
-            
-//        projectRepo.update(ProjectVO.toProject(data))
-//          .map(p => {Ok(resOK(JsString("Proyecto actualizado.")))})
-//          .recover { case e => {
-//            Ok(resKO(JsString(e.getMessage)))
-//          } 
-//        }
       }
     )
   }
     
   def delete(id: Long) = auth.JWTAuthentication.async { implicit request =>
-//    println("deleting...")
-    authorProjectRepo.delete(id).map(x => Ok(resOK(JsString("Proyecto eliminado")))).recover { case e => Ok(resKO(JsString(e.getMessage))) }
+    authorProjectRepo.deleteProject(id).map(x => Ok(JsonMessage.resOK(JsString("Proyecto eliminado")))).recover { case e => Ok(JsonMessage.resKO(JsString(e.getMessage))) }
   }
 }

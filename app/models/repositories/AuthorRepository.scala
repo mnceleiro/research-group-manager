@@ -16,7 +16,6 @@ import models.entities.Author
 import play.libs.F.Tuple
 
 class AuthorTable(tag: Tag) extends Table[Author](tag, "AUTHOR") {
-  
   val authors = TableQuery[AuthorTable]
 
   def id = column[Long]("id", O.PrimaryKey,O.AutoInc)
@@ -30,7 +29,6 @@ class AuthorTable(tag: Tag) extends Table[Author](tag, "AUTHOR") {
 }
 
 class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
-
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   
   val authors = TableQuery[AuthorTable]
@@ -57,44 +55,6 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
 
   def get(id: Long): Future[Option[Author]] = {
     dbConfig.db.run(authors.filter(_.id === id).result.headOption)
-  }
-
-  def listCompleteAuthorsProjects: Future[Seq[(Author, Option[Researcher], Option[User])]] = {
-//    dbConfig.db.run(researchers.result)
-//    val monadicJoin = for {
-//      u <- users
-//      r <- researchers if u.id === r.userId
-//    } yield (r, u)
-    
-    val applicativeJoin = for {
-      ((authors, researchers), users) <- authors joinLeft researchers on (_.resId === _.id) joinLeft users on (_._2.map(_.userId) === _.id)
-    } yield (authors, researchers, users)
-    
-//    val monadicJoin = for {
-//      (a, r) <- authors joinLeft researchers on (_.resId === _.id)
-//      (u, _) <- r joinLeft users on (_.userId === _.id)
-//    } yield (a, r)
-    
-    
-    val executed = for {
-      tuples  <- applicativeJoin.result
-    } yield (tuples)
-    
-    val executed2 = for {
-      tuples <- dbConfig.db.run(executed).map(x => x.map(y => (y._1, y._2, y._3)))
-    } yield (tuples)
-    
-    return executed2
-
-//    executed map { case (tuples, data) =>
-//      val users = tuples.map(_._1).toSet
-//      val researchers = tuples.map(_._2).toSet
-//      
-//      val wat = tuples.headOption.map(_._1)
-//      
-//      wat.map(a => ResearcherWithUser(wat.get, a))
-//    }
-    
   }
 
   def listAll: Future[Seq[Author]] = {

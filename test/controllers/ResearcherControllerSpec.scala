@@ -55,7 +55,7 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
 //    "Return 6 user roles" in {
 //      val resp = route(app, FakeRequest(
 //        GET,
-//        "/researchers/roles/all",
+//        "/roles/all",
 //        fakeJsonHeaders,
 //        "")).get
 //        
@@ -72,12 +72,9 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
       val resp = route(app, FakeRequest(
         GET,
         "/researchers/all",
-        //          FakeHeaders(Seq(
-        //              ("content-type" -> "text/plain"), 
-        //              ("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoibW5jZWxlaXJvQGVzZWkudXZpZ28uZXMiLCJnZW5lcmF0ZWQiOjE0OTE4OTg5MjY3MTB9.XewJTpzoZKcEdABq0G7o-p82xfES1aCngSR0XDzkcbUBearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoibW5jZWxlaXJvQGVzZWkudXZpZ28uZXMiLCJnZW5lcmF0ZWQiOjE0OTE4OTg5MjY3MTB9.XewJTpzoZKcEdABq0G7o-p82xfES1aCngSR0XDzkcbU")
-        //          )),
         fakeJsonHeaders,
-        "")).get
+        ""
+      )).get
 
       status(resp) mustBe OK
       contentType(resp) mustBe Some("application/json")
@@ -92,7 +89,7 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
       contentType(resp) mustBe Some("application/json")
 
       val jsonRes = Json.parse(contentAsString(resp))
-      val bindForm = ResearcherVO.researcherForm.bind(jsonRes)
+      val bindForm = ResearcherVO.researcherVOForm.bind(jsonRes)
       val res = jsonRes.validate[ResearcherVO].get
     }
 
@@ -127,10 +124,8 @@ class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAnd
 
       contentType(resp) mustBe Some("application/json")
       status(resp) mustBe OK
-
       val json = Json.parse(contentAsString(resp))
       val resCode = json.as[JsObject].\("res").get
-      println(json)
       resCode.as[String] mustEqual "error"
     }
 

@@ -6,6 +6,8 @@ import models.entities.User
 import play.api.data.Mapping
 import play.api.data.Form
 import play.api.data.Forms._
+import play.api.libs.json.Json
+import utils.Password
 
 case class ResearcherVO(id: Long,
   usId: Long, email: String, password: Option[String], confirmPassword: Option[String], admin: Boolean, access: Boolean,
@@ -16,10 +18,16 @@ object ResearcherVO {
   def toResearcherUser(vo: ResearcherVO): ResearcherWithUser = {
     
     if (vo.password != vo.confirmPassword) throw new Exception("Password not equals")
+    if (vo.password.isDefined) Password.hashPassword(vo.password.get) else vo.password
     
     ResearcherWithUser(
       Researcher(vo.resId, vo.firstName, vo.lastName, vo.address, vo.phone,vo.usId),
-      User(vo.usId, vo.email, None, vo.admin, vo.access))
+      User(vo.usId,
+          vo.email, 
+          if (vo.password.isDefined) Password.hashPassword(vo.password.get) else vo.password, 
+          vo.admin, 
+          vo.access)
+      )
   }
 
   def fromResearcherUser(ru: ResearcherWithUser) = {
@@ -43,5 +51,7 @@ object ResearcherVO {
     "address" -> nonEmptyText,
     "phone" -> nonEmptyText)(ResearcherVO.apply)(x => Some(x.id, x.usId, x.email, x.password, x.confirmPassword, x.admin, x.access, x.resId, x.firstName, x.lastName, x.address, x.phone))
 
-  val researcherForm: Form[ResearcherVO] = Form(researcherVOMapping)
+  implicit val researcherVOForm: Form[ResearcherVO] = Form(researcherVOMapping)
+  implicit val researcherVOWrites = Json.writes[ResearcherVO]
+  implicit val researcherVOReads = Json.reads[ResearcherVO]  
 }

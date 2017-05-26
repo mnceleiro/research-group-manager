@@ -10,6 +10,9 @@ import authors from "./authors"
 import congresses from "./congresses"
 
 import roles from "./roles"
+import publicationStates from "./publicationStates"
+import congressTypes from "./congressTypes"
+
 import projectsAuthors from "./projects-authors"
 
 const rootReducer = combineReducers({
@@ -19,10 +22,12 @@ const rootReducer = combineReducers({
   projectState: projects,
   authorState: authors,
   congressState: congresses,
-
   projectsAuthorsState: projectsAuthors,
 
   rolesState: roles,
+  publicationStateState: publicationStates,
+  congressTypeState: congressTypes,
+
   sessionState: session,
   flashState: messageReducer,
   form: formReducer

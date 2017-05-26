@@ -16,7 +16,9 @@ class ResearcherDetail extends React.Component {
         "firstName": researcher.firstName,
         "lastName": researcher.lastName,
         "phone": researcher.phone,
-        "address": researcher.address
+        "address": researcher.address,
+        "access": researcher.access,
+        "admin": researcher.admin
       }
 
       this.props.initialize(initData)

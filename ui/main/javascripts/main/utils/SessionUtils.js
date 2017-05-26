@@ -17,6 +17,10 @@ class SessionUtils {
     localStorage.setItem("current_user", value)
   }
 
+  logout() {
+    localStorage.removeItem("current_user")
+  }
+
   isAuthenticated() {
     return localStorage.getItem("current_user") ? true : false
   }

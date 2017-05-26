@@ -2,12 +2,12 @@ package models.repositories
 
 import slick.driver.JdbcProfile
 import slick.driver.MySQLDriver.api._
-import models.entities.Role
 import com.google.inject.Inject
 import play.api.db.slick.DatabaseConfigProvider
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import models.entities.Researcher
+
+import models.entities.Role
 
 class RoleTable(tag: Tag) extends Table[Role](tag, "ROLE") {
   def id = column[Long]("id", O.PrimaryKey,O.AutoInc)
