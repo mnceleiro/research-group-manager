@@ -100,9 +100,7 @@ export default function congresses(state = initialState, action) {
       isFetching: false,
       error: action.message
     })
-
   }
-
 
   return state
 }

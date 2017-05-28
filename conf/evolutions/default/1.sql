@@ -68,9 +68,9 @@ CREATE TABLE AUTHOR (
     res_id bigint(20),
     
     UNIQUE(email),
-    PRIMARY KEY (id),
-    FOREIGN KEY (res_id) REFERENCES RESEARCHER(id)
+    PRIMARY KEY (id)
 );
+-- FOREIGN KEY (res_id) REFERENCES RESEARCHER(id)
 
 -- Participantes? varios? tipo_participacion iría en tabla user_project?
 -- Entidades participantes
@@ -121,7 +121,7 @@ CREATE TABLE AUTHOR_PROJECT (
   FOREIGN KEY (project_id) REFERENCES PROJECT(id),
   FOREIGN KEY (role_id) REFERENCES ROLE(id)
 );
--- FOREIGN KEY (author_id) REFERENCES USER(id),
+-- FOREIGN KEY (author_id) REFERENCES AUTHOR(id),
 
 CREATE TABLE CONGRESS (
   id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -149,7 +149,7 @@ CREATE TABLE AUTHOR_CONGRESS (
   
   UNIQUE(author_id, congress_id),
   PRIMARY KEY (id),
-  FOREIGN KEY (author_id) REFERENCES USER(id),
+  FOREIGN KEY (author_id) REFERENCES AUTHOR(id),
   FOREIGN KEY (congress_id) REFERENCES CONGRESS(id)
 );
 
@@ -159,12 +159,12 @@ CREATE TABLE BOOK (
   code varchar(255),
   title varchar(255) NOT NULL,
   book varchar(255) NOT NULL,
-  volume varchar(20) NOT NULL,
+  volume varchar(20),
   start_page bigint(20),
   end_page bigint(20),
   year bigint(20),
-  editorial varchar(255),
-  place varchar(255),
+  editorial varchar(255) NOT NULL,
+  place varchar(255) NOT NULL,
   isbn varchar(255),
   
   status bigint(20),
@@ -254,12 +254,13 @@ INSERT INTO FIELD (id, description) VALUES (4, 'INTELIGENCIA ARTIFICIAL');
 INSERT INTO FIELD (id, description) VALUES (5, 'INGENIERÍA CIVIL');
 
 INSERT INTO USER (email, password, admin, access) VALUES ('mnceleiro@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 1, 1);
+INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Marcos', 'Núñez Celeiro', 'Calle Empanada de Zorza nº5', '9825312121', 1);
+
 INSERT INTO USER (email, password, admin, access) VALUES ('ocanellas@gmail.com','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 0, 0);
 INSERT INTO USER (email, password, admin, access) VALUES ('dmritchie@yahoo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 1, 1);
 INSERT INTO USER (email, password, admin, access) VALUES ('ltorval@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 1, 1);
 INSERT INTO USER (email, password, admin, access) VALUES ('mrjato@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 0, 1);
 
-INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Marcos', 'Núñez Celeiro', 'Calle Empanada de Zorza nº5', '9825312121', 1);
 INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Oscar', 'Mixwell Cañellas', 'Calle Alcantara nº12', '9825312122', 2);
 INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Dennis', 'MacAlistair Ritchie', 'Avenida Curros Enriquez 7', '9825312123', 3);
 INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Linus', 'Benedict Torvalds', 'Plaza Pontevedra 122', '9825312124', 4);
@@ -292,7 +293,7 @@ INSERT INTO AUTHOR_CONGRESS (author_id, congress_id) VALUES (1, 2);
 INSERT INTO BOOK 
   (code, title, book, volume, start_page, end_page, year, editorial, place, isbn, status) 
 VALUES 
-  ('39887L', 'SOFTWARE FOR BIOIMAGING', 'BOOK OF SOFTWARE FOR BIOIMAGING', '3:12', '0', '0', '2016', '', '', '1758-2946', 1);
+  ('39887L', 'SOFTWARE FOR BIOIMAGING', 'BOOK OF SOFTWARE FOR BIOIMAGING', '3:12', '0', '0', '2016', 'Intech', 'Ourense', '1758-2946', 1);
   
 INSERT INTO AUTHOR_BOOK (book_id, author_id) VALUES (1, 1);
 

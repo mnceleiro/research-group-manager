@@ -12,7 +12,10 @@ export function fetchProjects() {
       })
     })
     return fetch(request)
-      .then(resp => { return resp.json() })
+      .then(resp => {
+        if (resp.status === 401) sessionUtils.logout()
+        else return resp.json() 
+      })
       .then(projectsJson => {
         dispatch(receiveProjects(projectsJson))
       })

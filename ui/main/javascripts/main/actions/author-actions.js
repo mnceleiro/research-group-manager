@@ -5,8 +5,6 @@ import { sessionUtils } from "../utils/SessionUtils"
 export function fetchAuthors() {
   return function (dispatch) {
     dispatch(requestAuthors())
-    // debugger
-    // return apiGet("authors/all", receiveAuthors => { dispatch(receiveAuthors) })
 
     var request = new Request("../../authors/all", {
       headers: new Headers({
@@ -31,6 +29,38 @@ export function receiveAuthors(json) {
   return {
     type: types.RECEIVE_AUTHORS,
     authors: json,
+    receivedAt: Date.now()
+  }
+}
+
+export function fetchAuthorById(id) {
+  return function (dispatch) {
+    dispatch(requestAuthorById())
+
+    var request = new Request(`../../authors/with-entities/id/${id}`, {
+      headers: new Headers({
+        Authorization: sessionUtils.getAuthString()
+      })
+    })
+    return fetch(request)
+      .then(resp => { return resp.json() })
+      .then(authorJson => {
+        dispatch(receiveAuthor(authorJson))
+      })
+  }
+}
+
+function requestAuthorById(id) {
+  return {
+    type: types.REQUEST_AUTHOR,
+    id: id
+  }
+}
+
+function receiveAuthor(json) {
+  return {
+    type: types.RECEIVE_AUTHOR,
+    author: json,
     receivedAt: Date.now()
   }
 }

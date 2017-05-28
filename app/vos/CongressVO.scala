@@ -9,7 +9,7 @@ import models.entities.Congress
 import models.entities.AuthorCongress
 
 case class CongressVO(id: Long, title: String, name: String, place: String, country: String, 
-    start: String, end: String, international: Boolean, typeId: Long, statusId: Long, authors: Seq[AuthorOfCongressVO])
+    start: Option[String], end: Option[String], international: Boolean, typeId: Long, statusId: Long, authors: Seq[AuthorOfCongressVO])
 
 object CongressVO {
 
@@ -65,8 +65,8 @@ object CongressVO {
       "name" -> text,
       "place" -> text,
       "country" -> text,
-      "start" -> text,
-      "end" -> text,
+      "start" -> optional(text),
+      "end" -> optional(text),
       "international" -> boolean,
       "typeId" -> longNumber,
       "statusId" -> longNumber,

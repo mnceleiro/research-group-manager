@@ -15,10 +15,14 @@ import models.repositories.CongressRepository
 import models.entities.Author
 import models.repositories.AuthorRepository
 import vos.CongressVO
+import play.api.i18n.I18nSupport
+import play.api.i18n.MessagesApi
 
 class AuthorController @Inject() (
     repo: AuthorRepository,
-    auth: SecuredAuthenticator) extends Controller {
+    auth: SecuredAuthenticator,
+    implicit val messagesApi: MessagesApi
+  ) extends Controller with I18nSupport{
 
   def getAll = auth.JWTAuthentication.async {
     repo.listAll.map(cs => Ok(Json.toJson(cs)))
@@ -28,6 +32,13 @@ class AuthorController @Inject() (
     repo.get(id).map(c => 
       Ok(Json.toJson(c))
     )
+  }
+  
+  def getComplete(id: Long) = auth.JWTAuthentication.async {
+    repo.getComplete(id).map(t => {
+      println(t)
+      Ok(Json.toJson(""))
+    })
   }
 
   def add = auth.JWTAuthentication.async { implicit request =>
@@ -50,13 +61,19 @@ class AuthorController @Inject() (
 
       data => {
         repo.update(data)
-          .map(p => { println("OK"); Ok(JsonMessage.resOK(JsString("Autor actualizado."))) })
-          .recover { case e => { println(e); Ok(JsonMessage.resKO(JsString(e.getMessage))) } }
+          .map(p => { Ok(JsonMessage.resOK(JsString("Autor actualizado."))) })
+          .recover { case e => { Ok(JsonMessage.resKO(JsString(e.getMessage))) } }
       })
   }
 
   def delete(id: Long) = auth.JWTAuthentication.async { implicit request =>
-    repo.delete(id).map(x => Ok(JsonMessage.resOK(JsString("Autor eliminado")))).recover { case e => Ok(JsonMessage.resKO(JsString(e.getMessage))) }
+    repo.delete(id).map(x => {
+      Ok(JsonMessage.resOK(JsString("Autor eliminado")))
+    }).recover { 
+      case e => {
+        Ok(JsonMessage.resKO(JsString(e.getMessage)))
+      }
+    }
   }
 
 }

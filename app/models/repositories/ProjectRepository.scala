@@ -14,9 +14,9 @@ class ProjectTable(tag: Tag) extends Table[Project](tag, "PROJECT") {
   def code = column[String]("code")
   def title = column[String]("title")
   def public = column[Boolean]("public")
-  def startDate = column[String]("start_date")
-  def endDate = column[String]("end_date")
-  def budget = column[Long]("budget")
+  def startDate = column[Option[String]]("start_date")
+  def endDate = column[Option[String]]("end_date")
+  def budget = column[Option[Long]]("budget")
   def researcherCount = column[Option[Long]]("researcher_count")
 
   override def * = (id, code, title, public, startDate, endDate, budget, researcherCount) <> ((Project.apply _).tupled, Project.unapply)

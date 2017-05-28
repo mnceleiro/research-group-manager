@@ -14,6 +14,9 @@ import models.entities.ResearcherWithUser
 import models.entities.User
 import models.entities.Author
 import play.libs.F.Tuple
+import models.entities.Project
+import models.entities.Congress
+import models.entities.Book
 
 class AuthorTable(tag: Tag) extends Table[Author](tag, "AUTHOR") {
   val authors = TableQuery[AuthorTable]
@@ -23,7 +26,7 @@ class AuthorTable(tag: Tag) extends Table[Author](tag, "AUTHOR") {
   def signature = column[String]("signature")
   
   def resId = column[Option[Long]]("res_id")
-  def researcher = foreignKey("RESEARCHER_FK", resId, authors)(_.id.?, onUpdate=ForeignKeyAction.Restrict, onDelete=ForeignKeyAction.Cascade)
+//  def researcher = foreignKey("RESEARCHER_FK", resId, authors)(_.id.?, onUpdate=ForeignKeyAction.Restrict, onDelete=ForeignKeyAction.Cascade)
   
   override def * = (id, email, signature, resId) <> ((Author.apply _).tupled, Author.unapply)
 }
@@ -34,6 +37,15 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
   val authors = TableQuery[AuthorTable]
   val researchers = TableQuery[ResearcherTable]
   val users = TableQuery[UserTable]
+  
+  val congresses = TableQuery[CongressTable]
+  val authorsCongresses = TableQuery[AuthorCongressTable]
+  
+  val books = TableQuery[BookTable]
+  val authorsBooks= TableQuery[AuthorBookTable]
+  
+  val projects = TableQuery[ProjectTable]
+  val authorsProjects = TableQuery[AuthorProjectTable]
   
   def save(author: Author): Future[Author] = {
     dbConfig.db.run(
@@ -55,6 +67,36 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
 
   def get(id: Long): Future[Option[Author]] = {
     dbConfig.db.run(authors.filter(_.id === id).result.headOption)
+  }
+  
+  def getComplete(id: Long): Future[Seq[(Author, Option[Researcher], Option[Congress], Option[Project], Option[Book])]] = {
+//    val applicativeJoin = for {
+//      author   <- authors.filter(_.id === id) joinLeft researchers on (_.resId === _.id)
+//      
+//      congress   <- authorsCongresses.filter(_.authorId === id) joinLeft congresses on (_.congressId === _.id)
+//      project    <- authorsProjects.filter(_.authorId === id) joinLeft projects on (_.projectId === _.id)
+//      book       <- authorsBooks.filter(_.authorId === id) joinLeft books on (_.bookId === _.id)
+//      
+//    } yield (author._1, author._2, congress._2, project._2, book._2)
+    
+    val applicativeJoin = for {
+      author   <- authors.filter(_.id === id) joinLeft researchers on (_.resId === _.id)
+      
+      congress   <- authorsCongresses.filter(_.authorId === id) joinLeft congresses on (_.congressId === _.id)
+      project    <- authorsProjects.filter(_.authorId === id) joinLeft projects on (_.projectId === _.id)
+      book       <- authorsBooks.filter(_.authorId === id) joinLeft books on (_.bookId === _.id)
+      
+    } yield (author._1, author._2, congress._2, project._2, book._2)
+	  
+    val executeJoin = for {
+      tuples  <- applicativeJoin.result
+    } yield (tuples)
+    
+    val mappedQuery = for {
+      tuples <- dbConfig.db.run(executeJoin).map(x => x.map(y => (y._1, y._2, y._3, y._4, y._5)))
+    } yield (tuples)
+    
+    return mappedQuery
   }
 
   def listAll: Future[Seq[Author]] = {

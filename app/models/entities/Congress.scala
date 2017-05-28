@@ -3,7 +3,7 @@ package models.entities
 import play.api.data.Form
 import play.api.data.Forms._
 
-case class Congress(id: Long, title: String, name: String, place: String, country: String, start: String, end: String, international: Boolean, typeId: Long, statusId: Long) extends BaseEntity
+case class Congress(id: Long, title: String, name: String, place: String, country: String, start: Option[String], end: Option[String], international: Boolean, typeId: Long, statusId: Long) extends BaseEntity
 
 object Congress {
     val congressForm: Form[Congress] = Form(
@@ -13,8 +13,8 @@ object Congress {
           "name" -> text,
           "place" -> text,
           "country" -> text,
-          "start" -> text,
-          "end" -> text,
+          "start" -> optional(text),
+          "end" -> optional(text),
           "international" -> boolean,
           "typeId" -> longNumber,
           "statusId" -> longNumber

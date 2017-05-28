@@ -38,12 +38,12 @@ export default class RGMAuthorsTable extends React.Component {
         <div className="row">
           <div className="col-xs-12 col-md-offset-1 col-md-10">
             <legend>
-              Autores asociados al proyecto
+              Autores asociados
             </legend>
           </div>
         </div>
 
-        {insertable && <div className="row">
+        {insertable && <div className="row space-bottom-small">
           <div className={this.state.authorSelectClass}>
             <Select
               clearable={false}
@@ -69,7 +69,7 @@ export default class RGMAuthorsTable extends React.Component {
         </div>
         }
 
-        <div className="row">
+        <div className="row space-bottom-small">
           <div className="col-xs-12 col-md-offset-1 col-md-10">
             <RGMInlineTable headers={headers} fields={fields} data={selectedAuthors} editable={editable} removable={removable} onClickEdit={onEdit} onDelete={onDelete} />
           </div>

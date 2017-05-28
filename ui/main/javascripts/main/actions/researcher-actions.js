@@ -33,7 +33,10 @@ export function fetchResearchers() {
       })
     })
     return fetch(request)
-      .then(resp => { return resp.json() })
+      .then(resp => {
+        if (resp.status === 401) sessionUtils.logout()
+        else return resp.json()
+      })
       .then(researchersJson => {
         dispatch(receiveResearchers(researchersJson))
       })
@@ -50,7 +53,10 @@ export function fetchResearcherById(id) {
       })
     })
     return fetch(request)
-      .then(resp => { return resp.json() })
+      .then(resp => {
+        if (resp.status === 401) sessionUtils.logout()
+        return resp.json()
+      })
       .then(researcherJson => {
         dispatch(receiveResearcher(researcherJson))
       })
@@ -132,7 +138,13 @@ export function deleteResearcher(r) {
       body: JSON.stringify(r)
 
     }).then(response => {
-      dispatch(deleteResearcherSuccess(response, r))
+      if (response.status !== 200) {
+        if (response.status === 401) sessionUtils.logout()
+        dispatch(deleteResearcherError("No es posible eliminar el investigador."))
+      }
+      else dispatch(deleteResearcherSuccess(response, r))
+    }).catch(error => {
+      dispatch(deleteResearcherError("No es posible eliminar el investigador: " + error))
     })
   }
 }
@@ -221,5 +233,12 @@ function deleteResearcherSuccess(response, researcher) {
     type: types.DELETE_RESEARCHER_SUCCESS,
     message: response,
     researcher
+  }
+}
+
+function deleteResearcherError(msg) {
+  return {
+    type: types.DELETE_RESEARCHER_ERROR,
+    message: msg
   }
 }

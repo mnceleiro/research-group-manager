@@ -23,13 +23,14 @@ class ResearcherTable(tag: Tag) extends Table[Researcher](tag, "RESEARCHER") {
   def phone = column[String]("phone")
   def userId = column[Long]("user_id")
 
-  def user = foreignKey("USER_FK", userId, users)(_.id, onUpdate = ForeignKeyAction.Restrict, onDelete = ForeignKeyAction.Cascade)
+  def user = foreignKey("USER_FK", userId, users)(_.id, onUpdate = ForeignKeyAction.NoAction, onDelete = ForeignKeyAction.NoAction)
 
   override def * = (id, firstName, lastName, address, phone, userId) <> ((Researcher.apply _).tupled, Researcher.unapply)
 }
 
 class ResearcherRepository @Inject() (dbConfigProvider: DatabaseConfigProvider) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
+  val authors = TableQuery[AuthorTable]
   val researchers = TableQuery[ResearcherTable]
   val users = TableQuery[UserTable]
 
@@ -74,7 +75,15 @@ class ResearcherRepository @Inject() (dbConfigProvider: DatabaseConfigProvider) 
   }
 
   def delete(id: Long): Future[Int] = {
-    dbConfig.db.run(researchers.filter(_.id === id).delete)
+    val query = (for {
+      us <- researchers.filter(x => x.id === id).result.headOption
+      resDel <- researchers.filter(_.id === id).delete
+      usDel <- users.filter(u => u.id === us.map(x => x.id)).delete
+      
+      authorUpdated <- authors.filter(x => x.resId === id).map(x => x.resId).update(null)
+    } yield (resDel))
+    
+    dbConfig.db.run(query.transactionally)
   }
 
   def get(id: Long): Future[Option[ResearcherWithUser]] = {

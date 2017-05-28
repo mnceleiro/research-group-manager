@@ -36,8 +36,8 @@ class CongressDetail extends Component {
       authors: [],
       selectedAuthor: null,
 
-      selectedState: null,
-      selectedType: null
+      selectedState: 1,
+      selectedType: 1
     }
   }
 
@@ -170,13 +170,22 @@ class CongressDetail extends Component {
     const headers = ["Email", "Autor", "Investigador asociado"]
     const fields = ["email", "signature", "researcherEmail"]
 
-    if (isFetching) {
+    if (isFetching || congressTypes.length == 0 || publicationStates.length == 0) {
       return (
         <div>Cargando...</div>
       )
     } else {
-      const stateValue = publicationStates.find(x => x.id === this.state.selectedState)
-      const typeValue = congressTypes.find(x => x.id === this.state.selectedType)
+      let stateValue = publicationStates.find(x => x.id === this.state.selectedState) || publicationStates[0]
+      let typeValue = congressTypes.find(x => x.id === this.state.selectedType) || congressTypes[0]
+      let congress = this.props.congress
+      if (congress.id) {
+        congress.authors = congress.authors.map(x => {
+          let res = this.props.researchers.find(r => r.id === x.researcherId)
+          if (res) x.researcherEmail = res.email
+
+          return x
+        })
+      }
 
       return (
         <div className="congress-form">
@@ -201,8 +210,10 @@ class CongressDetail extends Component {
                 headers={headers}
                 fields={fields}
                 authors={this.props.authors}
+
                 selectedAuthors={this.state.authors}
                 selectedAuthor={this.state.selectedAuthor}
+
                 onInsert={this.onAddRow.bind(this)}
                 onInsertSelection={this.handleAuthorSelectionChange.bind(this)}
                 onDelete={(i) => this.onDeleteRow(i)}

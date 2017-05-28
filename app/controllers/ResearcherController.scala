@@ -70,6 +70,7 @@ class ResearcherController @Inject()(
   }
   
   def delete(id: Long) = auth.JWTAuthentication.async { implicit request =>
-    researcherRepo.delete(id).map(x => Ok(JsonMessage.resOK(JsString("Investigador eliminado")))).recover { case e => Ok(JsonMessage.resKO(JsString(e.getMessage))) }
+    if (id == 1) Future.successful(BadRequest(JsonMessage.resKO("No está permitido eliminar el investigador administrador.")))
+    else researcherRepo.delete(id).map(x => Ok(JsonMessage.resOK("Investigador eliminado"))).recover { case e => Ok(JsonMessage.resKO(JsString(e.getMessage))) }
   }
 }

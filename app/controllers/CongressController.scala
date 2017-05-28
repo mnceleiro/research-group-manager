@@ -26,7 +26,7 @@ class CongressController @Inject() (
     congressRepo: CongressRepository,
     authorCongressRepo: AuthorCongressRepository,
     implicit val messagesApi: MessagesApi,
-    auth: SecuredAuthenticator) extends Controller with I18nSupport{
+    auth: SecuredAuthenticator) extends Controller with I18nSupport {
 
   def getAll = auth.JWTAuthentication.async {
     congressRepo.listAll.map(cs => Ok(Json.toJson(cs.map(c => {
@@ -56,7 +56,7 @@ class CongressController @Inject() (
   def add = auth.JWTAuthentication.async { implicit request =>
     CongressVO.congressVOForm.bindFromRequest.fold(
       errorForm => {
-        Future.apply(Ok(JsonMessage.resKO(JsString(""))))
+        Future.successful(Ok(JsonMessage.resKO(errorForm.errorsAsJson)))
       },
       data => {
         val (congress , authorCongresses, authors) = CongressVO.toTuples(data) 

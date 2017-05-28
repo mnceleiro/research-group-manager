@@ -12,6 +12,9 @@ object JsonMessage {
   
   def resOK(data: JsValue) = Json.obj("res" -> "OK") ++ Json.obj("data" -> data)
   def resKO(error: JsValue) = Json.obj("res" -> "error") ++ Json.obj("description" -> error)
+  
+  def resOK(data: String) = Json.obj("res" -> "OK") ++ Json.obj("data" -> data)
+  def resKO(error: String) = Json.obj("res" -> "error") ++ Json.obj("description" -> error)
 
 //  def apply(key: String)(implicit messages: Messages): HttpMessage = {
 //    HttpMessage(key, Messages(key))

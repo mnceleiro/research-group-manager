@@ -12,7 +12,7 @@ import models.entities.Role
 import models.entities.AuthorProject
 import play.api.libs.json.Json
 
-case class ProjectVO(id: Long, code: String, title: String, public: Boolean, startDate: String, endDate: String, budget: Long, researcherCount: Option[Long], authors: Seq[AuthorOfProjectVO])
+case class ProjectVO(id: Long, code: String, title: String, public: Boolean, startDate: Option[String], endDate: Option[String], budget: Option[Long], researcherCount: Option[Long], authors: Seq[AuthorOfProjectVO])
 
 
 object ProjectVO {
@@ -56,9 +56,9 @@ object ProjectVO {
       "code" -> text,
       "title" -> text,
       "public" -> boolean,
-      "startDate" -> text,
-      "endDate" -> text,
-      "budget" -> longNumber,
+      "startDate" -> optional(text),
+      "endDate" -> optional(text),
+      "budget" -> optional(longNumber),
       "researcherCount" -> optional(longNumber),
       "authors" -> seq(AuthorOfProjectVO.authorMapping)
   )(ProjectVO.apply)(x => Some(x.id, x.code, x.title, x.public, x.startDate, x.endDate, x.budget, x.researcherCount, x.authors))

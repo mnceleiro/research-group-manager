@@ -14,17 +14,6 @@ import models.entities.Role
 import vos.ResearcherVO
 
 class ResearcherControllerSpec extends AcceptanceSpec[Researcher] with BeforeAndAfter {
-
-  implicit var userReads = Json.reads[Researcher]
-  implicit var userWrites = Json.writes[Researcher]
-  implicit var userFormat = Json.format[Researcher]
-  
-  implicit var userReadsVO = Json.reads[ResearcherVO]
-  implicit var userWritesVO = Json.writes[ResearcherVO]
-  implicit var userFormatVO = Json.format[ResearcherVO]
-  
-  implicit var roleReads = Json.reads[Role]
-
   var tokenString: String = null
   var fakeTextHeaders: FakeHeaders = null
   var fakeJsonHeaders: FakeHeaders = null

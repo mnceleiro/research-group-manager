@@ -14,8 +14,8 @@ class CongressTable(tag: Tag) extends Table[Congress](tag, "CONGRESS") {
   def name = column[String]("name")
   def place = column[String]("place")
   def country = column[String]("country")
-  def start = column[String]("start")
-  def end = column[String]("end")
+  def start = column[Option[String]]("start")
+  def end = column[Option[String]]("end")
   def international = column[Boolean]("international")
   
   def typeId = column[Long]("type")

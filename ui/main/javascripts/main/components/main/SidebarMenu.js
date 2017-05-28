@@ -31,6 +31,7 @@ export const SidebarMenu = (data) => {
             <ul className="nav side-menu">
               <li className="active"><a><i className="fa fa-calendar fa-2x"></i>Calendario</a></li>
               <li><a href="/researchers"><i className="fa fa-users fa-2x"></i>Investigadores</a></li>
+              <li><a href="/authors"><i className="fa fa-users fa-2x"></i>Autores</a></li>
               <li><a href="/projects"><i className="fa fa-home fa-2x"></i>Proyectos</a></li>
             </ul>
           </div>
@@ -40,7 +41,7 @@ export const SidebarMenu = (data) => {
           </div>
           <div className="rgm-menu-section">
             <ul className="nav side-menu">
-              <li><a><i className="fa fa-book fa-2x"></i>Revistas</a></li>
+              <li><a href="/books"><i className="fa fa-book fa-2x"></i>Libros</a></li>
               <li><a href="/congresses"><i className="fa fa-briefcase fa-2x"></i> Congresos</a></li>
             </ul>
           </div>

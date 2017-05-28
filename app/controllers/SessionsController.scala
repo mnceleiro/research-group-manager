@@ -36,6 +36,7 @@ class SessionsController @Inject() (userRepo: UserRepository, auth: SecuredAuthe
               "token" -> JWTUtils.createToken(Json.stringify(Json.obj(
                 "userId" -> dbUser.id,
                 "email" -> dbUser.email,
+                "admin" -> dbUser.admin,
                 "generated" -> Calendar.getInstance().getTime()))))
 
             Future.successful(Ok(Json.stringify(toret)))

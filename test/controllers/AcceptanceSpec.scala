@@ -8,8 +8,10 @@ import org.scalatest.BeforeAndAfterAll
 import play.api.db.evolutions.Evolutions
 import play.api.db.DBApi
 
+import play.api.db.Database
+import play.api.db.evolutions.{DatabaseEvolutions, EvolutionsReader, ThisClassLoaderEvolutionsReader}
 
-trait AcceptanceSpec[T <: BaseEntity] extends PlaySpec with OneAppPerSuite with BeforeAndAfterAll {
+trait AcceptanceSpec[T] extends PlaySpec with OneAppPerSuite with BeforeAndAfterAll {
   val dbApi = app.injector.instanceOf[DBApi]
     
   override def beforeAll = {
@@ -18,6 +20,6 @@ trait AcceptanceSpec[T <: BaseEntity] extends PlaySpec with OneAppPerSuite with 
   }
   
   override def afterAll = {
-//    Evolutions.cleanupEvolutions(dbApi.database("default"))
+//    Evolutions.cleanupEvolutions(dbApi.database("test"))
   }
 }

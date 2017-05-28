@@ -7,57 +7,56 @@ import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import models.repositories.ProjectRepository
-import vos.ProjectVO
-import models.entities.Project
+import models.repositories.BookRepository
+import vos.BookVO
+import models.entities.Book
 import play.api.libs.json.JsString
 import vos.ResearcherVO
 import scala.concurrent.Future
-import models.entities.AuthorProject
-import models.repositories.AuthorProjectRepository
-import vos.AuthorOfProjectVO
+import models.entities.AuthorBook
+import models.repositories.AuthorBookRepository
+import vos.AuthorOfBookVO
 import models.entities.Author
 import models.entities.JsonMessage
 import play.api.i18n.I18nSupport
 import play.api.i18n.MessagesApi
 
-class ProjectController @Inject()(
-    projectRepo: ProjectRepository,
-    authorProjectRepo: AuthorProjectRepository,
+class BookController @Inject()(
+    bookRepo: BookRepository,
+    authorBookRepo: AuthorBookRepository,
     auth: SecuredAuthenticator,
     implicit val messagesApi: MessagesApi
-    
   ) extends Controller with I18nSupport {
   
   def getAll = auth.JWTAuthentication.async {
-    val projects = projectRepo.listAll
-    projects.map(projectList => {
+    val books = bookRepo.listAll
+    books.map(bookList => {
       Ok(Json.toJson(
-        projectList.map(p => {
-          ProjectVO.toVO(p)
+        bookList.map(b => {
+          BookVO.toVO(b)
         })))
     })
   }
   
   def getWithAuthors(id: Long) = auth.JWTAuthentication.async {
-    val projectFuture = authorProjectRepo.getProject(id)
+    val bookFuture = authorBookRepo.getBook(id)
     
-    projectFuture.map(p => {
+    bookFuture.map(p => {
       if (p == None) Ok(JsonMessage.resKO(JsString("El proyecto buscado no existe")))
       else {
-        Ok(Json.toJson(ProjectVO.toVO(p)))
+        Ok(Json.toJson(BookVO.toVO(p)))
       }
     })
   }
   
   def add = auth.JWTAuthentication.async { implicit request =>
-    ProjectVO.projectVOForm.bindFromRequest.fold(
+    BookVO.bookVOForm.bindFromRequest.fold(
       errorForm => {
         Future.successful(Ok(JsonMessage.resKO(errorForm.errorsAsJson)))
       },
       data => {
-        val (p1, aps, as) = ProjectVO.toTuples(data)
-        authorProjectRepo.saveProject(p1, aps, as).map(r => {
+        val (b1, abs, as) = BookVO.toTuples(data)
+        authorBookRepo.saveBook(b1, abs, as).map(r => {
             Ok(JsonMessage.resOK(JsString("Proyecto creado")))
             
           }).recover {
@@ -67,12 +66,12 @@ class ProjectController @Inject()(
   }
   
   def addWithAuthors = auth.JWTAuthentication.async { implicit request =>
-    ProjectVO.projectVOForm.bindFromRequest.fold(
+    BookVO.bookVOForm.bindFromRequest.fold(
       errorForm => {
         Future.successful(Ok(JsonMessage.resKO(errorForm.errorsAsJson)))
       },
       data => {
-        projectRepo.save(ProjectVO.toProject(data))
+        bookRepo.save(BookVO.toBook(data))
           .map(r => {
             Ok(JsonMessage.resOK(JsString("Proyecto creado")))
             
@@ -83,12 +82,12 @@ class ProjectController @Inject()(
   }
   
     def update(id: Long) = auth.JWTAuthentication.async { implicit request =>
-    ProjectVO.projectVOForm.bindFromRequest.fold(
+    BookVO.bookVOForm.bindFromRequest.fold(
       errorForm => Future.successful(Ok(JsonMessage.resKO(errorForm.errorsAsJson))),
       
       data => {
-        val (p1, aps, as) = ProjectVO.toTuples(data)
-        authorProjectRepo.updateProject(p1, aps, as).map(_ => 
+        val (p1, aps, as) = BookVO.toTuples(data)
+        authorBookRepo.updateBook(p1, aps, as).map(_ => 
           Ok(JsonMessage.resOK(JsString("Proyecto actualizado.")))
         ).recover { case e => {
           Ok(JsonMessage.resKO(JsString(e.getMessage)))
@@ -98,6 +97,6 @@ class ProjectController @Inject()(
   }
     
   def delete(id: Long) = auth.JWTAuthentication.async { implicit request =>
-    authorProjectRepo.deleteProject(id).map(x => Ok(JsonMessage.resOK(JsString("Proyecto eliminado")))).recover { case e => Ok(JsonMessage.resKO(JsString(e.getMessage))) }
+    authorBookRepo.deleteBook(id).map(x => Ok(JsonMessage.resOK(JsString("Proyecto eliminado")))).recover { case e => Ok(JsonMessage.resKO(JsString(e.getMessage))) }
   }
 }

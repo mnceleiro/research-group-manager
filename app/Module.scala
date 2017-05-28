@@ -43,8 +43,7 @@ import scala.concurrent.Future
  * adding `play.modules.enabled` settings to the `application.conf`
  * configuration file.
  */
-class Module (environment: Environment,
-                       configuration: Configuration) extends AbstractModule {
+class Module (environment: Environment, configuration: Configuration) extends AbstractModule {
 
   override def configure() = {
     // Use the system clock as the default implementation of Clock

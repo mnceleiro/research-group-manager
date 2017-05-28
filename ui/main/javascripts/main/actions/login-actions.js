@@ -3,6 +3,8 @@ import {
   LOGOUT_SUCCESS, SET_SESSION_DATA
 } from "../constants/actionTypes"
 
+import { sessionUtils } from "../utils/SessionUtils"
+
 export function doLogin(credentials) {
   let config = {
     method: "POST",
@@ -17,7 +19,6 @@ export function doLogin(credentials) {
       .then(response =>
         response.json().then(user => ({ user, response }))
       ).then(({ user, response }) =>  {
-        debugger
         if (!response.ok || user.res) {
           // If there was a problem, we want to
           // dispatch the error condition
@@ -27,10 +28,10 @@ export function doLogin(credentials) {
 
           } else if (user.res) dispatch(loginError(user.description))
 
-
         } else {
           // If login was successful, set the token in local storage
-          localStorage.setItem("current_user", JSON.stringify(user))
+          sessionUtils.setData(JSON.stringify(user))
+          //localStorage.setItem("current_user", JSON.stringify(user))
 
           // Dispatch the success action
           dispatch(receiveLogin(user))
@@ -42,7 +43,6 @@ export function doLogin(credentials) {
 
 export function logoutUser() {
   return dispatch => {
-    localStorage.removeItem("id_token")
     dispatch(doLogout())
   }
 }

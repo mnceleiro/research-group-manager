@@ -23,9 +23,11 @@ class SecuredAuthenticator @Inject() (userRepo: UserRepository) extends Controll
           Future.successful(Results.Unauthorized("Invalid credential"))
         } { payload =>
           val id = Json.parse(payload).\("userId").as[Long]
-
-          userRepo.get(id).flatMap(us => {
-            block(UserRequest(us.get, request))
+          val theUser = userRepo.get(id)
+          
+          theUser.flatMap(us => {
+            if (us == None) Future.successful(Results.Unauthorized("Invalid credential"))
+            else block(UserRequest(us.get, request))
           })
         }
       } else {

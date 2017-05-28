@@ -65,3 +65,17 @@ object AuthorOfCongressVO {
 	implicit val authorOfCongressReads = Json.reads[AuthorOfCongressVO]
 }
 
+object AuthorOfBookVO {
+  val authorMapping: Mapping[AuthorOfBookVO] = mapping(
+    "id" -> longNumber,
+    "email" -> text,
+    "signature" -> text,
+    "researcherId" -> optional(longNumber),
+    "res" -> optional(ResearcherVO.researcherVOMapping)
+  )(AuthorOfBookVO.apply)(x => Some(x.id, x.email, x.signature, x.researcherId, x.res))
+
+  implicit val authorForm: Form[AuthorOfBookVO] = Form(authorMapping)
+	implicit val authorOfBookWrites = Json.writes[AuthorOfBookVO]
+	implicit val authorOfBookReads = Json.reads[AuthorOfBookVO]
+}
+

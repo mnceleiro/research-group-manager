@@ -9,7 +9,7 @@ import play.api.data.Mapping
 
 case class Project(
     id: Long, code: String, title: String, 
-    public: Boolean, startDate: String, endDate: String, budget: Long, 
+    public: Boolean, startDate: Option[String], endDate: Option[String], budget: Option[Long], 
     researcherCount: Option[Long]
 ) extends BaseEntity
 

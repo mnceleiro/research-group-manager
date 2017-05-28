@@ -10,6 +10,12 @@ import ProjectDetail from "./components/project/ProjectDetail"
 import CongressTable from "./components/congress/CongressTable"
 import CongressDetail from "./components/congress/CongressDetail"
 
+import BookTable from "./components/book/BookTable"
+import BookDetail from "./components/book/BookDetail"
+
+import AuthorTable from "./components/author/AuthorTable"
+import AuthorDetail from "./components/author/AuthorDetail"
+
 const createRoutes = store => ( // eslint-disable-line no-unused-vars
   <Route path="/">
     <Route path="/researchers">
@@ -26,6 +32,16 @@ const createRoutes = store => ( // eslint-disable-line no-unused-vars
       <IndexRoute component={CongressTable} />
       <Route path="/congresses/new" component={CongressDetail} />
       <Route path="/congresses/edit/:key" component={CongressDetail} />
+    </Route>
+    <Route path="/books">
+      <IndexRoute component={BookTable} />
+      <Route path="/books/new" component={BookDetail} />
+      <Route path="/books/edit/:key" component={BookDetail} />
+    </Route>
+    <Route path="/authors">
+      <IndexRoute component={AuthorTable} />
+      <Route path="/authors/new" component={AuthorDetail} />
+      <Route path="/authors/edit/:key" component={AuthorDetail} />
     </Route>
   </Route>
 )

@@ -192,6 +192,7 @@ class ProjectDetail extends React.Component {
         project = {}
         project.authors = []
       }
+      
       return (
         <div className="project-form">
           <legend>

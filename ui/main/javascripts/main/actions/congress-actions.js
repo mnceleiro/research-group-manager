@@ -3,15 +3,18 @@ import { sessionUtils } from "../utils/SessionUtils"
 
 export function fetchCongresses() {
   return function (dispatch) {
-    dispatch(requestCongresss())
-    // return apiGet("congresses/all", receiveCongresss => { dispatch(receiveCongresss) })
+    dispatch(requestCongresses())
+    // return apiGet("congresses/all", receiveCongresses => { dispatch(receiveCongresses) })
     var request = new Request("congresses/all", {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
       })
     })
     return fetch(request)
-      .then(resp => { return resp.json() })
+      .then(resp => {
+        if (resp.status === 401) sessionUtils.logout()
+        else return resp.json()
+      })
       .then(congressesJson => {
         dispatch(receiveCongresses(congressesJson))
       })
@@ -119,7 +122,7 @@ export function deleteCongress(r) {
 }
 
 /* Obtener investigador/es */
-function requestCongresss() {
+function requestCongresses() {
   return {
     type: types.REQUEST_CONGRESSES,
   }
@@ -132,18 +135,18 @@ function requestCongressById(id) {
   }
 }
 
-export function receiveCongresses(json) {
-  return {
-    type: types.RECEIVE_CONGRESSES,
-    congresses: json,
-    receivedAt: Date.now()
-  }
-}
-
 function receiveCongress(json) {
   return {
     type: types.RECEIVE_CONGRESS,
     congress: json,
+    receivedAt: Date.now()
+  }
+}
+
+export function receiveCongresses(json) {
+  return {
+    type: types.RECEIVE_CONGRESSES,
+    congresses: json,
     receivedAt: Date.now()
   }
 }
