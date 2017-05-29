@@ -13,30 +13,6 @@ import models.entities.Congress
 import vos.CongressVO
 
 class CongressControllerSpec extends AcceptanceSpec[Congress] with BeforeAndAfter {
-  var tokenString: String = null
-  var fakeTextHeaders: FakeHeaders = null
-  var fakeJsonHeaders: FakeHeaders = null
-
-  before {
-    val resp = route(app, FakeRequest(
-      POST, "/users/login",
-      FakeHeaders(Seq("content-type" -> "application/json")),
-      Json.parse("""{"email":"mnceleiro@esei.uvigo.es", "password":"1234"}"""))).get
-
-    this.tokenString = "Bearer " + Json.parse(contentAsString(resp)).as[JsObject].\("token").get.as[String]
-
-    this.fakeTextHeaders = FakeHeaders(Seq(
-      ("content-type" -> "text/plain"),
-      ("Authorization", this.tokenString)))
-
-    this.fakeJsonHeaders = FakeHeaders(Seq(
-      ("content-type" -> "application/json"),
-      ("Authorization", this.tokenString)))
-  }
-
-  after {
-
-  }
 
   "Congress controller" should {
 

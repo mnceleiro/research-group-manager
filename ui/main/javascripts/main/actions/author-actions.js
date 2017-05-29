@@ -1,12 +1,13 @@
 import * as types from "../constants/actionTypes"
 
 import { sessionUtils } from "../utils/SessionUtils"
+import { BASE_URL } from "../constants/config"
 
 export function fetchAuthors() {
   return function (dispatch) {
     dispatch(requestAuthors())
 
-    var request = new Request("../../authors/all", {
+    var request = new Request(BASE_URL + "authors/all", {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
       })
@@ -37,7 +38,7 @@ export function fetchAuthorById(id) {
   return function (dispatch) {
     dispatch(requestAuthorById())
 
-    var request = new Request(`../../authors/with-entities/id/${id}`, {
+    var request = new Request(`${BASE_URL}authors/with-entities/id/${id}`, {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
       })
@@ -69,7 +70,7 @@ export function addAuthor(r) {
   return function (dispatch) {
     dispatch(requestAddAuthor())
 
-    var request = new Request("../../authors/add", {
+    var request = new Request(BASE_URL + "authors/add", {
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: sessionUtils.getAuthString()
@@ -119,7 +120,7 @@ export function updateAuthor(r) {
   return function (dispatch) {
     dispatch(requestUpdateAuthor())
 
-    var request = new Request(`../../authors/update/${r.id}`, {
+    var request = new Request(`${BASE_URL}/authors/update/${r.id}`, {
       headers: new Headers({
         "Content-Type": "application/json",
         "Authorization": sessionUtils.getAuthString()
@@ -168,7 +169,7 @@ export function deleteAuthor(r) {
   return function(dispatch) {
     dispatch(requestDeleteAuthor())
 
-    var request = new Request("../delete/" + r.id, {
+    var request = new Request(BASE_URL + "authors/delete/" + r.id, {
       headers: new Headers({
         "Content-Type": "application/json",
         "Authorization": sessionUtils.getAuthString()

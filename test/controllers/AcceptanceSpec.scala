@@ -2,17 +2,23 @@ package controllers
 
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.OneAppPerSuite
-import play.api.libs.json.Json
 import models.entities.BaseEntity
 import org.scalatest.BeforeAndAfterAll
+import org.scalatest.BeforeAndAfter
 import play.api.db.evolutions.Evolutions
 import play.api.db.DBApi
+import play.api.test._
 
 import play.api.db.Database
-import play.api.db.evolutions.{DatabaseEvolutions, EvolutionsReader, ThisClassLoaderEvolutionsReader}
+import play.api.test.Helpers._
+import play.api.libs.json._
 
-trait AcceptanceSpec[T] extends PlaySpec with OneAppPerSuite with BeforeAndAfterAll {
+trait AcceptanceSpec[T] extends PlaySpec with OneAppPerSuite with BeforeAndAfterAll with BeforeAndAfter {
   val dbApi = app.injector.instanceOf[DBApi]
+  
+  var tokenString: String = null
+  var fakeTextHeaders: FakeHeaders = null
+  var fakeJsonHeaders: FakeHeaders = null
     
   override def beforeAll = {
     Evolutions.cleanupEvolutions(dbApi.database("default"))
@@ -21,5 +27,26 @@ trait AcceptanceSpec[T] extends PlaySpec with OneAppPerSuite with BeforeAndAfter
   
   override def afterAll = {
 //    Evolutions.cleanupEvolutions(dbApi.database("test"))
+  }
+  
+    before {
+    val resp = route(app, FakeRequest(
+      POST, "/users/login",
+      FakeHeaders(Seq("content-type" -> "application/json")),
+      Json.parse("""{"email":"mnceleiro@esei.uvigo.es", "password":"1234"}"""))).get
+
+    this.tokenString = "Bearer " + Json.parse(contentAsString(resp)).as[JsObject].\("token").get.as[String]
+
+    this.fakeTextHeaders = FakeHeaders(Seq(
+      ("content-type" -> "text/plain"),
+      ("Authorization", this.tokenString)))
+
+    this.fakeJsonHeaders = FakeHeaders(Seq(
+      ("content-type" -> "application/json"),
+      ("Authorization", this.tokenString)))
+  }
+
+  after {
+
   }
 }

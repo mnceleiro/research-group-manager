@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react"
+import React, {Component } from "react"
+import PropTypes from "prop-types"
 import { Router } from "react-router"
 import { connect } from "react-redux"
 
@@ -22,7 +23,7 @@ class App extends Component {
   }
 
   render() {
-    let {store, history, isAuthenticated, errorMessage, logoutUser } = this.props
+    let {store, history, isAuthenticated, errorMessage } = this.props
 
     // return (
     //   <div>

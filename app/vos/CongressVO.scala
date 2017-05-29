@@ -9,7 +9,7 @@ import models.entities.Congress
 import models.entities.AuthorCongress
 
 case class CongressVO(id: Long, title: String, name: String, place: String, country: String, 
-    start: Option[String], end: Option[String], international: Boolean, typeId: Long, statusId: Long, authors: Seq[AuthorOfCongressVO])
+    startDate: Option[String], endDate: Option[String], international: Boolean, typeId: Long, statusId: Long, authors: Seq[AuthorOfCongressVO])
 
 object CongressVO {
 
@@ -18,11 +18,11 @@ object CongressVO {
   implicit var pFormatVO = Json.format[Author]
   
   def toVO(c: Congress): CongressVO = {
-    return CongressVO(c.id, c.title, c.name, c.place, c.country, c.start, c.end, c.international, c.typeId, c.statusId, Seq())
+    return CongressVO(c.id, c.title, c.name, c.place, c.country, c.startDate, c.endDate, c.international, c.typeId, c.statusId, Seq())
   }
   
   def fromVO(c: CongressVO): Congress = {
-    return Congress(c.id, c.title, c.name, c.place, c.country, c.start, c.end, c.international, c.typeId, c.statusId)
+    return Congress(c.id, c.title, c.name, c.place, c.country, c.startDate, c.endDate, c.international, c.typeId, c.statusId)
   }
   
   def toCongressVOWithAuthors(data: Seq[(Congress, Option[AuthorCongress], Option[Author])]): Option[CongressVO] = {
@@ -31,10 +31,10 @@ object CongressVO {
     if (data.length == 0) return None
     else if (data.length == 1 && data.head._2.isEmpty) {
       val p = data.head._1
-      Some(CongressVO(p.id, p.title, p.name, p.place, p.country, p.start, p.end, p.international, p.typeId, p.statusId, Seq()))
+      Some(CongressVO(p.id, p.title, p.name, p.place, p.country, p.startDate, p.endDate, p.international, p.typeId, p.statusId, Seq()))
       
     } else {
-      Some(CongressVO(p.id, p.title, p.name, p.place, p.country, p.start, p.end, p.international, p.typeId, p.statusId, data.map(t => {
+      Some(CongressVO(p.id, p.title, p.name, p.place, p.country, p.startDate, p.endDate, p.international, p.typeId, p.statusId, data.map(t => {
         val mid = t._2.get
         val a = t._3.get
         AuthorOfCongressVO(a.id, a.email, a.signature, a.researcherId, None)
@@ -65,11 +65,11 @@ object CongressVO {
       "name" -> text,
       "place" -> text,
       "country" -> text,
-      "start" -> optional(text),
-      "end" -> optional(text),
+      "startDate" -> optional(text),
+      "endDate" -> optional(text),
       "international" -> boolean,
       "typeId" -> longNumber,
       "statusId" -> longNumber,
       "authors" -> seq(AuthorOfCongressVO.authorMapping)
-    )(CongressVO.apply)(x => Some(x.id, x.title, x.name, x.place, x.country, x.start, x.end, x.international, x.typeId, x.statusId, x.authors)))
+    )(CongressVO.apply)(x => Some(x.id, x.title, x.name, x.place, x.country, x.startDate, x.endDate, x.international, x.typeId, x.statusId, x.authors)))
 }

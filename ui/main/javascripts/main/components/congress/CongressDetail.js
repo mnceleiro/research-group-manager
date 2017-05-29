@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { browserHistory } from "react-router"
 import { connect } from "react-redux"
 import { Field, reduxForm } from "redux-form"
@@ -87,8 +88,8 @@ class CongressDetail extends Component {
         "name": congress.name,
         "place": congress.place,
         "country": congress.country,
-        "start": congress.start,
-        "end": congress.end,
+        "startDate": congress.startDate,
+        "endDate": congress.endDate,
         "international": congress.international,
         "typeId": {},
         "statusId": {}
@@ -99,6 +100,7 @@ class CongressDetail extends Component {
   }
 
   onSubmit(congress) {
+    if (congress.international === "") congress.international = false
     if (this.isUpdate()) {
       let toSend = Object.assign({}, congress, { id: this.props.params.key, authors: this.state.authors, typeId: this.state.selectedType, statusId: this.state.selectedState })
       this.props.updateCongress(toSend)
@@ -198,8 +200,8 @@ class CongressDetail extends Component {
               <Field component={InputRow} type="text" label="Nombre" name="name" />
               <Field component={InputRow} type="text" label="Lugar" name="place" />
               <Field component={InputRow} type="text" label="País" name="country" />
-              <Field component={RGMDefaultDatePicker} type="text" label="Fecha de inicio" name="start" />
-              <Field component={RGMDefaultDatePicker} type="text" label="Fecha de fin" name="end" />
+              <Field component={RGMDefaultDatePicker} type="text" label="Fecha de inicio" name="startDate" />
+              <Field component={RGMDefaultDatePicker} type="text" label="Fecha de fin" name="endDate" />
               <Field component={RGMDefaultSelect} onChange={this.onStateChange.bind(this)} dataSelected={stateValue} selectableData={publicationStates} type="select" label="Estado" name="status" />
               <Field component={RGMDefaultSelect} onChange={this.onTypeChange.bind(this)} dataSelected={typeValue} selectableData={congressTypes} type="select" label="Tipo" name="type" />
               <div className="form-group">

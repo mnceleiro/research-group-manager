@@ -1,3 +1,5 @@
+import DateUtils from "../../utils/DateUtils"
+
 export const validate = formProps => {
   const errors = {}
 
@@ -9,13 +11,26 @@ export const validate = formProps => {
     errors.title = "Por favor, introduzca el título"
   }
 
-  // if (!formProps.startDate) {
-  //   errors.email = "Por favor, introduzca una dirección de correo"
+  // if (formProps.startDate) {
+  //   debugger
+  //   if (moment(formProps.startDate, "DD/MM/YYYY").toDate() instanceof Date) {
+  //     errors.startDate = "Por favor, introduzca una fecha valida"
+  //   }
   // }
-  //
-  // if (!formProps.endDate) {
-  //   errors.email = "El texto introducido no es un email."
-  // }
+  if (formProps.startDate && !DateUtils.isValid(formProps.startDate)) {
+    errors.startDate = "Por favor, introduzca una fecha valida."
+  }
+
+  if (formProps.endDate && !DateUtils.isValid(formProps.endDate)) {
+    errors.endDate = "La fecha introducida no es válida."
+  }
+
+  if (formProps.startDate && formProps.endDate) {
+    if (DateUtils.greaterThan(formProps.startDate, formProps.endDate)) {
+      errors.startDate = "La fecha de inicio no puede ser superior a la de fin."
+      errors.endDate = "La fecha de inicio no puede ser superior a la de fin."
+    }
+  }
 
   // if (!formProps.budget) {
   //   errors.budget = "Por favor, introduzca el presupuesto."

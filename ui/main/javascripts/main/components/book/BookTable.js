@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { Link } from "react-router"
 import { connect } from "react-redux"
 
@@ -51,15 +52,15 @@ class BookTable extends Component {
 }
 
 BookTable.propTypes = {
-  books: React.PropTypes.array,
-  dispatch: React.PropTypes.func,
-  onBookEdit: React.PropTypes.func,
-  getAllBooks: React.PropTypes.func,
+  books: PropTypes.array,
+  dispatch: PropTypes.func,
+  onBookEdit: PropTypes.func,
+  getAllBooks: PropTypes.func,
 
-  location: React.PropTypes.object,
-  table: React.PropTypes.object,
+  location: PropTypes.object,
+  table: PropTypes.object,
 
-  isFetching: React.PropTypes.bool
+  isFetching: PropTypes.bool
 }
 
 let mapStateToProps = store => {

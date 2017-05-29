@@ -1,8 +1,9 @@
-import React from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import DatePicker from "react-datepicker"
 import moment from "moment"
 
-export class RGMDefaultDatePicker extends React.Component {
+export class RGMDefaultDatePicker extends Component {
   constructor(props) {
     super(props)
 
@@ -11,6 +12,7 @@ export class RGMDefaultDatePicker extends React.Component {
 
   handleChange(date) {
     if (date) this.props.input.onChange(moment(date).format("DD/MM/YYYY"))
+    else this.props.input.onChange("")
   }
 
   render() {
@@ -29,10 +31,11 @@ export class RGMDefaultDatePicker extends React.Component {
       <div className="form-group">
         <label className="control-label col-xs-3 col-md-2" htmlFor={field.input.name}>{field.label}:</label>
         <div className="col-xs-9 col-md-9">
-          <DatePicker
+          <DatePicker {...field.input}
             id={field.name}
             name={field.input.name}
             placeholderText={field.label}
+            isClearable={true}
             dateFormat="DD/MM/YYYY"
             locale="es-ES"
             className="form-control"
@@ -47,5 +50,5 @@ export class RGMDefaultDatePicker extends React.Component {
 }
 
 RGMDefaultDatePicker.propTypes = {
-  input: React.PropTypes.object
+  input: PropTypes.object
 }

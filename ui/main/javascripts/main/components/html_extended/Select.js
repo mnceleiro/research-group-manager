@@ -1,7 +1,8 @@
-import React from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import Select from "react-select"
 
-export class RGMDefaultSelect extends React.Component {
+export class RGMDefaultSelect extends Component {
   constructor(props) {
     super(props)
 
@@ -31,14 +32,12 @@ export class RGMDefaultSelect extends React.Component {
 
   render() {
 
-    let { input, label, name, dataSelected } = this.props
+    let { input, label, name, dataSelected, clearable } = this.props
 
     const labelWidth = this.props.labelWidth || 2
     const inputWidth = this.props.inputWidth || 9
-    const nullable = this.props.nullable || false
-    const clearable = this.props.clearable || false
 
-    if (!dataSelected && !nullable) return (<div></div>)
+    if (!dataSelected && !clearable) return (<div></div>)
     else {
       let currentValue = dataSelected ? { "value": dataSelected.id, "label": dataSelected.description } : null
       return (
@@ -48,7 +47,7 @@ export class RGMDefaultSelect extends React.Component {
             <Select {...input}
               id={name}
               options={this.state.data}
-              clearable={clearable}
+              clearable={clearable || false}
               value={currentValue}
             />
           </div>
@@ -59,17 +58,16 @@ export class RGMDefaultSelect extends React.Component {
 }
 
 RGMDefaultSelect.propTypes = {
-  input: React.PropTypes.object,
-  selectableData: React.PropTypes.array,
-  dataSelected: React.PropTypes.object,
-  label: React.PropTypes.string,
-  name: React.PropTypes.string,
-  nullable: React.PropTypes.bool,
-  clearable: React.PropTypes.bool,
+  input: PropTypes.object,
+  selectableData: PropTypes.array,
+  dataSelected: PropTypes.object,
+  label: PropTypes.string,
+  name: PropTypes.string,
+  clearable: PropTypes.bool,
 
-  formClass: React.PropTypes.string,
-  labelWidth: React.PropTypes.string,
-  inputWidth: React.PropTypes.string
+  formClass: PropTypes.string,
+  labelWidth: PropTypes.string,
+  inputWidth: PropTypes.string
 }
 
 

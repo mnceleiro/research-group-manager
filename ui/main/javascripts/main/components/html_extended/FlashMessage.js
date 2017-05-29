@@ -1,4 +1,5 @@
 import React, {Component} from "react"
+import PropTypes from "prop-types"
 import {connect} from "react-redux"
 
 class FlashMessage extends Component{
@@ -20,9 +21,9 @@ class FlashMessage extends Component{
 }
 
 FlashMessage.propTypes = {
-  flashMessage: React.PropTypes.object,
-  message: React.PropTypes.string,
-  className: React.PropTypes.string
+  flashMessage: PropTypes.object,
+  message: PropTypes.string,
+  className: PropTypes.string
 }
 
 const mapStateToProps = (flashMessage) => {

@@ -1,4 +1,5 @@
-import React from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { browserHistory } from "react-router"
 import { connect } from "react-redux"
 import { Field, reduxForm } from "redux-form"
@@ -17,7 +18,7 @@ import RGMAuthorsTable from "../app_generic/RGMAuthorsTable"
 
 import { validate } from "./ProjectValidation"
 
-class ProjectDetail extends React.Component {
+class ProjectDetail extends Component {
   constructor(props) {
     super(props)
 
@@ -192,7 +193,7 @@ class ProjectDetail extends React.Component {
         project = {}
         project.authors = []
       }
-      
+
       return (
         <div className="project-form">
           <legend>
@@ -272,33 +273,34 @@ class ProjectDetail extends React.Component {
 // }
 
 ProjectDetail.propTypes = {
-  project: React.PropTypes.object,
-  roles: React.PropTypes.array,
-  researchers: React.PropTypes.array,
-  authors: React.PropTypes.array,
-  params: React.PropTypes.object,
-  dispatch: React.PropTypes.func,
-  initialize: React.PropTypes.func,
-  errorHappened: React.PropTypes.string,
-  isFetching: React.PropTypes.bool,
+  project: PropTypes.object,
+  roles: PropTypes.array,
+  researchers: PropTypes.array,
+  authors: PropTypes.array,
+  params: PropTypes.object,
+  dispatch: PropTypes.func,
+  initialize: PropTypes.func,
+  errorHappened: PropTypes.string,
+  success: PropTypes.string,
+  isFetching: PropTypes.bool,
 
-  activeProject: React.PropTypes.object,
-  activeAuthor: React.PropTypes.object,
+  activeProject: PropTypes.object,
+  activeAuthor: PropTypes.object,
 
-  fetchProjectById: React.PropTypes.func,
-  addProject: React.PropTypes.func,
-  updateProject: React.PropTypes.func,
-  deleteProject: React.PropTypes.func,
-  handleSubmit: React.PropTypes.func,
+  fetchProjectById: PropTypes.func,
+  addProject: PropTypes.func,
+  updateProject: PropTypes.func,
+  deleteProject: PropTypes.func,
+  handleSubmit: PropTypes.func,
 
-  fetchAuthors: React.PropTypes.func,
-  fetchRoles: React.PropTypes.func,
-  fetchResearchers: React.PropTypes.func,
+  fetchAuthors: PropTypes.func,
+  fetchRoles: PropTypes.func,
+  fetchResearchers: PropTypes.func,
 
   // Funcioens de edicion
-  // addAuthorToCurrentProject: React.PropTypes.func,
-  // editAuthorFromProject: React.PropTypes.func,
-  // deleteAuthorFromProject: React.PropTypes.func
+  // addAuthorToCurrentProject: PropTypes.func,
+  // editAuthorFromProject: PropTypes.func,
+  // deleteAuthorFromProject: PropTypes.func
 }
 
 let mapStateToProps = store => {

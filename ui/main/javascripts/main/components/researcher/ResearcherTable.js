@@ -1,4 +1,5 @@
-import React from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { Link } from "react-router"
 import { connect } from "react-redux"
 
@@ -6,7 +7,7 @@ import ResearcherList from "./ResearcherList"
 import FlashMessage from "../html_extended/FlashMessage"
 import { fetchResearchers, createResearcher, editResearcher } from "../../actions/researcher-actions"
 
-class ResearcherTable extends React.Component {
+class ResearcherTable extends Component {
 
   componentWillMount() {
     this.props.getAllResearchers()
@@ -50,12 +51,12 @@ class ResearcherTable extends React.Component {
 }
 
 ResearcherTable.propTypes = {
-  researchers: React.PropTypes.array,
-  dispatch: React.PropTypes.func,
-  onResearcherEdit: React.PropTypes.func,
-  getAllResearchers: React.PropTypes.func,
+  researchers: PropTypes.array,
+  dispatch: PropTypes.func,
+  onResearcherEdit: PropTypes.func,
+  getAllResearchers: PropTypes.func,
 
-  location: React.PropTypes.object
+  location: PropTypes.object
 }
 
 let mapStateToProps = store => {

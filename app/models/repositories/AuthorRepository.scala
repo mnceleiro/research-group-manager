@@ -69,31 +69,18 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
     dbConfig.db.run(authors.filter(_.id === id).result.headOption)
   }
   
-  def getComplete(id: Long): Future[Seq[(Author, Option[Researcher], Option[Congress], Option[Project], Option[Book])]] = {
-//    val applicativeJoin = for {
-//      author   <- authors.filter(_.id === id) joinLeft researchers on (_.resId === _.id)
-//      
+  def getComplete(id: Long): Future[Option[(Author, Option[Researcher])]] = {
+    val join = for {
+      (x)   <- (authors.filter(_.id === id) joinLeft researchers on (_.resId === _.id)).result.headOption
+      
 //      congress   <- authorsCongresses.filter(_.authorId === id) joinLeft congresses on (_.congressId === _.id)
 //      project    <- authorsProjects.filter(_.authorId === id) joinLeft projects on (_.projectId === _.id)
 //      book       <- authorsBooks.filter(_.authorId === id) joinLeft books on (_.bookId === _.id)
-//      
-//    } yield (author._1, author._2, congress._2, project._2, book._2)
-    
-    val applicativeJoin = for {
-      author   <- authors.filter(_.id === id) joinLeft researchers on (_.resId === _.id)
       
-      congress   <- authorsCongresses.filter(_.authorId === id) joinLeft congresses on (_.congressId === _.id)
-      project    <- authorsProjects.filter(_.authorId === id) joinLeft projects on (_.projectId === _.id)
-      book       <- authorsBooks.filter(_.authorId === id) joinLeft books on (_.bookId === _.id)
-      
-    } yield (author._1, author._2, congress._2, project._2, book._2)
-	  
-    val executeJoin = for {
-      tuples  <- applicativeJoin.result
-    } yield (tuples)
-    
+    } yield (x.map(x => (x._1, x._2)))
+
     val mappedQuery = for {
-      tuples <- dbConfig.db.run(executeJoin).map(x => x.map(y => (y._1, y._2, y._3, y._4, y._5)))
+      tuples <- dbConfig.db.run(join).map(x => x.map(y => (y._1, y._2)))
     } yield (tuples)
     
     return mappedQuery
@@ -101,6 +88,14 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
 
   def listAll: Future[Seq[Author]] = {
     dbConfig.db.run(authors.result)
+  }
+  
+  def listAllComplete: Future[Seq[(Author, Option[Researcher])]] = {
+    val join = (for {
+      x <- authors joinLeft researchers on (_.resId === _.id)
+    } yield ((x._1, x._2))).result
+    
+    return dbConfig.db.run(join)
   }
 
 }

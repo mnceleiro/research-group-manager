@@ -13,7 +13,7 @@ const initialState = {
   lastUpdated: 1439478405547,
   table: {
     headers: ["Congreso", "Título", "Lugar", "País", "Inicio", "Fin"],
-    fields: ["title", "name", "place", "country", "start", "end"],
+    fields: ["title", "name", "place", "country", "startDate", "endDate"],
     editable: true
   }
 }

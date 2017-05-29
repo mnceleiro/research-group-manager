@@ -29,7 +29,7 @@ export const SidebarMenu = (data) => {
           </div>
           <div className="rgm-menu-section">
             <ul className="nav side-menu">
-              <li className="active"><a><i className="fa fa-calendar fa-2x"></i>Calendario</a></li>
+              <li className="active"><a href="/"><i className="fa fa-calendar fa-2x"></i>Calendario</a></li>
               <li><a href="/researchers"><i className="fa fa-users fa-2x"></i>Investigadores</a></li>
               <li><a href="/authors"><i className="fa fa-users fa-2x"></i>Autores</a></li>
               <li><a href="/projects"><i className="fa fa-home fa-2x"></i>Proyectos</a></li>

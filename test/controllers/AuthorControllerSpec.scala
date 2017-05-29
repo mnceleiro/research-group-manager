@@ -9,48 +9,47 @@ import play.api.test.Helpers._
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.json.Json
 import play.api.libs.json.JsObject
-import vos.ProjectVO
-import models.entities.Project
+import models.entities.Author
+import vos.AuthorVO
 
-class ProjectControllerSpec extends AcceptanceSpec[Project] {
+class AuthorControllerSpec extends AcceptanceSpec[Author] with BeforeAndAfter {
 
-  "Project controller" should {
+  "Author controller" should {
 
-    "return 3 projects" in {
+    "return 6 authors" in {
       val resp = route(app, FakeRequest(
         GET,
-        "/projects/all",
+        "/authors/all",
         fakeJsonHeaders,
         ""
       )).get
 
       status(resp) mustBe OK
       contentType(resp) mustBe Some("application/json")
-      val projectList = Json.parse(contentAsString(resp)).validate[List[ProjectVO]].get
-      projectList.length mustBe 3
+      val list = Json.parse(contentAsString(resp)).validate[List[AuthorVO]].get
+      list.length mustBe 6
     }
 
-    "return first project with all the fields non-empty" in {
-      val resp = route(app, FakeRequest(GET, "/projects/with-authors/id/1", fakeJsonHeaders, "")).get
+    "return first author with all the fields form valid" in {
+      val resp = route(app, FakeRequest(GET, "/authors/with-entities/id/1", fakeJsonHeaders, "")).get
       status(resp) mustBe OK
       contentType(resp) mustBe Some("application/json")
 
-      val jsonRes = Json.parse(contentAsString(resp))
-      val bindForm = ProjectVO.projectVOForm.bind(jsonRes)
-      val res = jsonRes.validate[ProjectVO].get
+      val jsonData = Json.parse(contentAsString(resp))
+      val bindForm = AuthorVO.authorForm.bind(jsonData)
+      val data = jsonData.validate[AuthorVO].get
     }
 
-    "Insert new project and return a JSON valid response" in {
-      val newProject = ProjectVO(0, "1L442K", "Project 1", true, Option("08/10/2015"), Option("08/10/2016"), Option(100000), Option(4L), Seq()
-      )
+    "Insert new author and return a JSON valid response" in {
+      val element = AuthorVO(0, "email1@email.com", "Linus Torvals", None)
 
       val resp = route(
         app,
         FakeRequest(
           POST,
-          "/projects/add",
+          "/authors/add",
           fakeJsonHeaders,
-          Json.toJson(newProject))).get
+          Json.toJson(element))).get
 
       contentType(resp) mustBe Some("application/json")
       status(resp) mustBe OK
@@ -59,35 +58,34 @@ class ProjectControllerSpec extends AcceptanceSpec[Project] {
       assert(json.\("res").as[String] !== "error")
     }
 
-    "Deleting a project with an ID 3 will return a response OK" in {
+    "Deleting a author with an ID 7 will return a response OK" in {
       val resp = route(
         app,
         FakeRequest(
           DELETE,
-          "/projects/delete/3",
+          "/authors/delete/7",
           fakeJsonHeaders,
           Json.toJson(""))).get
 
       contentType(resp) mustBe Some("application/json")
       status(resp) mustBe OK
-
       val json = Json.parse(contentAsString(resp))
       val resCode = json.as[JsObject].\("res").get
       resCode.as[String] mustEqual "OK"
     }
 
-    "return 3 projects after the add and the delete" in {
+    "return 6 authors after the add and the delete" in {
       val resp = route(app, FakeRequest(
         GET,
-        "/projects/all",
+        "/authors/all",
         fakeJsonHeaders,
         "")).get
 
       status(resp) mustBe OK
       contentType(resp) mustBe Some("application/json")
       
-      val projectList = Json.parse(contentAsString(resp)).validate[List[ProjectVO]].get
-      projectList.length mustBe 3
+      val list = Json.parse(contentAsString(resp)).validate[List[AuthorVO]].get
+      list.length mustBe 6
     }
   }
 }

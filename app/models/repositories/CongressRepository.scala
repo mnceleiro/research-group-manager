@@ -14,14 +14,14 @@ class CongressTable(tag: Tag) extends Table[Congress](tag, "CONGRESS") {
   def name = column[String]("name")
   def place = column[String]("place")
   def country = column[String]("country")
-  def start = column[Option[String]]("start")
-  def end = column[Option[String]]("end")
+  def startDate = column[Option[String]]("start")
+  def endDate = column[Option[String]]("end")
   def international = column[Boolean]("international")
   
   def typeId = column[Long]("type")
   def statusId = column[Long]("status")
 
-  override def * = (id, title, name, place, country, start, end, international, typeId, statusId) <> ((Congress.apply _).tupled, Congress.unapply)
+  override def * = (id, title, name, place, country, startDate, endDate, international, typeId, statusId) <> ((Congress.apply _).tupled, Congress.unapply)
 }
 
 class CongressRepository @Inject() (dbConfigProvider: DatabaseConfigProvider) {

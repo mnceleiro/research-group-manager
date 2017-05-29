@@ -1,7 +1,6 @@
 import * as types from "../constants/actionTypes"
 
 import { sessionUtils } from "../utils/SessionUtils"
-
 import { BASE_URL } from "../constants/config"
 
 // alert(sessionUtils.getAuthString())
@@ -47,7 +46,7 @@ export function fetchResearcherById(id) {
   return function (dispatch) {
     dispatch(requestResearcherById())
 
-    var request = new Request(`../../researchers/id/${id}`, {
+    var request = new Request(`${BASE_URL}researchers/id/${id}`, {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
       })
@@ -67,13 +66,13 @@ export function addResearcher(r) {
   return function (dispatch) {
     dispatch(requestAddResearcher())
 
-    var request = new Request("../../researchers/add", {
+    var request = new Request(BASE_URL + "researchers/add", {
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: sessionUtils.getAuthString()
       })
     })
-    alert(JSON.stringify(r))
+
     return fetch(request, {
       method: "POST",
       body: JSON.stringify(r)
@@ -97,7 +96,7 @@ export function updateResearcher(r) {
   return function (dispatch) {
     dispatch(requestUpdateResearcher())
 
-    var request = new Request(`../../researchers/update/${r.id}`, {
+    var request = new Request(`${BASE_URL}researchers/update/${r.id}`, {
       headers: new Headers({
         "Content-Type": "application/json",
         "Authorization": sessionUtils.getAuthString()
@@ -126,7 +125,7 @@ export function deleteResearcher(r) {
   return function(dispatch) {
     dispatch(requestDeleteResearcher())
 
-    var request = new Request("../delete/" + r.id, {
+    var request = new Request(BASE_URL + "researchers/delete/" + r.id, {
       headers: new Headers({
         "Content-Type": "application/json",
         "Authorization": sessionUtils.getAuthString()

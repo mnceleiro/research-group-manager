@@ -1,11 +1,12 @@
 import * as types from "../constants/actionTypes"
 import { sessionUtils } from "../utils/SessionUtils"
+import { BASE_URL } from "../constants/config"
 
 export function fetchBooks() {
   return function (dispatch) {
     dispatch(requestBooks())
 
-    var request = new Request("books/all", {
+    var request = new Request(BASE_URL + "books/all", {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
       })
@@ -13,7 +14,7 @@ export function fetchBooks() {
     return fetch(request)
       .then(resp => {
         if (resp.status === 401) sessionUtils.logout()
-        else return resp.json() 
+        else return resp.json()
       })
       .then(json => {
         dispatch(receiveBooks(json))
@@ -25,7 +26,7 @@ export function fetchBookById(id) {
   return function (dispatch) {
     dispatch(requestBookById())
 
-    var request = new Request(`../../books/with-authors/id/${id}`, {
+    var request = new Request(`${BASE_URL}books/with-authors/id/${id}`, {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
       })
@@ -42,7 +43,7 @@ export function addBook(o) {
   return function (dispatch) {
     dispatch(requestAddBook())
 
-    var request = new Request("../../books/add", {
+    var request = new Request(BASE_URL + "books/add", {
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: sessionUtils.getAuthString()
@@ -72,7 +73,7 @@ export function updateBook(o) {
   return function (dispatch) {
     dispatch(requestUpdateBook())
 
-    var request = new Request(`../../books/update/${o.id}`, {
+    var request = new Request(`${BASE_URL}books/update/${o.id}`, {
       headers: new Headers({
         "Content-Type": "application/json",
         "Authorization": sessionUtils.getAuthString()
@@ -101,7 +102,7 @@ export function deleteBook(o) {
   return function(dispatch) {
     dispatch(requestDeleteBook())
 
-    var request = new Request("../delete/" + o.id, {
+    var request = new Request(BASE_URL + "books/delete/" + o.id, {
       headers: new Headers({
         "Content-Type": "application/json",
         "Authorization": sessionUtils.getAuthString()

@@ -1,12 +1,13 @@
 import * as types from "../constants/actionTypes"
 import { sessionUtils } from "../utils/SessionUtils"
+import { BASE_URL } from "../constants/config"
 
 export function fetchProjects() {
   return function (dispatch) {
     dispatch(requestProjects())
     // debugger
     // return apiGet("projects/all", receiveProjects => { dispatch(receiveProjects) })
-    var request = new Request("projects/all", {
+    var request = new Request(BASE_URL + "projects/all", {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
       })
@@ -14,7 +15,7 @@ export function fetchProjects() {
     return fetch(request)
       .then(resp => {
         if (resp.status === 401) sessionUtils.logout()
-        else return resp.json() 
+        else return resp.json()
       })
       .then(projectsJson => {
         dispatch(receiveProjects(projectsJson))
@@ -26,7 +27,7 @@ export function fetchProjectById(id) {
   return function (dispatch) {
     dispatch(requestProjectById())
 
-    var request = new Request(`../../projects/with-authors/id/${id}`, {
+    var request = new Request(`${BASE_URL}projects/with-authors/id/${id}`, {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
       })
@@ -43,7 +44,7 @@ export function addProject(r) {
   return function (dispatch) {
     dispatch(requestAddProject())
 
-    var request = new Request("../../projects/add", {
+    var request = new Request(BASE_URL + "projects/add", {
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: sessionUtils.getAuthString()
@@ -73,7 +74,7 @@ export function updateProject(r) {
   return function (dispatch) {
     dispatch(requestUpdateProject())
 
-    var request = new Request(`../../projects/update/${r.id}`, {
+    var request = new Request(`${BASE_URL}projects/update/${r.id}`, {
       headers: new Headers({
         "Content-Type": "application/json",
         "Authorization": sessionUtils.getAuthString()
@@ -102,7 +103,7 @@ export function deleteProject(r) {
   return function(dispatch) {
     dispatch(requestDeleteProject())
 
-    var request = new Request("../delete/" + r.id, {
+    var request = new Request(BASE_URL + "projects/delete/" + r.id, {
       headers: new Headers({
         "Content-Type": "application/json",
         "Authorization": sessionUtils.getAuthString()

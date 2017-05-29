@@ -1,7 +1,8 @@
-import React from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { Link } from "react-router"
 
-class ProjectRow extends React.Component {
+class ProjectRow extends Component {
   render() {
     return(
       <tr>
@@ -18,15 +19,15 @@ class ProjectRow extends React.Component {
 }
 
 ProjectRow.propTypes = {
-  id: React.PropTypes.number.isRequired,
-  title: React.PropTypes.string.isRequired,
-  code: React.PropTypes.string.isRequired,
-  startDate: React.PropTypes.string.isRequired,
-  endDate: React.PropTypes.string.isRequired,
-  budget: React.PropTypes.number.isRequired,
-  researcherCount: React.PropTypes.number,
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  code: PropTypes.string.isRequired,
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired,
+  budget: PropTypes.number.isRequired,
+  researcherCount: PropTypes.number,
 
-  onProjectEdit: React.PropTypes.func
+  onProjectEdit: PropTypes.func
 }
 
 export default ProjectRow

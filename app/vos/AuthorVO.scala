@@ -13,9 +13,25 @@ import models.entities.Author
 import play.api.libs.json.Json
 
 case class AuthorVO(
-    id: Long, email: String, signature: String, researcher: Option[Researcher], 
-    books: Option[Seq[Book]], journals: Option[Seq[Journal]], congresses: Option[Seq[Congress]], projects: Option[Seq[Project]]
+    id: Long, email: String, signature: String, researcher: Option[Researcher]
 )
+
+object AuthorVO {
+  def toVO(a: Author, r: Option[Researcher]): AuthorVO = {
+    AuthorVO(a.id, a.email, a.signature, r)
+  }
+  
+  val authorMapping: Mapping[AuthorVO] = mapping(
+    "id" -> longNumber,
+    "email" -> text,
+    "signature" -> text,
+    "researcher" -> optional(Researcher.researcherMapping) 
+  )(AuthorVO.apply)(x => Some(x.id, x.email, x.signature, x.researcher))
+  
+  implicit val authorReads = Json.reads[AuthorVO]
+  implicit val authorWrites = Json.writes[AuthorVO]
+  implicit val authorForm: Form[AuthorVO] = Form(authorMapping)
+}
 
 trait AuthorOfAbstractVO{
   val id: Long

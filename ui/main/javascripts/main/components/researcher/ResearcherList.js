@@ -1,7 +1,8 @@
-import React from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import ResearcherRow from "./ResearcherRow"
 
-class ResearcherList extends React.Component {
+class ResearcherList extends Component {
 
   render() {
     return (
@@ -38,8 +39,8 @@ class ResearcherList extends React.Component {
 }
 
 ResearcherList.propTypes = {
-  list: React.PropTypes.array.isRequired,
-  onResearcherEdit: React.PropTypes.func
+  list: PropTypes.array.isRequired,
+  onResearcherEdit: PropTypes.func
 }
 
 export default ResearcherList

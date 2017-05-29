@@ -11,7 +11,7 @@ import utils.JWTUtils
 import org.scalatest.BeforeAndAfter
 import models.entities.User
 
-class UserAuthenticationSpec extends AcceptanceSpec[Researcher] with BeforeAndAfter {
+class UserAuthenticationSpec extends AcceptanceSpec[Researcher] {
   implicit var resReads = Json.reads[Researcher]
   implicit var resWrites = Json.writes[Researcher]
   implicit var resFormat = Json.format[Researcher]
@@ -21,20 +21,6 @@ class UserAuthenticationSpec extends AcceptanceSpec[Researcher] with BeforeAndAf
   implicit var usFormat = Json.format[User]
   
   var token: String = null
-  
-  before {
-    val resp = route(app, FakeRequest(
-        POST, "/users/login", 
-        FakeHeaders(Seq("content-type" -> "application/json")), 
-        Json.parse("""{"email":"mnceleiro@esei.uvigo.es", "password":"1234"}"""))
-    ).get
-
-    this.token = Json.parse(contentAsString(resp)).as[JsObject].\("token").get.as[String]
-  }
-  
-  after {
-    
-  }
   
   "UserAuthentication" should {
     "authenticate with an user/password" in {

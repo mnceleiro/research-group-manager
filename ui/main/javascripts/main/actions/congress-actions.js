@@ -1,11 +1,12 @@
 import * as types from "../constants/actionTypes"
 import { sessionUtils } from "../utils/SessionUtils"
+import { BASE_URL } from "../constants/config"
 
 export function fetchCongresses() {
   return function (dispatch) {
     dispatch(requestCongresses())
     // return apiGet("congresses/all", receiveCongresses => { dispatch(receiveCongresses) })
-    var request = new Request("congresses/all", {
+    var request = new Request(BASE_URL + "congresses/all", {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
       })
@@ -25,7 +26,7 @@ export function fetchCongressById(id) {
   return function (dispatch) {
     dispatch(requestCongressById())
 
-    var request = new Request(`../../congresses/with-authors/id/${id}`, {
+    var request = new Request(`${BASE_URL}congresses/with-authors/id/${id}`, {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
       })
@@ -42,7 +43,7 @@ export function addCongress(r) {
   return function (dispatch) {
     dispatch(requestAddCongress())
 
-    var request = new Request("../../congresses/add", {
+    var request = new Request(BASE_URL + "congresses/add", {
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: sessionUtils.getAuthString()
@@ -72,7 +73,7 @@ export function updateCongress(r) {
   return function (dispatch) {
     dispatch(requestUpdateCongress())
 
-    var request = new Request(`../../congresses/update/${r.id}`, {
+    var request = new Request(`${BASE_URL}congresses/update/${r.id}`, {
       headers: new Headers({
         "Content-Type": "application/json",
         "Authorization": sessionUtils.getAuthString()
@@ -101,7 +102,7 @@ export function deleteCongress(r) {
   return function(dispatch) {
     dispatch(requestDeleteCongress())
 
-    var request = new Request("../delete/" + r.id, {
+    var request = new Request(BASE_URL + "delete/" + r.id, {
       headers: new Headers({
         "Content-Type": "application/json",
         "Authorization": sessionUtils.getAuthString()

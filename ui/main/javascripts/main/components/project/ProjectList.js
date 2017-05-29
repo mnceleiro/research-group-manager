@@ -1,7 +1,8 @@
-import React from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import ProjectRow from "./ProjectRow"
 
-class ProjectList extends React.Component {
+class ProjectList extends Component {
 
   render() {
     return (
@@ -39,8 +40,8 @@ class ProjectList extends React.Component {
 }
 
 ProjectList.propTypes = {
-  list: React.PropTypes.array.isRequired,
-  onProjectEdit: React.PropTypes.func
+  list: PropTypes.array.isRequired,
+  onProjectEdit: PropTypes.func
 }
 
 export default ProjectList

@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { Link } from "react-router"
 import { connect } from "react-redux"
 
@@ -51,15 +52,15 @@ class CongressTable extends Component {
 }
 
 CongressTable.propTypes = {
-  congresses: React.PropTypes.array,
-  dispatch: React.PropTypes.func,
-  onCongressEdit: React.PropTypes.func,
-  getAllCongresses: React.PropTypes.func,
+  congresses: PropTypes.array,
+  dispatch: PropTypes.func,
+  onCongressEdit: PropTypes.func,
+  getAllCongresses: PropTypes.func,
 
-  location: React.PropTypes.object,
-  table: React.PropTypes.object,
+  location: PropTypes.object,
+  table: PropTypes.object,
 
-  isFetching: React.PropTypes.bool
+  isFetching: PropTypes.bool
 }
 
 let mapStateToProps = store => {

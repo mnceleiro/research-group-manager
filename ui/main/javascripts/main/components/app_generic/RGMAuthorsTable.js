@@ -1,9 +1,10 @@
-import React, { PropTypes } from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import RGMInlineTable from "../app_generic/RGMInlineTable"
 
 import Select from "react-select"
 
-export default class RGMAuthorsTable extends React.Component {
+export default class RGMAuthorsTable extends Component {
   constructor(props) {
     super(props)
 

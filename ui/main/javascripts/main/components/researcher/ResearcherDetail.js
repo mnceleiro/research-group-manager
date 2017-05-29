@@ -1,4 +1,5 @@
-import React from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { browserHistory } from "react-router"
 import { connect } from "react-redux"
 import { Field, reduxForm } from "redux-form"
@@ -72,7 +73,7 @@ class ResearcherDetail extends React.Component {
     if (this.isUpdate()) {
       return (
         <div className="col-md-2">
-          <input type="button" id="btnRemoveResearcher" className="btn rgm-btn-default rgm-btn-lg" value="Eliminar investigador" onClick={this.handleRemove} />
+          <input type="button" id="btnRemoveResearcher" className="btn rgm-btn-default rgm-btn-lg" value="Eliminar Autor" onClick={this.handleRemove} />
         </div>
       )
     } else return ""
@@ -141,6 +142,10 @@ class ResearcherDetail extends React.Component {
       resId = this.props.params.key
       usId = this.props.params.key
     }
+    if (res.admin === "") res.admin = false
+    if (res.access === "") res.access = false
+
+
     // var id = !this.props.params.key ? 0 : this.props.params.key
     var password = !res.password ? null : res.password
 
@@ -180,19 +185,19 @@ class ResearcherDetail extends React.Component {
 }
 
 ResearcherDetail.propTypes = {
-  researcher: React.PropTypes.object,
-  params: React.PropTypes.object,
-  fetchResearcherById: React.PropTypes.func,
-  addResearcher: React.PropTypes.func,
-  updateResearcher: React.PropTypes.func,
-  deleteResearcher: React.PropTypes.func,
-  deletedResearcher: React.PropTypes.object,
-  handleSubmit: React.PropTypes.func,
-  activeResearcher: React.PropTypes.number,
-  dispatch: React.PropTypes.func,
-  initialize: React.PropTypes.func,
-  success: React.PropTypes.string,
-  errorHappened: React.PropTypes.string
+  researcher: PropTypes.object,
+  params: PropTypes.object,
+  fetchResearcherById: PropTypes.func,
+  addResearcher: PropTypes.func,
+  updateResearcher: PropTypes.func,
+  deleteResearcher: PropTypes.func,
+  deletedResearcher: PropTypes.object,
+  handleSubmit: PropTypes.func,
+  activeResearcher: PropTypes.number,
+  dispatch: PropTypes.func,
+  initialize: PropTypes.func,
+  success: PropTypes.string,
+  errorHappened: PropTypes.string
 }
 
 let mapStateToProps = store => {

@@ -27,6 +27,7 @@ class SecuredAuthenticator @Inject() (userRepo: UserRepository) extends Controll
           
           theUser.flatMap(us => {
             if (us == None) Future.successful(Results.Unauthorized("Invalid credential"))
+            else if (!us.get.access) Future.successful(Results.Unauthorized("Not authorized"))
             else block(UserRequest(us.get, request))
           })
         }

@@ -77,7 +77,15 @@ const webpackConfig = {
     }, {
       from: "node_modules/react-select/dist",
       to: "../lib/react-select"
-    }]),
+    }, {
+      from: "node_modules/react-big-calendar/lib/css/react-big-calendar.css",
+      to: "../lib/react-big-calendar"
+    }, {
+      from: "node_modules/pnotify/dist",
+      to: "../lib/pnotify"
+    }
+    
+    ]),
     new webpack.LoaderOptionsPlugin({
       options: {
         eslint: {

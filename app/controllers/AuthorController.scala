@@ -17,6 +17,7 @@ import models.repositories.AuthorRepository
 import vos.CongressVO
 import play.api.i18n.I18nSupport
 import play.api.i18n.MessagesApi
+import vos.AuthorVO
 
 class AuthorController @Inject() (
     repo: AuthorRepository,
@@ -27,6 +28,14 @@ class AuthorController @Inject() (
   def getAll = auth.JWTAuthentication.async {
     repo.listAll.map(cs => Ok(Json.toJson(cs)))
   }
+  
+  def getAllComplete = auth.JWTAuthentication.async {
+    repo.listAllComplete.map(cs => {
+      Ok(Json.toJson(
+        cs.map(x => AuthorVO.toVO(x._1, x._2))
+      ))
+    })
+  }
 
   def get(id: Long) = auth.JWTAuthentication.async {
     repo.get(id).map(c => 
@@ -36,8 +45,11 @@ class AuthorController @Inject() (
   
   def getComplete(id: Long) = auth.JWTAuthentication.async {
     repo.getComplete(id).map(t => {
-      println(t)
-      Ok(Json.toJson(""))
+      val author = t.map(x => {
+        AuthorVO.toVO(x._1, x._2)
+      }).headOption
+      
+      Ok(Json.toJson(author))
     })
   }
 

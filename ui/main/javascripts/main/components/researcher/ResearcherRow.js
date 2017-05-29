@@ -1,7 +1,8 @@
-import React from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { Link } from "react-router"
 
-class ResearcherRow extends React.Component {
+class ResearcherRow extends Component {
   render() {
     return(
       <tr>
@@ -17,14 +18,14 @@ class ResearcherRow extends React.Component {
 }
 
 ResearcherRow.propTypes = {
-  id: React.PropTypes.number.isRequired,
-  name: React.PropTypes.string.isRequired,
-  surname: React.PropTypes.string.isRequired,
-  email: React.PropTypes.string.isRequired,
-  address: React.PropTypes.string.isRequired,
-  phone: React.PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  surname: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
 
-  onResearcherEdit: React.PropTypes.func
+  onResearcherEdit: PropTypes.func
 }
 
 export default ResearcherRow

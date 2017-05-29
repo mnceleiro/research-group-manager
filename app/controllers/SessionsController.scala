@@ -26,8 +26,7 @@ class SessionsController @Inject() (userRepo: UserRepository, auth: SecuredAuthe
     userRepo.getByEmail((userData \ "email").as[String]).flatMap { dbUserOpt =>
       dbUserOpt match {
         case Some(dbUser) => {
-          val equals = Password.checkPassword(
-            (userData \ "password").as[String], dbUser.password.get)
+          val equals = Password.checkPassword((userData \ "password").as[String], dbUser.password.get)
 
           if (equals) {
             var toret = Json.obj(
@@ -39,10 +38,12 @@ class SessionsController @Inject() (userRepo: UserRepository, auth: SecuredAuthe
                 "admin" -> dbUser.admin,
                 "generated" -> Calendar.getInstance().getTime()))))
 
-            Future.successful(Ok(Json.stringify(toret)))
+            if (dbUser.access) Future.successful(Ok(Json.stringify(toret)))
+            else Future.successful(Ok(JsonMessage.resKO(JsString("Usuario sin acceso. Si quiere acceso a la página debe consultar con un administrador."))))
 
-          } else
+          } else {
             Future.successful(Ok(JsonMessage.resKO(JsString("Usuario o contraseña incorrectos"))))
+          }
         }
 
         case None => Future.successful(Ok(JsonMessage.resKO(JsString("Usuario o contraseña incorrectos"))))

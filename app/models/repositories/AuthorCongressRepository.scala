@@ -66,8 +66,8 @@ class AuthorCongressRepository @Inject()(dbConfigProvider: DatabaseConfigProvide
   def updateCongress(congress: Congress, aps: Seq[AuthorCongress], as: Seq[Author]) = {
     val query = (for {
       updateCongresses <- (congresses.filter(_.id === congress.id)
-          .map(c => (c.id, c.title, c.name, c.place, c.country, c.start, c.end, c.international, c.typeId, c.statusId))
-          .update((congress.id, congress.title, congress.name, congress.place, congress.country, congress.start, congress.end, congress.international, congress.typeId, congress.statusId)))
+          .map(c => (c.id, c.title, c.name, c.place, c.country, c.startDate, c.endDate, c.international, c.typeId, c.statusId))
+          .update((congress.id, congress.title, congress.name, congress.place, congress.country, congress.startDate, congress.endDate, congress.international, congress.typeId, congress.statusId)))
       deleteAps <- authorsCongresses.filter(_.congressId === congress.id).delete
       insertAps <- authorsCongresses.returning(authorsCongresses.map(_.id)).into((c, ide) => c.copy(id = ide)) ++= aps
       

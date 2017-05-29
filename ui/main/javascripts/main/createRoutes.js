@@ -16,11 +16,14 @@ import BookDetail from "./components/book/BookDetail"
 import AuthorTable from "./components/author/AuthorTable"
 import AuthorDetail from "./components/author/AuthorDetail"
 
+import Calendar from "./components/calendar/Calendar"
+
 const createRoutes = store => ( // eslint-disable-line no-unused-vars
   <Route path="/">
+    <IndexRoute component={Calendar} />
     <Route path="/researchers">
       <IndexRoute component={ResearcherTable} />
-      <Route path="/researchers/new" component={ResearcherDetail} />
+      <Route path="/researchers/new" component={ResearcherDetail} allowed={["admin"]} />
       <Route path="/researchers/edit/:key" component={ResearcherDetail} />
     </Route>
     <Route path="/projects">

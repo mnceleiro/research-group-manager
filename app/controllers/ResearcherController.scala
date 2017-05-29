@@ -59,9 +59,12 @@ class ResearcherController @Inject()(
   
   def update(id: Long) = auth.JWTAuthentication.async { implicit request =>
     ResearcherVO.researcherVOForm.bindFromRequest.fold(
-      errorForm => Future.successful(Ok(JsonMessage.resKO(errorForm.errorsAsJson))),
-      
+      errorForm => {
+        println(errorForm)
+        Future.successful(Ok(JsonMessage.resKO(errorForm.errorsAsJson)))
+      },
       data => {
+        if (id == 1 && (!data.access  || !data.admin)) Future.successful(BadRequest(JsonMessage.resKO("No está permitido eliminar los permisos de administración de este investigador.")))
         researcherRepo.update(ResearcherVO.toResearcherUser(data))
           .map(p => { Ok(JsonMessage.resOK(JsString("Investigador actualizado."))) })
           .recover{ case e => { Ok(JsonMessage.resKO(JsString(e.getMessage)))} }
@@ -70,7 +73,7 @@ class ResearcherController @Inject()(
   }
   
   def delete(id: Long) = auth.JWTAuthentication.async { implicit request =>
-    if (id == 1) Future.successful(BadRequest(JsonMessage.resKO("No está permitido eliminar el investigador administrador.")))
+    if (id == 1) Future.successful(BadRequest(JsonMessage.resKO("No está permitido eliminar este investigador. El primer investigador de la aplicación puede editarse, no elminarse.")))
     else researcherRepo.delete(id).map(x => Ok(JsonMessage.resOK("Investigador eliminado"))).recover { case e => Ok(JsonMessage.resKO(JsString(e.getMessage))) }
   }
 }

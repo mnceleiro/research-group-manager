@@ -1,4 +1,5 @@
-import React from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { Link } from "react-router"
 import { connect } from "react-redux"
 
@@ -8,7 +9,7 @@ import RGMDefaultTable from "../app_generic/RGMDefaultTable"
 import FlashMessage from "../html_extended/FlashMessage"
 import { fetchProjects, createProject, editProject } from "../../actions/project-actions"
 
-class ProjectTable extends React.Component {
+class ProjectTable extends Component {
   componentDidMount() {
     this.props.getAllProjects()
   }
@@ -68,14 +69,14 @@ class ProjectTable extends React.Component {
 }
 
 ProjectTable.propTypes = {
-  projects: React.PropTypes.array,
-  dispatch: React.PropTypes.func,
-  onProjectEdit: React.PropTypes.func,
-  getAllProjects: React.PropTypes.func,
+  projects: PropTypes.array,
+  dispatch: PropTypes.func,
+  onProjectEdit: PropTypes.func,
+  getAllProjects: PropTypes.func,
 
-  location: React.PropTypes.object,
-  table: React.PropTypes.object,
-  isFetching: React.PropTypes.bool
+  location: PropTypes.object,
+  table: PropTypes.object,
+  isFetching: PropTypes.bool
 }
 
 let mapStateToProps = store => {

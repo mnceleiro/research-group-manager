@@ -1,7 +1,8 @@
-import React from "react"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import Select from "react-select"
 
-export class AuthorModalForm extends React.Component {
+export class AuthorModalForm extends Component {
   constructor(props) {
     super(props)
 
@@ -125,11 +126,11 @@ export class AuthorModalForm extends React.Component {
 }
 
 AuthorModalForm.propTypes = {
-  author: React.PropTypes.object,
+  author: PropTypes.object,
 
-  roles: React.PropTypes.array,
-  researchers: React.PropTypes.array,
-  authors: React.PropTypes.array,
+  roles: PropTypes.array,
+  researchers: PropTypes.array,
+  authors: PropTypes.array,
 
-  onSaveAuthor: React.PropTypes.func
+  onSaveAuthor: PropTypes.func
 }

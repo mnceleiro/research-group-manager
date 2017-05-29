@@ -404,3 +404,25 @@ a.site-title:hover {
 
 // Margin && Padding
 .space-bottom-small { margin-bottom: 20px; }
+.space-bottom-medium { margin-bottom: 40px; }
+.space-left-small { margin-left: 20px; }
+
+// Display
+.show { display: block; }
+.hide { display: none; }
+
+.rbc-calendar {
+  min-height: 500px;
+  height: 500px;
+}
+
+.react-datepicker__close-icon::after {
+  top: 35% !important;
+}
+
+.rbc-agenda-view .rbc-header:nth-child(2) {
+  display: none;
+}
+.rbc-agenda-time-cell {
+  display: none;
+}
