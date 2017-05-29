@@ -1,6 +1,10 @@
 name := """Research Group Manager"""
-
 version := "1.0-SNAPSHOT"
+
+import com.typesafe.sbt.SbtNativePackager.autoImport.NativePackagerHelper._
+
+// with top level dir
+mappings in Universal ++= directory(baseDirectory.value / "public")
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
