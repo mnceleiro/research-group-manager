@@ -1,0 +1,29 @@
+//var webpack = require('webpack')
+//var WebpackShellPlugin = require('webpack-shell-plugin')
+//
+//var config = {
+//  entry: './ui/main/javascripts/__tests__/all-tests.js',
+//  output: {
+//    path: __dirname + "/ui/test/compiled",
+//    filename: "testBundle.js"
+//  },
+//  plugins: [
+//    new WebpackShellPlugin({
+//     onBuildExit: "jest testBundle.js"
+//    })
+//  ]
+//}
+//
+//module.exports = config
+
+//module.exports = function(config) {
+//  config.set({
+//    basePath: "./ui/main/javascripts/__tests__/all-tests.js",
+//    frameworks: ["jest"],
+//    browsers: ["Chrome", "Firefox"],
+//    webpack: "webpack.config.js",
+//    singleRun: true,
+//    plugins: [
+//    ]
+//  });
+//};

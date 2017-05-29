@@ -8,7 +8,7 @@ import { fetchResearcherById, addResearcher, updateResearcher, deleteResearcher 
 import { InputRow } from "../html_extended/InputRow"
 import { validate } from "./ResearcherValidation"
 
-class ResearcherDetail extends React.Component {
+class ResearcherDetail extends Component {
 
   handleInitialize(researcher) {
     if (this.props.params.key && parseInt(this.props.params.key) > 0 && researcher.id) {
