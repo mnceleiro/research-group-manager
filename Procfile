@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/research-group-manager -Dplay.crypto.secret=abcdefghijk -Dresource.config=heroku.conf
+web: target/universal/stage/bin/research-group-manager -Dplay.crypto.secret=abcdefghijk -Dconfig.resource=heroku.conf
