@@ -14,7 +14,7 @@
     "watch:dev": "webpack --config webpack.config.dev.babel.js --define process.env.NODE_ENV='\"develop\"' --watch",
     "build:loc": "webpack --config webpack.config.dev.babel.js --define process.env.NODE_ENV='\"local\"'",
     "build:dev": "webpack --config webpack.config.dev.babel.js --define process.env.NODE_ENV='\"develop\"'",
-    "build-prod": "webpack -p --config webpack.config.prod.babel.js --optimize-minimize --define process.env.NODE_ENV='\"production\"' --progress --colors",
+    "build:prod": "webpack -p --config webpack.config.prod.babel.js --optimize-minimize --define process.env.NODE_ENV='\"production\"' --progress --colors",
     "eslint": "eslint ui"
   },
   "pre-commit": [
