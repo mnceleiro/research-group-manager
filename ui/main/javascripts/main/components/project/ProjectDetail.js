@@ -239,41 +239,6 @@ class ProjectDetail extends Component {
   }
 }
 
-// <div className="form-group">
-//   <CheckBox name="public" text="Público" />
-// </div>
-//
-// <div className="row">
-//   <div className="col-xs-12 col-md-offset-1 col-md-10">
-//     <legend>
-//       Autores asociados al proyecto
-//     </legend>
-//   </div>
-// </div>
-// <div className="row">
-//   <div className="col-xs-8 col-md-offset-6 col-md-3">
-//     <Select
-//       id="role"
-//       name="role"
-//       clearable={false}
-//       options={this.props.authors.filter(a => !project.authors.find( ap => a.id === ap.id)).map(x => { return { "label": x.email, value: x.id } })}
-//       value={this.state.selectedAuthor}
-//       onChange={this.handleAuthorSelectionChange.bind(this)}
-//     />
-//
-//   </div>
-//   <div className="col-xs-4 col-md-3">
-//     <button type="button" className="btn rgm-btn-primary rgm-btn-lg" onClick={this.onAddAuthor.bind(this)}>Añadir</button>
-//   </div>
-// </div>
-// { project && project.authors &&
-//   <div className="row">
-//     <div className="col-xs-12 col-md-offset-1 col-md-10">
-//       <RGMInlineTable headers={headers} fields={fields} data={project.authors} editable={true} onClickEdit={(i,o) => this.onClickEditRow(i,o)} onDelete={(i) => this.onDeleteRow(i)} />
-//     </div>
-//   </div>
-// }
-
 ProjectDetail.propTypes = {
   project: PropTypes.object,
   roles: PropTypes.array,
@@ -298,11 +263,6 @@ ProjectDetail.propTypes = {
   fetchAuthors: PropTypes.func,
   fetchRoles: PropTypes.func,
   fetchResearchers: PropTypes.func,
-
-  // Funcioens de edicion
-  // addAuthorToCurrentProject: PropTypes.func,
-  // editAuthorFromProject: PropTypes.func,
-  // deleteAuthorFromProject: PropTypes.func
 }
 
 let mapStateToProps = store => {

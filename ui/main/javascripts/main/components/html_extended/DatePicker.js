@@ -16,21 +16,12 @@ export class RGMDefaultDatePicker extends Component {
   }
 
   render() {
-    // return (
-    //   <div className="form-group">
-    //     <label className="control-label col-xs-3 col-md-2" htmlFor={field.input.name}>{field.label}:</label>
-    //     <div className="col-xs-9 col-md-9">
-    //       <input {...field.input} type="date" className="form-control" id={field.name} name={field.input.name} placeholder={field.label} />
-    //       {field.meta.touched && field.meta.error && <div className="form-alert alert-danger">{field.meta.error}</div>}
-    //     </div>
-    //   </div>
-    // )
     let field = this.props
 
     return (
       <div className="form-group">
-        <label className="control-label col-xs-3 col-md-2" htmlFor={field.input.name}>{field.label}:</label>
-        <div className="col-xs-9 col-md-9">
+        <label className="control-label col-md-2" htmlFor={field.input.name}>{field.label}:</label>
+        <div className="col-md-9">
           <DatePicker {...field.input}
             id={field.name}
             name={field.input.name}

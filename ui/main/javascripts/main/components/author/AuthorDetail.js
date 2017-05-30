@@ -146,7 +146,7 @@ class AuthorDetail extends Component {
     let divClass = ""
     if (!resValue) divClass = "hide"
 
-    var saveCancel = <div className="col-xs-offset-3 col-xs-9 col-md-offset-2 col-md-7">
+    var saveCancel = <div className="col-md-offset-2 col-md-7">
                        <input type="submit" className="btn rgm-btn-primary rgm-btn-lg" value="Guardar autor" />
                        <input type="button" className="btn rgm-btn-default rgm-btn-lg" value="Cancelar" onClick={this.handleCancel} />
                      </div>

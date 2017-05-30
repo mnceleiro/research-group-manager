@@ -42,8 +42,8 @@ export class RGMDefaultSelect extends Component {
       let currentValue = dataSelected ? { "value": dataSelected.id, "label": dataSelected.description } : null
       return (
         <div className={this.props.formClass || "form-group"}>
-          <label className={"control-label col-xs-3 col-md-" + labelWidth} htmlFor={input.name}>{label}:</label>
-          <div className={"col-xs-9 col-md-" + inputWidth}>
+          <label className={"control-label col-md-" + labelWidth} htmlFor={input.name}>{label}:</label>
+          <div className={"col-md-" + inputWidth}>
             <Select {...input}
               id={name}
               options={this.state.data}
@@ -69,26 +69,3 @@ RGMDefaultSelect.propTypes = {
   labelWidth: PropTypes.string,
   inputWidth: PropTypes.string
 }
-
-
-// import React from "react"
-// import Select from "react-select"
-//
-// export const RGMDefaultSelect = (field) => {
-//   debugger
-//   return (
-//     <div className="form-group">
-//       <label className="control-label col-xs-3 col-md-2" htmlFor={field.input.name}>{field.label}:</label>
-//       <div className="col-xs-9 col-md-9">
-//         <Select {...field.input}
-//           id={field.name}
-//           name={field.input.name}
-//           options={this.state.data}
-//           clearable={false}
-//           value={this.state.dataSelected}
-//           onChange={this.handleChange}
-//         />
-//       </div>
-//     </div>
-//   )
-// }

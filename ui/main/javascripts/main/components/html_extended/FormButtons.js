@@ -5,10 +5,10 @@ export const FormButtons = (data) => {
 
   var { offset } = data
 
-  let offsetCN = "col-xs-offset-3 col-xs-9 col-md-offset-2 col-md-7"
+  let offsetCN = "col-md-offset-2 col-md-7"
   if (offset) {
     offsetCN = offsetCN.replace("col-md-offset-2", "col-md-offset-" + offset)
-    offsetCN = offsetCN.replace("col-md-7", "col-md-" + (9-offset))  
+    offsetCN = offsetCN.replace("col-md-7", "col-md-" + (9-offset))
   }
   // console.log(JSON.stringify(data))
   return (

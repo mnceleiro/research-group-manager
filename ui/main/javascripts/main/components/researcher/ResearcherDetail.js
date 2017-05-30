@@ -88,7 +88,7 @@ class ResearcherDetail extends Component {
 
     const { handleSubmit } = this.props
 
-    var saveCancel = <div className="col-xs-offset-3 col-xs-9 col-md-offset-2 col-md-7">
+    var saveCancel = <div className="col-md-offset-2 col-md-7">
                        <input type="submit" className="btn rgm-btn-primary rgm-btn-lg" value="Guardar" />
                        <input type="button" className="btn rgm-btn-default rgm-btn-lg" value="Cancelar" onClick={this.handleCancel} />
                      </div>
@@ -109,12 +109,12 @@ class ResearcherDetail extends Component {
             <Field component={InputRow} type="number" label="Telefono" name="phone" />
 
             <div className="form-group">
-              <div className="checkbox col-xs-offset-2 col-md-offset-2 col-xs-3 col-md-2">
+              <div className="checkbox col-md-offset-2 col-md-2">
                 <label className="control-label">
                   <Field type="checkbox" id="access" name="access" component="input" />Acceso usuario
                 </label>
               </div>
-              <div className="checkbox col-xs-3 col-md-2">
+              <div className="checkbox col-md-2">
                 <label className="control-label">
                   <Field type="checkbox" id="admin" name="admin" component="input" />Administrador
                 </label>

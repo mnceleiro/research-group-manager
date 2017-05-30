@@ -8,21 +8,13 @@ export default class RGMAuthorsTable extends Component {
   constructor(props) {
     super(props)
 
-    // let editable = this.props.editable || false
-    // let insertable = this.props.insertable || this.props.onInsert
-    // let removable = this.props.removable || this.props.onDelete
-    //
-    // this.state = {
-    //   authors: this.props.authors,
-    //   editable, insertable, removable
-    // }
     if (this.props.roles) {
       this.state = {
-        authorSelectClass: "col-xs-6 col-md-offset-2 col-md-4"
+        authorSelectClass: "col-md-offset-2 col-md-4"
       }
     } else {
       this.state = {
-        authorSelectClass: "col-xs-10 col-md-offset-5 col-md-4"
+        authorSelectClass: "col-md-offset-5 col-md-4"
       }
     }
   }
@@ -37,7 +29,7 @@ export default class RGMAuthorsTable extends Component {
     return (
       <div>
         <div className="row">
-          <div className="col-xs-12 col-md-offset-1 col-md-10">
+          <div className="col-md-offset-1 col-md-10">
             <legend>
               Autores asociados
             </legend>
@@ -55,7 +47,7 @@ export default class RGMAuthorsTable extends Component {
           </div>
 
           { roles &&
-          <div className="col-xs-4 col-md-3">
+          <div className="col-md-3">
             <Select
               clearable={false}
               options={roles}
@@ -64,14 +56,14 @@ export default class RGMAuthorsTable extends Component {
             />
           </div>
           }
-          <div className="col-xs-2 col-md-3">
+          <div className="col-md-3">
             <button type="button" className="btn rgm-btn-primary rgm-btn-lg" onClick={onInsert}>Añadir</button>
           </div>
         </div>
         }
 
         <div className="row space-bottom-small">
-          <div className="col-xs-12 col-md-offset-1 col-md-10">
+          <div className="col-md-offset-1 col-md-10">
             <RGMInlineTable headers={headers} fields={fields} data={selectedAuthors} editable={editable} removable={removable} onClickEdit={onEdit} onDelete={onDelete} />
           </div>
         </div>

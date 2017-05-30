@@ -231,16 +231,6 @@ class CongressDetail extends Component {
     }
   }
 }
-// <Field component={RGMDefaultSelect} dataSelected={publicationValue} selectableData={publicationStates} type="text" label="Estado" name="publicationStatus" />
-// <Field component={RGMDefaultSelect} dataSelected={congressValue} selectableData={congressTypes} type="select" label="Tipo" name="congressType" />
-
-// { congress && this.state.authors &&
-//   <div className="row">
-//     <div className="col-xs-12 col-md-offset-1 col-md-10">
-//       <RGMInlineTable headers={headers} fields={fields} data={this.state.authors} editable={false} removable={true} onDelete={(i) => this.onDeleteRow(i)} />
-//     </div>
-//   </div>
-// }
 
 CongressDetail.propTypes = {
   // Datos
@@ -304,7 +294,6 @@ let mapStateToProps = store => {
   }
 }
 
-//fetchCongressById, addCongress, updateCongress, deleteCongress
 let mapDispatchToProps = dispatch => {
   return {
     // Congresos

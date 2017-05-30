@@ -65,8 +65,8 @@ export class AuthorModalForm extends Component {
                 <div className="row">
                   <form className="form-horizontal">
                     <div className="form-group">
-                      <label className="control-label col-xs-3 col-md-2" htmlFor="email">Email:</label>
-                      <div className="col-xs-9 col-md-9">
+                      <label className="control-label col-md-2" htmlFor="email">Email:</label>
+                      <div className="col-md-9">
                         <Select
                           id="author"
                           name="author"
@@ -78,15 +78,15 @@ export class AuthorModalForm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label className="control-label col-xs-3 col-md-2" htmlFor="signature">Autor:</label>
-                      <div className="col-xs-9 col-md-9">
+                      <label className="control-label col-md-2" htmlFor="signature">Autor:</label>
+                      <div className="col-md-9">
                         <input type="text" className="form-control" id="signature" name="signature" placeholder="Autor" onChange={this.handleChange.bind(this)} value={(author && author.signature) || ""} />
                       </div>
                     </div>
 
                     <div className="form-group">
-                      <label className="control-label col-xs-3 col-md-2" htmlFor="role">Rol:</label>
-                      <div className="col-xs-9 col-md-9">
+                      <label className="control-label col-md-2" htmlFor="role">Rol:</label>
+                      <div className="col-md-9">
                         <Select
                           id="role"
                           clearable={false}
@@ -99,8 +99,8 @@ export class AuthorModalForm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label className="control-label col-xs-3 col-md-2" htmlFor="researcher">Asociar:</label>
-                      <div className="col-xs-9 col-md-9">
+                      <label className="control-label col-md-2" htmlFor="researcher">Asociar:</label>
+                      <div className="col-md-9">
                         <Select
                           id="role"
                           name="role"
