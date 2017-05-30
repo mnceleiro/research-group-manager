@@ -4,6 +4,8 @@ import { browserHistory } from "react-router"
 import { connect } from "react-redux"
 import { Field, reduxForm } from "redux-form"
 
+import { LoadingModal } from "../html_extended/modals/Modal"
+
 import { fetchResearcherById, addResearcher, updateResearcher, deleteResearcher } from "../../actions/researcher-actions"
 import { InputRow } from "../html_extended/InputRow"
 import { validate } from "./ResearcherValidation"
@@ -80,8 +82,8 @@ class ResearcherDetail extends Component {
   }
 
   render() {
-    if (this.isUpdate() && !this.props.researcher.id) {
-      return <div>Loading...</div>
+    if ((this.isUpdate() && !this.props.researcher.id) || (!this.isUpdate() && this.props.isFetching)) {
+      return <LoadingModal isOpen={this.props.isFetching} />
     }
 
     const { handleSubmit } = this.props
@@ -104,7 +106,7 @@ class ResearcherDetail extends Component {
             <Field component={InputRow} type="text" label="Nombre" name="firstName" />
             <Field component={InputRow} type="text" label="Apellidos" name="lastName" />
             <Field component={InputRow} type="text" label="Direccion" name="address" />
-            <Field component={InputRow} type="text" label="Telefono" name="phone" />
+            <Field component={InputRow} type="number" label="Telefono" name="phone" />
 
             <div className="form-group">
               <div className="checkbox col-xs-offset-2 col-md-offset-2 col-xs-3 col-md-2">
@@ -144,7 +146,6 @@ class ResearcherDetail extends Component {
     }
     if (res.admin === "") res.admin = false
     if (res.access === "") res.access = false
-
 
     // var id = !this.props.params.key ? 0 : this.props.params.key
     var password = !res.password ? null : res.password
@@ -187,6 +188,7 @@ class ResearcherDetail extends Component {
 ResearcherDetail.propTypes = {
   researcher: PropTypes.object,
   params: PropTypes.object,
+  isFetching: PropTypes.bool,
   fetchResearcherById: PropTypes.func,
   addResearcher: PropTypes.func,
   updateResearcher: PropTypes.func,
@@ -206,6 +208,7 @@ let mapStateToProps = store => {
     researcher: store.researcherState.activeResearcher === 0 ? {} : store.researcherState.researchers.find(r => {
       return r.id === store.researcherState.activeResearcher
     }),
+    isFetching: store.researcherState.isFetching,
     success: store.researcherState.success,
     errorHappened: store.researcherState.error,
     deletedResearcher: store.researcherState.deletedResearcher

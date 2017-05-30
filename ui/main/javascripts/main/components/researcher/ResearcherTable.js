@@ -6,6 +6,7 @@ import { connect } from "react-redux"
 import ResearcherList from "./ResearcherList"
 import FlashMessage from "../html_extended/FlashMessage"
 import { fetchResearchers, createResearcher, editResearcher } from "../../actions/researcher-actions"
+import { LoadingModal } from "../html_extended/modals/Modal"
 
 class ResearcherTable extends Component {
 
@@ -36,6 +37,7 @@ class ResearcherTable extends Component {
         <div className="researcher-table">
           {this.renderFlashMessage()}
           <br />
+
           <div className="panel-right">
             <Link to="/researchers/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo investigador</button></Link>
           </div>
@@ -45,13 +47,14 @@ class ResearcherTable extends Component {
         </div>
       )
     } else {
-      return <div></div>
+      return <LoadingModal isOpen={this.props.isFetching} />
     }
   }
 }
 
 ResearcherTable.propTypes = {
   researchers: PropTypes.array,
+  isFetching: PropTypes.bool,
   dispatch: PropTypes.func,
   onResearcherEdit: PropTypes.func,
   getAllResearchers: PropTypes.func,
@@ -60,7 +63,10 @@ ResearcherTable.propTypes = {
 }
 
 let mapStateToProps = store => {
-  return { researchers: store.researcherState.researchers }
+  return {
+    researchers: store.researcherState.researchers,
+    isFetching: store.researcherState.isFetching
+  }
 }
 
 let mapDispatchToProps = dispatch => {

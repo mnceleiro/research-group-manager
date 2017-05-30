@@ -21,6 +21,7 @@ import Calendar from "./components/calendar/Calendar"
 const createRoutes = store => ( // eslint-disable-line no-unused-vars
   <Route path="/">
     <IndexRoute component={Calendar} />
+    <Route path="/calendar" component={Calendar} />
     <Route path="/researchers">
       <IndexRoute component={ResearcherTable} />
       <Route path="/researchers/new" component={ResearcherDetail} allowed={["admin"]} />

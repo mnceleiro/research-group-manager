@@ -62,7 +62,16 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
   }
 
   def delete(id: Long): Future[Int] = {
-    dbConfig.db.run(authors.filter(_.id === id).delete)
+//    dbConfig.db.run(authors.filter(_.id === id).delete)
+    val query = (for {
+      au <- authors.filter(x => x.id === id).result.headOption
+      auCongress <- authorsCongresses.filter(_.authorId === id).delete
+      auBook <- authorsBooks.filter(_.authorId === id).delete
+      auProject <- authorsProjects.filter(_.authorId === id).delete
+      authorDel <- authors.filter(_.id === id).delete
+    } yield (authorDel))
+    
+    dbConfig.db.run(query.transactionally)
   }
 
   def get(id: Long): Future[Option[Author]] = {

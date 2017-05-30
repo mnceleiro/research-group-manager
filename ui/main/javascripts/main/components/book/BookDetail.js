@@ -7,6 +7,7 @@ import { Field, reduxForm } from "redux-form"
 import { InlineInputRow } from "../html_extended/InputRow"
 import { FormButtons } from "../html_extended/FormButtons"
 import { RGMDefaultSelect } from "../html_extended/Select"
+import { LoadingModal } from "../html_extended/modals/Modal"
 
 import { validate } from "./BookValidation"
 
@@ -159,7 +160,7 @@ class BookDetail extends Component {
 
     if (isFetching || publicationStates.length == 0) {
       return (
-        <div>Cargando...</div>
+        <LoadingModal isOpen={this.props.isFetching} />
       )
     } else {
       const stateValue = publicationStates.find(x => x.id === this.state.selectedState) || publicationStates[0]
@@ -177,7 +178,7 @@ class BookDetail extends Component {
       return (
         <div className="book-form">
           <legend>
-            Datos de la publicación
+            Datos de la publicación (Libro)
           </legend>
           <div className="row">
             <form className="form-horizontal" onSubmit={handleSubmit(this.onSubmit)}>

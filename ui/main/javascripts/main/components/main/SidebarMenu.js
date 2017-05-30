@@ -1,6 +1,9 @@
 import React from "react"
 
 export const SidebarMenu = (data) => {
+
+  const active = data.active
+
   return (
     <div id="menu" className="col-md-2">
       <nav role="navigation">
@@ -29,10 +32,10 @@ export const SidebarMenu = (data) => {
           </div>
           <div className="rgm-menu-section">
             <ul className="nav side-menu">
-              <li className="active"><a href="/"><i className="fa fa-calendar fa-2x"></i>Calendario</a></li>
-              <li><a href="/researchers"><i className="fa fa-users fa-2x"></i>Investigadores</a></li>
-              <li><a href="/authors"><i className="fa fa-users fa-2x"></i>Autores</a></li>
-              <li><a href="/projects"><i className="fa fa-home fa-2x"></i>Proyectos</a></li>
+              <li className={active === "calendar" ? "active": ""}><a onClick={data.onClickCalendar}><i className="fa fa-calendar fa-2x"></i>Calendario</a></li>
+              <li className={active === "researchers" ? "active": ""}><a onClick={data.onClickResearchers}><i className="fa fa-users fa-2x"></i>Investigadores</a></li>
+              <li className={active === "authors" ? "active": ""}><a onClick={data.onClickAuthors}><i className="fa fa-users fa-2x"></i>Autores</a></li>
+              <li className={active === "projects" ? "active": ""}><a onClick={data.onClickProjects}><i className="fa fa-home fa-2x"></i>Proyectos</a></li>
             </ul>
           </div>
 
@@ -41,8 +44,8 @@ export const SidebarMenu = (data) => {
           </div>
           <div className="rgm-menu-section">
             <ul className="nav side-menu">
-              <li><a href="/books"><i className="fa fa-book fa-2x"></i>Libros</a></li>
-              <li><a href="/congresses"><i className="fa fa-briefcase fa-2x"></i> Congresos</a></li>
+              <li className={active === "books" ? "active": ""}><a onClick={data.onClickBooks}><i className="fa fa-book fa-2x"></i>Libros</a></li>
+              <li className={active === "congresses" ? "active": ""}><a onClick={data.onClickCongresses}><i className="fa fa-briefcase fa-2x"></i> Congresos</a></li>
             </ul>
           </div>
 

@@ -4,6 +4,7 @@ import { browserHistory } from "react-router"
 import { connect } from "react-redux"
 import { Field, reduxForm } from "redux-form"
 
+import { LoadingModal } from "../html_extended/modals/Modal"
 import { InputRow } from "../html_extended/InputRow"
 import { CheckBox } from "../html_extended/CheckBox"
 import { RGMDefaultDatePicker } from "../html_extended/DatePicker"
@@ -174,7 +175,7 @@ class CongressDetail extends Component {
 
     if (isFetching || congressTypes.length == 0 || publicationStates.length == 0) {
       return (
-        <div>Cargando...</div>
+        <LoadingModal isOpen={isFetching} />
       )
     } else {
       let stateValue = publicationStates.find(x => x.id === this.state.selectedState) || publicationStates[0]

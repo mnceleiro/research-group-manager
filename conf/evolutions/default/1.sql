@@ -152,10 +152,10 @@ CREATE TABLE AUTHOR_CONGRESS (
 
 CREATE TABLE BOOK (
   id bigint(20) NOT NULL AUTO_INCREMENT,
-  code varchar(255),
+  code varchar(100),
   title varchar(255) NOT NULL,
   book varchar(255) NOT NULL,
-  volume varchar(20),
+  volume varchar(25),
   start_page bigint(20),
   end_page bigint(20),
   year bigint(20),

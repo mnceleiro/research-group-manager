@@ -3,14 +3,18 @@ export const validate = fp => {
 
   if (!fp.email) {
     errors.email = "Por favor, introduzca una dirección de correo"
-  }
 
-  if (fp.email && !fp.email.includes("@")) {
+  } else if (fp.email.split("").length >= 200) {
+    errors.email = "Este campo excede el número de caracteres permitido."
+    
+  } else if (!fp.email.includes("@")) {
     errors.email = "El texto introducido no es un email."
   }
 
   if (!fp.signature) {
     errors.signature = "Por favor, introduzca la firma de autor"
+  } else if (fp.signature.split("").length >= 200) {
+    errors.signature = "Este campo excede el número de caracteres permitido."
   }
 
   return errors

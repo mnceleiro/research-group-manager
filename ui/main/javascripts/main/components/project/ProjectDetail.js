@@ -16,6 +16,8 @@ import { AuthorModalForm } from "./AuthorModalForm"
 import { FormButtons } from "../html_extended/FormButtons"
 import RGMAuthorsTable from "../app_generic/RGMAuthorsTable"
 
+import { LoadingModal } from "../html_extended/modals/Modal"
+
 import { validate } from "./ProjectValidation"
 
 class ProjectDetail extends Component {
@@ -177,7 +179,7 @@ class ProjectDetail extends Component {
     const fields = ["email", "signature", "roleDesc", "researcherDesc"]
 
     if (isFetching || this.props.roles.length === 0) {
-      return (<div>Cargando...</div>)
+      return (<LoadingModal isOpen={this.props.isFetching} />)
 
     } else {
       let project = this.props.activeProject.obj
@@ -205,7 +207,7 @@ class ProjectDetail extends Component {
               <Field component={InputRow} type="text" label="Titulo" name="title" />
               <Field component={RGMDefaultDatePicker} type="text" label="Fecha de inicio" name="startDate" />
               <Field component={RGMDefaultDatePicker} type="text" label="Fecha de fin" name="endDate" />
-              <Field component={InputRow} type="text" label="Presupuesto" name="budget" />
+              <Field component={InputRow} type="number" label="Presupuesto" name="budget" />
 
               <RGMAuthorsTable
                 headers={headers}

@@ -11,6 +11,7 @@ import { InputRow } from "../html_extended/InputRow"
 import { RGMDefaultSelect } from "../html_extended/Select"
 import { validate } from "./AuthorValidation"
 
+import { LoadingModal } from "../html_extended/modals/Modal"
 
 class AuthorDetail extends Component {
 
@@ -134,7 +135,7 @@ class AuthorDetail extends Component {
     const { handleSubmit, isFetching } = this.props
 
     if (isFetching) {
-      return <div>Loading...</div>
+      return <LoadingModal isOpen={this.props.isFetching} />
     }
 
     const selectableResearchers = this.props.selectableResearchers.map(r => {
@@ -199,9 +200,22 @@ class AuthorDetail extends Component {
 
   onSubmit(au) {
     if (this.isUpdate()) {
+      debugger
+      const authorEmail = this.props.authors.filter(x => x.id != this.props.params.key).find(x => x.email.trim() === au.email.trim())
+      if (authorEmail) {
+        alert ("Ha introducido el email de otro autor.")
+        return
+      }
       let toSend = Object.assign({}, au, { id: this.props.params.key, researcherId: this.state.selectedResearcher })
       this.props.updateAuthor(toSend)
     } else {
+
+      const authorEmail = this.props.authors.find(a => a.email.trim() === au.email.trim())
+      if (authorEmail) {
+        alert ("El email introducido ya pertenece a otro autor.")
+        return
+      }
+
       let toSend = Object.assign({}, au, { id: 0, researcherId: this.state.selectedResearcher })
       this.props.addAuthor(toSend)
     }
@@ -214,6 +228,7 @@ class AuthorDetail extends Component {
 
 AuthorDetail.propTypes = {
   author: PropTypes.object,
+  authors: PropTypes.array,
   selectableResearchers: PropTypes.array,
   params: PropTypes.object,
 
@@ -244,6 +259,7 @@ let mapStateToProps = store => {
     }),
     author: store.authorState.activeAuthor,
     researchers: store.researcherState.researchers,
+    authors: store.authorState.authors,
     isFetching: store.researcherState.isFetching || store.authorState.isFetching,
 
     success: store.authorState.success,

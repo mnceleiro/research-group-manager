@@ -101,8 +101,7 @@ export function updateCongress(r) {
 export function deleteCongress(r) {
   return function(dispatch) {
     dispatch(requestDeleteCongress())
-
-    var request = new Request(BASE_URL + "delete/" + r.id, {
+    var request = new Request(BASE_URL + "congresses/delete/" + r.id, {
       headers: new Headers({
         "Content-Type": "application/json",
         "Authorization": sessionUtils.getAuthString()

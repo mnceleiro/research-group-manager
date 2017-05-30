@@ -5,18 +5,18 @@ export const validate = formProps => {
 
   if (!formProps.code) {
     errors.code = "Por favor, introduzca un código."
+
+  } else if (formProps.code.split("").length >= 100) {
+    errors.code = "Este campo excede el número de caracteres permitido."
   }
 
   if (!formProps.title) {
     errors.title = "Por favor, introduzca el título"
+
+  } else if (formProps.title.split("").length >= 200) {
+    errors.title = "Este campo excede el número de caracteres permitido."
   }
 
-  // if (formProps.startDate) {
-  //   debugger
-  //   if (moment(formProps.startDate, "DD/MM/YYYY").toDate() instanceof Date) {
-  //     errors.startDate = "Por favor, introduzca una fecha valida"
-  //   }
-  // }
   if (formProps.startDate && !DateUtils.isValid(formProps.startDate)) {
     errors.startDate = "Por favor, introduzca una fecha valida."
   }
@@ -32,9 +32,11 @@ export const validate = formProps => {
     }
   }
 
-  // if (!formProps.budget) {
-  //   errors.budget = "Por favor, introduzca el presupuesto."
-  // }
+  if (formProps.budget && formProps.budget > 1000000) {
+    errors.budget = "El presupuesto introducido supera el límite permitido."
+  } else if (formProps.budget < 0) {
+    errors.budget = "El presupuesto no puede ser negativo."
+  }
 
   return errors
 }

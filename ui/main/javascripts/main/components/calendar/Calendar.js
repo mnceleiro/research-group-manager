@@ -11,7 +11,8 @@ import { fetchProjects } from "../../actions/project-actions"
 import { calendarFormat } from "../../constants/calendar-format"
 import { calendarMessages } from "../../constants/calendar-culture"
 
-import { showNotificationBetweenDates } from "../../utils/NotificationUtils"
+import { showNotificationBetweenDates, removeAll } from "../../utils/NotificationUtils"
+import { LoadingModal } from "../html_extended/modals/Modal"
 
 // let views = Object.keys(BigCalendar.views).map(k => BigCalendar.views[k])
 let views = ["month", "agenda", ]
@@ -26,6 +27,10 @@ export class Calendar extends Component {
   componentWillMount() {
     this.props.fetchProjects()
     this.props.fetchCongresses()
+  }
+
+  componentWillUnmount() {
+    removeAll()
   }
 
   componentWillReceiveProps() {
@@ -92,7 +97,7 @@ export class Calendar extends Component {
     // )
     // console.log(views)
     if (data.length === 0 || this.props.isFetching) {
-      return <div></div>
+      return <LoadingModal isOpen={this.props.isFetching} />
     } else {
       // Divido fechas de inicio y fin
       let calendarArray = this.getCalendarArray(data)

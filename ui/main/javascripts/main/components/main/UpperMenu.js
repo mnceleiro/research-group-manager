@@ -10,7 +10,7 @@ export const UpperMenu = (data) => {
         <i className="fa fa-sign-out fa-2x"></i><span className="profile-text">Salir</span>
       </div>
       <div className="user">
-        <a href={"/researchers/edit/" + data.user.userId}><div>
+        <a onClick={data.onClickProfile}><div>
         <img src="/assets/images/user_profile.png" alt="profile pic" className="img-circle profile-img" />
         <span className="profile-text">{data.user.name}</span>
         </div></a>
