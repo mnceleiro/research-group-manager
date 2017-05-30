@@ -1,0 +1,11 @@
+.rbc-calendar {
+  min-height: 500px;
+  height: 500px;
+}
+
+.rbc-agenda-view .rbc-header:nth-child(2) {
+  display: none;
+}
+.rbc-agenda-time-cell {
+  display: none;
+}
