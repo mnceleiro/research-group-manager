@@ -59,22 +59,30 @@ Con esto debería funcionar correctamente.
 
 * [Play Framework 2.5](https://www.playframework.com/) - Framework web
 * [Slick](http://slick.lightbend.com/) - Acceso a datos
-* [Redux](http://redux.js.org/) - Frontend
 
 ## Gestión de dependencias
 
 * [SBT](http://www.scala-sbt.org/)
 * [NPM](https://www.npmjs.com/)
 
-## Módulos & Librerias
-
+## Librerías y utilidades principales
 * [React](https://facebook.github.io/react/)
-* [Redux Form](http://redux-form.com)
+* [Redux](http://redux.js.org/)
+* [React router](https://github.com/ReactTraining/react-router/)
 * [Webpack](https://webpack.js.org/)
+* [Bootstrap](http://getbootstrap.com/)
+* [SASS](http://sass-lang.com/)
+* [Redux Form](http://redux-form.com)
 * [Babel](https://babeljs.io/)
+
+## Librerías y utilidades secundarias
 * [BrowserSync](https://browsersync.io/)
 * [ESLint](http://eslint.org/)
-* [SASS](http://sass-lang.com/)
 * [jQuery](https://jquery.com/)
-* [Bootstrap](http://getbootstrap.com/)
 * [Font Awesome](http://fontawesome.io/)
+* [React Select](http://jedwatson.github.io/react-select/)
+* [Redux Thunk](https://github.com/gaearon/redux-thunk)
+* [React big calendar](http://intljusticemission.github.io/react-big-calendar/examples/index.html)
+* [Redux datepicker](https://hacker0x01.github.io/react-datepicker/)
+* [Moment](https://momentjs.com/)
+* [Pre-commit](https://github.com/nlf/precommit-hook)

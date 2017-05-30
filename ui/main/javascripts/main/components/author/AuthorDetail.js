@@ -78,13 +78,13 @@ class AuthorDetail extends Component {
 
     // Datos
     if (this.isUpdate() && nextProps.author && !this.props.author.id) {
-      this.handleInitialize(nextProps.author)
       this.setState({
         ...this.state,
         selectedResearcher: nextProps.author.researcher && nextProps.author.researcher.id,
         email: nextProps.author.email,
         signature: nextProps.author.signature
       })
+      this.handleInitialize(nextProps.author)
     }
   }
 
