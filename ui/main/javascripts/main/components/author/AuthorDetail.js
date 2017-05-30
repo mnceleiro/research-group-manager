@@ -200,7 +200,6 @@ class AuthorDetail extends Component {
 
   onSubmit(au) {
     if (this.isUpdate()) {
-      debugger
       const authorEmail = this.props.authors.filter(x => x.id != this.props.params.key).find(x => x.email.trim() === au.email.trim())
       if (authorEmail) {
         alert ("Ha introducido el email de otro autor.")
