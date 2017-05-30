@@ -39,8 +39,8 @@ class ProjectDetail extends Component {
 
   componentWillMount() {
     this.props.fetchAuthors()
-    this.props.fetchRoles()
     this.props.fetchResearchers()
+    this.props.fetchRoles()
 
     if (this.isUpdate()) {
       this.props.fetchProjectById(this.props.params.key)
@@ -56,18 +56,18 @@ class ProjectDetail extends Component {
       browserHistory.push(`/projects?success=${nextProps.success}`)
     }
 
-    if (this.isUpdate() && !this.props.activeProject.obj && nextProps.activeProject.obj) {
-      this.handleInitialize(nextProps.project)
+    if (this.isUpdate() && nextProps.activeProject.obj && !this.props.activeProject.obj) {
+      this.handleInitialize(nextProps.activeProject.obj)
 
       this.setState({
         ...this.state,
-        authors: nextProps.project.authors || []
+        authors: nextProps.activeProject.obj.authors || []
       })
     }
   }
 
   handleInitialize(project) {
-    if (this.props.params.key && parseInt(this.props.params.key) > 0 && project.id) {
+    if (this.isUpdate() && project.id) {
       const initData = {
         "code": project.code,
         "title": project.title,
@@ -176,7 +176,7 @@ class ProjectDetail extends Component {
     const headers = ["Email", "Autor", "rol", "Investigador asociado"]
     const fields = ["email", "signature", "roleDesc", "researcherDesc"]
 
-    if (isFetching) {
+    if (isFetching || this.props.roles.length === 0) {
       return (<div>Cargando...</div>)
 
     } else {

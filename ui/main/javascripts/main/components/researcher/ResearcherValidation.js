@@ -21,10 +21,6 @@ export const validate = formProps => {
     errors.phone = "Por favor, introduzca número de teléfono"
   }
 
-  if(!formProps.signatureName) {
-    errors.signatureName = "Por favor, introduzca la firma"
-  }
-
   if(!formProps.address) {
     errors.address = "Por favor, introduzca su dirección postal"
   }
