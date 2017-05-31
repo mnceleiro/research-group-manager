@@ -35,10 +35,12 @@ export default class RGMMainTable extends Component {
         <div className="rgm-table">
           {this.renderFlashMessage()}
           <br />
-          <div className="panel-right">
-            <Link to={"/" + this.props.entityTable + "/new"}><button className="btn rgm-btn-primary rgm-btn-lg">{"Nuevo " + this.props.entityString}</button></Link>
-          </div>
-          <RGMDefaultTable headers={headers} fields={fields} data={this.props.objects} editable={editable} onEdit={this.props.onEditRow} editLink={this.props.entityTable + "/edit/"} />
+          {this.props.creatable &&
+            <div className="panel-right">
+              <Link to={"/" + this.props.entityTable + "/new"}><button className="btn rgm-btn-primary rgm-btn-lg">{"Nuevo " + this.props.entityString}</button></Link>
+            </div>
+          }
+          <RGMDefaultTable headers={headers} fields={fields} data={this.props.objects} editable={editable} editText={this.props.editText} onEdit={this.props.onEditRow} editLink={this.props.entityTable + "/edit/"} />
         </div>
       )
     } else {
@@ -59,6 +61,8 @@ RGMMainTable.propTypes = {
 
   entityTable: PropTypes.string,
   entityString: PropTypes.string,
+  editText: PropTypes.string,
 
-  isFetching: PropTypes.bool
+  isFetching: PropTypes.bool,
+  creatable: PropTypes.bool
 }

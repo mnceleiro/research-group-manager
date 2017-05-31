@@ -38,9 +38,11 @@ class ResearcherTable extends Component {
           {this.renderFlashMessage()}
           <br />
 
-          <div className="panel-right">
-            <Link to="/researchers/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo investigador</button></Link>
-          </div>
+          { this.props.creatable &&
+            <div className="panel-right">
+              <Link to="/researchers/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo investigador</button></Link>
+            </div>
+          }
           <div className="table-responsive">
             <ResearcherList list={this.props.researchers} onResearcherEdit={this.props.onResearcherEdit} />
           </div>
@@ -54,6 +56,7 @@ class ResearcherTable extends Component {
 
 ResearcherTable.propTypes = {
   researchers: PropTypes.array,
+  creatable: PropTypes.bool,
   isFetching: PropTypes.bool,
   dispatch: PropTypes.func,
   onResearcherEdit: PropTypes.func,
@@ -64,7 +67,14 @@ ResearcherTable.propTypes = {
 
 let mapStateToProps = store => {
   return {
-    researchers: store.researcherState.researchers,
+    creatable: store.sessionState.user.admin,
+    researchers: store.researcherState.researchers.map(x => {
+      // if (store.sessionState.user.admin || store.sessionState.user.userId === x.usId) x.editText = "Detalle"
+      // else x.editText = "Detalle"
+      x.editText = "Detalle"
+
+      return x
+    }),
     isFetching: store.researcherState.isFetching
   }
 }

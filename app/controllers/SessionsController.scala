@@ -32,6 +32,7 @@ class SessionsController @Inject() (userRepo: UserRepository, auth: SecuredAuthe
             var toret = Json.obj(
               "userId" -> dbUser.id,
               "email" -> dbUser.email,
+              "admin" -> dbUser.admin,
               "token" -> JWTUtils.createToken(Json.stringify(Json.obj(
                 "userId" -> dbUser.id,
                 "email" -> dbUser.email,

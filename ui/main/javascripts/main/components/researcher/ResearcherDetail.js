@@ -75,13 +75,15 @@ class ResearcherDetail extends Component {
     if (this.isUpdate()) {
       return (
         <div className="col-md-2">
-          <input type="button" id="btnRemoveResearcher" className="btn rgm-btn-default rgm-btn-lg" value="Eliminar Autor" onClick={this.handleRemove} />
+          <input type="button" id="btnRemoveResearcher" className="btn rgm-btn-default rgm-btn-lg" value="Eliminar investigador" onClick={this.handleRemove} />
         </div>
       )
     } else return ""
   }
 
   render() {
+    const editable = this.props.editable
+
     if ((this.isUpdate() && !this.props.researcher.id) || (!this.isUpdate() && this.props.isFetching)) {
       return <LoadingModal isOpen={this.props.isFetching} />
     }
@@ -100,31 +102,32 @@ class ResearcherDetail extends Component {
         </legend>
         <div className="row">
           <form className="form-horizontal" onSubmit={handleSubmit(this.onSubmit)}>
-            <Field component={InputRow} type="email" label="Email" name="email" />
-            <Field component={InputRow} type="password" label="Contraseña" name="password" />
-            <Field component={InputRow} type="password" label="Confirmar contraseña" name="confirmPassword" />
-            <Field component={InputRow} type="text" label="Nombre" name="firstName" />
-            <Field component={InputRow} type="text" label="Apellidos" name="lastName" />
-            <Field component={InputRow} type="text" label="Direccion" name="address" />
-            <Field component={InputRow} type="number" label="Telefono" name="phone" />
+            <Field component={InputRow} disabled={!editable} type="email" label="Email" name="email" />
+            <Field component={InputRow} disabled={!editable} type="password" label="Contraseña" name="password" />
+            <Field component={InputRow} disabled={!editable} type="password" label="Confirmar contraseña" name="confirmPassword" />
+            <Field component={InputRow} disabled={!editable} type="text" label="Nombre" name="firstName" />
+            <Field component={InputRow} disabled={!editable} type="text" label="Apellidos" name="lastName" />
+            <Field component={InputRow} disabled={!editable} type="text" label="Direccion" name="address" />
+            <Field component={InputRow} disabled={!editable} type="number" label="Telefono" name="phone" />
 
             <div className="form-group">
               <div className="checkbox col-md-offset-2 col-md-2">
                 <label className="control-label">
-                  <Field type="checkbox" id="access" name="access" component="input" />Acceso usuario
+                  <Field type="checkbox" id="access" name="access" component="input" disabled={!editable} />Acceso usuario
                 </label>
               </div>
               <div className="checkbox col-md-2">
                 <label className="control-label">
-                  <Field type="checkbox" id="admin" name="admin" component="input" />Administrador
+                  <Field type="checkbox" id="admin" name="admin" disabled={!editable} component="input" />Administrador
                 </label>
               </div>
             </div>
-
+            { editable &&
             <div className="form-group">
               {saveCancel}
               {this.renderRemoveButton()}
             </div>
+            }
           </form>
         </div>
       </div>
@@ -140,9 +143,9 @@ class ResearcherDetail extends Component {
     let resId = 0
     let usId = 0
     if (this.props.params.key) {
-      id = this.props.params.key
-      resId = this.props.params.key
-      usId = this.props.params.key
+      id = parseInt(this.props.params.key)
+      resId = id
+      usId = id
     }
     if (res.admin === "") res.admin = false
     if (res.access === "") res.access = false
@@ -158,26 +161,6 @@ class ResearcherDetail extends Component {
     } else {
       this.props.addResearcher(toSend)
     }
-    // // Request
-    // var url = null
-    // if (this.props.params.key) url = "../../researchers/edit/" + this.props.params.key
-    // else url = "../../researchers/add"
-    //
-    // var request = new Request(url, {
-    //   headers: new Headers({
-    //     "Content-Type": "application/json"
-    //   })
-    // })
-    //
-    // fetch(request, {
-    //   method: "POST",
-    //   body: JSON.stringify(this.state)
-    //
-    // }).then(response => {
-    //   return response.text()
-    // }).then(() => {
-    //   browserHistory.push("/researchers")
-    // })
   }
 
   handleRemove() {
@@ -188,7 +171,10 @@ class ResearcherDetail extends Component {
 ResearcherDetail.propTypes = {
   researcher: PropTypes.object,
   params: PropTypes.object,
+
   isFetching: PropTypes.bool,
+  editable: PropTypes.bool,
+
   fetchResearcherById: PropTypes.func,
   addResearcher: PropTypes.func,
   updateResearcher: PropTypes.func,
@@ -204,6 +190,8 @@ ResearcherDetail.propTypes = {
 
 let mapStateToProps = store => {
   return {
+    editable: store.sessionState.user.admin || store.researcherState.activeResearcher === store.sessionState.user.userId,
+
     activeResearcher: store.researcherState.activeResearcher,
     researcher: store.researcherState.activeResearcher === 0 ? {} : store.researcherState.researchers.find(r => {
       return r.id === store.researcherState.activeResearcher

@@ -20,7 +20,7 @@ class ResearcherList extends Component {
         <tbody>
         {
           this.props.list.map(r => {
-            return <ResearcherRow
+            return <ResearcherRow btnText={r.editText}
                                 onResearcherEdit={this.props.onResearcherEdit}
                                 key={ r.resId }
                                 id={ r.resId }

@@ -95,7 +95,7 @@ class BookDetail extends Component {
 
   onSubmit(book) {
     if (this.isUpdate()) {
-      let toSend = Object.assign({}, book, { id: this.props.params.key, authors: this.state.authors, statusId: this.state.selectedState })
+      let toSend = Object.assign({}, book, { id: parseInt(this.props.params.key), authors: this.state.authors, statusId: this.state.selectedState })
       this.props.updateBook(toSend)
     } else {
       let toSend = Object.assign({}, book, { id: 0, authors: this.state.authors, statusId: this.state.selectedState })
@@ -153,7 +153,7 @@ class BookDetail extends Component {
   }
 
   render() {
-    const { handleSubmit, isFetching, publicationStates } = this.props
+    const { handleSubmit, isFetching, publicationStates, editable } = this.props
 
     const headers = ["Email", "Autor", "Investigador asociado"]
     const fields = ["email", "signature", "researcherEmail"]
@@ -183,28 +183,30 @@ class BookDetail extends Component {
           <div className="row">
             <form className="form-horizontal" onSubmit={handleSubmit(this.onSubmit)}>
               <div className="form-group space-bottom-small">
-                <Field component={InlineInputRow} labelWidth="1" inputWidth="4" type="text" label="Código" name="code" />
-                <Field component={InlineInputRow} labelWidth="1" inputWidth="5" type="text" label="Título" name="title" />
+                <Field component={InlineInputRow} labelWidth="1" inputWidth="4" type="text" label="Código" name="code" disabled={!editable} />
+                <Field component={InlineInputRow} labelWidth="1" inputWidth="5" type="text" label="Título" name="title" disabled={!editable} />
               </div>
               <div className="form-group space-bottom-small">
-                <Field component={InlineInputRow} labelWidth="1" inputWidth="4" type="text" label="Libro" name="book" />
-                <Field component={InlineInputRow} labelWidth="1" inputWidth="2" type="number" label="Página de inicio" name="startPage" />
-                <Field component={InlineInputRow} labelWidth="1" inputWidth="2" type="number" label="Página de fin" name="endPage" />
+                <Field component={InlineInputRow} labelWidth="1" inputWidth="4" type="text" label="Libro" name="book" disabled={!editable} />
+                <Field component={InlineInputRow} labelWidth="1" inputWidth="2" type="number" label="Página de inicio" name="startPage" disabled={!editable} />
+                <Field component={InlineInputRow} labelWidth="1" inputWidth="2" type="number" label="Página de fin" name="endPage" disabled={!editable} />
               </div>
               <div className="form-group space-bottom-small">
-                <Field component={InlineInputRow} labelWidth="1" inputWidth="2" type="text" label="Volumen" name="volume" />
-                <Field component={InlineInputRow} labelWidth="1" inputWidth="1"  type="text" label="Año" name="year" />
-                <Field component={InlineInputRow} labelWidth="1" inputWidth="5" type="text" label="Editorial" name="editorial" />
+                <Field component={InlineInputRow} labelWidth="1" inputWidth="2" type="text" label="Volumen" name="volume" disabled={!editable} />
+                <Field component={InlineInputRow} labelWidth="1" inputWidth="1"  type="text" label="Año" name="year" disabled={!editable} />
+                <Field component={InlineInputRow} labelWidth="1" inputWidth="5" type="text" label="Editorial" name="editorial" disabled={!editable} />
               </div>
               <div className="form-group space-bottom-small">
-                <Field component={InlineInputRow} labelWidth="1" inputWidth="2"  type="text" label="Lugar" name="place" />
-                <Field component={InlineInputRow} labelWidth="1" inputWidth="3"  type="text" label="ISBN" name="isbn" />
-                <Field component={RGMDefaultSelect} formClass="" labelWidth="1" inputWidth="3" onChange={this.onStateChange.bind(this)} dataSelected={stateValue} selectableData={publicationStates} type="select" label="Estado" name="status" />
+                <Field component={InlineInputRow} labelWidth="1" inputWidth="2"  type="text" label="Lugar" name="place" disabled={!editable} />
+                <Field component={InlineInputRow} labelWidth="1" inputWidth="3"  type="text" label="ISBN" name="isbn" disabled={!editable} />
+                <Field component={RGMDefaultSelect} formClass="" labelWidth="1" inputWidth="3" disabled={!editable} onChange={this.onStateChange.bind(this)} dataSelected={stateValue} selectableData={publicationStates} type="select" label="Estado" name="status" />
               </div>
 
               <RGMAuthorsTable
                 headers={headers}
                 fields={fields}
+                insertable={editable}
+                removable={editable}
                 authors={this.props.authors}
                 selectedAuthors={this.state.authors}
                 selectedAuthor={this.state.selectedAuthor}
@@ -213,8 +215,10 @@ class BookDetail extends Component {
                 onDelete={(i) => this.onDeleteRow(i)}
               />
 
-              <FormButtons canDelete={this.isUpdate()} saveText="Guardar" cancelText="Cancelar" deleteText="Eliminar"
-                cancelAction={this.handleCancel} deleteAction={this.handleDelete} offset="1" />
+              { editable &&
+                <FormButtons canDelete={this.isUpdate()} saveText="Guardar" cancelText="Cancelar" deleteText="Eliminar"
+                  cancelAction={this.handleCancel} deleteAction={this.handleDelete} offset="1" />
+              }
             </form>
           </div>
         </div>
@@ -232,6 +236,7 @@ BookDetail.propTypes = {
 
   // Variables de control
   isFetching: PropTypes.bool,
+  editable: PropTypes.bool,
   errorHappened: PropTypes.string,
   success: PropTypes.string,
 
@@ -263,6 +268,8 @@ var form = reduxForm({
 
 let mapStateToProps = store => {
   return {
+    editable: store.sessionState.user.admin ||
+      (store.bookState.active.id ? store.bookState.active.authors.find(a => a.researcherId === store.sessionState.user.userId) && true : false),
     // Datos
     book: store.bookState.active,
     authors: store.researcherState.researchers.length === 0 ? store.authorState.authors : store.authorState.authors.map(a => {

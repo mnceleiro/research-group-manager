@@ -2,6 +2,8 @@ import * as types from "../constants/actionTypes"
 import { sessionUtils } from "../utils/SessionUtils"
 import { BASE_URL } from "../constants/config"
 
+import { logoutUser } from "./login-actions"
+
 export function fetchProjects() {
   return function (dispatch) {
     dispatch(requestProjects())
@@ -55,7 +57,7 @@ export function addProject(r) {
       method: "POST",
       body: JSON.stringify(r)
 
-    }).then(resp => {return resp.json() })
+    }).then(resp => { return resp.status === 401 ? dispatch(logoutUser()) : resp.json() })
       .then(projectJson => {
         if (projectJson.res === "error") {
           alert(JSON.stringify(projectJson))
@@ -85,7 +87,7 @@ export function updateProject(r) {
       method: "POST",
       body: JSON.stringify(r)
 
-    }).then(resp => {return resp.json() })
+    }).then(resp => { return resp.status === 401 ? dispatch(logoutUser()) : resp.json() })
       .then(projectJson => {
         if (projectJson.res === "error") {
           dispatch(updateProjectError(projectJson.res))
@@ -114,8 +116,9 @@ export function deleteProject(r) {
       method: "DELETE",
       body: JSON.stringify(r)
 
-    }).then(response => {
-      dispatch(deleteProjectSuccess(response, r))
+    }).then(resp => {
+      if (resp.status === 401) dispatch(logoutUser())
+      else dispatch(deleteProjectSuccess(resp, r))
     })
   }
 }

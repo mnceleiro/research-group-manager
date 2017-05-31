@@ -39,6 +39,15 @@ class AuthorProjectRepository @Inject()(dbConfigProvider: DatabaseConfigProvider
   val roles = TableQuery[RoleTable]
   
   val dbConfig = dbConfigProvider.get[JdbcProfile]
+	
+	def checkAuthorHasProject(resId: Long, projectId: Long): Future[Option[Option[Long]]] = {
+	  val join = (for {
+	    x <- authorsProjects.filter(x => x.projectId === projectId && x.authorId === resId)
+	    x <- authorsProjects.filter(x => x.projectId === projectId && x.authorId === resId)
+	  } yield (x.id) ).result.headOption.transactionally
+	  
+	  dbConfig.db.run(join)
+	}
   
   def getProject(id: Long): Future[Seq[(Project, Option[AuthorProject], Option[Author])]] = {
     val applicativeJoin = for {

@@ -72,6 +72,7 @@ class App extends Component {
     //     { !isAuthenticated && <LoginForm auth={isAuthenticated} errorMessage={errorMessage} /> }
     //   </div>
     // )
+
     if (!isAuthenticated) {
       return (
         <LoginForm auth={isAuthenticated} errorMessage={errorMessage} />

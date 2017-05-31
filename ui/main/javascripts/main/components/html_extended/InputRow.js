@@ -20,7 +20,7 @@ export const InlineInputRow = (field) => {
       <div>
         <label className={"control-label col-md-"+labelWidth} htmlFor={field.input.name}>{field.label}:</label>
         <div className={"col-md-"+inputWidth}>
-          <input {...field.input} type={field.type} className="form-control" id={field.name} name={field.input.name} placeholder={field.label} />
+          <input {...field.input} disabled={field.disabled || false} type={field.type} className="form-control" id={field.name} name={field.input.name} placeholder={field.label} />
           {field.meta.touched && field.meta.error && <div className="form-alert alert-danger">{field.meta.error}</div>}
         </div>
       </div>

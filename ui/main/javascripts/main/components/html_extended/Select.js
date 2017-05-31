@@ -6,11 +6,8 @@ export class RGMDefaultSelect extends Component {
   constructor(props) {
     super(props)
 
-    // this.handleChange = this.handleChange.bind(this)
-
     this.state = {
       data: this.props.selectableData.map(x => { return { value: x.id, label: x.description } }),
-      // dataSelected: this.props.dataSelected ? { "value": this.props.dataSelected.id, "label": this.props.dataSelected.description } : null
     }
   }
 
@@ -21,13 +18,6 @@ export class RGMDefaultSelect extends Component {
         data: this.props.selectableData.map(x => { return { value: x.id, label: x.description } }),
       })
     }
-
-    // if (nextProps.dataSelected && !this.state.dataSelected) {
-    //   this.setState({
-    //     ...this.state,
-    //     value: { "value": nextProps.dataSelected, "label": nextProps.description }
-    //   })
-    // }
   }
 
   render() {
@@ -36,6 +26,8 @@ export class RGMDefaultSelect extends Component {
 
     const labelWidth = this.props.labelWidth || 2
     const inputWidth = this.props.inputWidth || 9
+
+    const disabled = this.props.disabled || false
 
     if (!dataSelected && !clearable) return (<div></div>)
     else {
@@ -46,6 +38,7 @@ export class RGMDefaultSelect extends Component {
           <div className={"col-md-" + inputWidth}>
             <Select {...input}
               id={name}
+              disabled={disabled}
               options={this.state.data}
               clearable={clearable || false}
               value={currentValue}
@@ -64,6 +57,7 @@ RGMDefaultSelect.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string,
   clearable: PropTypes.bool,
+  disabled: PropTypes.bool,
 
   formClass: PropTypes.string,
   labelWidth: PropTypes.string,

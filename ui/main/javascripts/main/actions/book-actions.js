@@ -2,6 +2,8 @@ import * as types from "../constants/actionTypes"
 import { sessionUtils } from "../utils/SessionUtils"
 import { BASE_URL } from "../constants/config"
 
+import { logoutUser } from "./login-actions"
+
 export function fetchBooks() {
   return function (dispatch) {
     dispatch(requestBooks())
@@ -13,7 +15,7 @@ export function fetchBooks() {
     })
     return fetch(request)
       .then(resp => {
-        if (resp.status === 401) sessionUtils.logout()
+        if (resp.status === 401) dispatch(logoutUser())
         else return resp.json()
       })
       .then(json => {
@@ -32,7 +34,7 @@ export function fetchBookById(id) {
       })
     })
     return fetch(request)
-      .then(resp => { return resp.json() })
+      .then(resp => { return resp.status === 401 ? dispatch(logoutUser()) : resp.json() })
       .then(json => {
         dispatch(receiveBook(json))
       })
@@ -54,7 +56,7 @@ export function addBook(o) {
       method: "POST",
       body: JSON.stringify(o)
 
-    }).then(resp => {return resp.json() })
+    }).then(resp => { return resp.status === 401 ? dispatch(logoutUser()) : resp.json() })
       .then(json => {
         if (json.res === "error") {
           alert(JSON.stringify(json))
@@ -84,7 +86,7 @@ export function updateBook(o) {
       method: "POST",
       body: JSON.stringify(o)
 
-    }).then(resp => {return resp.json() })
+    }).then(resp => { return resp.status === 401 ? dispatch(logoutUser()) : resp.json() })
       .then(json => {
         if (json.res === "error") {
           dispatch(updateBookError(json))
@@ -114,6 +116,7 @@ export function deleteBook(o) {
       body: JSON.stringify(o)
 
     }).then(response => {
+      if (response.status === 401) dispatch(logoutUser())
       dispatch(deleteBookSuccess(response, o))
 
     }).catch(error => {

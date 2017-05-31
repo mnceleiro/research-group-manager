@@ -17,7 +17,8 @@ export class RGMDefaultDatePicker extends Component {
 
   render() {
     let field = this.props
-
+    const disabled = field.disabled
+    
     return (
       <div className="form-group">
         <label className="control-label col-md-2" htmlFor={field.input.name}>{field.label}:</label>
@@ -26,8 +27,9 @@ export class RGMDefaultDatePicker extends Component {
             id={field.name}
             name={field.input.name}
             placeholderText={field.label}
-            isClearable={true}
+            isClearable={!disabled && true}
             dateFormat="DD/MM/YYYY"
+            disabled={disabled}
             locale="es-ES"
             className="form-control"
             selected={field.input.value ? moment(field.input.value, "DD/MM/YYYY") : null}

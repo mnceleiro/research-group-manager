@@ -19,6 +19,10 @@ trait AcceptanceSpec[T] extends PlaySpec with OneAppPerSuite with BeforeAndAfter
   var tokenString: String = null
   var fakeTextHeaders: FakeHeaders = null
   var fakeJsonHeaders: FakeHeaders = null
+  
+//  var tokenStringNoAuth: String = null
+//  var fakeTextHeadersNoAuth: FakeHeaders = null
+//  var fakeJsonHeadersNoAuth: FakeHeaders = null
     
   override def beforeAll = {
     Evolutions.cleanupEvolutions(dbApi.database("default"))
@@ -30,20 +34,34 @@ trait AcceptanceSpec[T] extends PlaySpec with OneAppPerSuite with BeforeAndAfter
   }
   
     before {
-    val resp = route(app, FakeRequest(
+    val respAdmin = route(app, FakeRequest(
       POST, "/users/login",
       FakeHeaders(Seq("content-type" -> "application/json")),
       Json.parse("""{"email":"mnceleiro@esei.uvigo.es", "password":"1234"}"""))).get
+      
+    val respNoAuthorization = route(app, FakeRequest(
+      POST, "/users/login",
+      FakeHeaders(Seq("content-type" -> "application/json")),
+      Json.parse("""{"email":"dmritchie@yahoo.es", "password":"1234"}"""))).get
 
-    this.tokenString = "Bearer " + Json.parse(contentAsString(resp)).as[JsObject].\("token").get.as[String]
+    this.tokenString = "Bearer " + Json.parse(contentAsString(respAdmin)).as[JsObject].\("token").get.as[String]
+//    this.tokenStringNoAuth = "Bearer " + Json.parse(contentAsString(respAdmin)).as[JsObject].\("token").get.as[String]
 
-    this.fakeTextHeaders = FakeHeaders(Seq(
-      ("content-type" -> "text/plain"),
-      ("Authorization", this.tokenString)))
-
-    this.fakeJsonHeaders = FakeHeaders(Seq(
-      ("content-type" -> "application/json"),
-      ("Authorization", this.tokenString)))
+//    this.fakeTextHeaders = FakeHeaders(Seq(
+//      ("content-type" -> "text/plain"),
+//      ("Authorization", this.tokenString)))
+//
+//    this.fakeJsonHeaders = FakeHeaders(Seq(
+//      ("content-type" -> "application/json"),
+//      ("Authorization", this.tokenString)))
+//      
+//    this.fakeTextHeadersNoAuth = FakeHeaders(Seq(
+//      ("content-type" -> "text/plain"),
+//      ("Authorization", this.tokenString)))
+//
+//    this.fakeJsonHeadersNoAuth = FakeHeaders(Seq(
+//      ("content-type" -> "application/json"),
+//      ("Authorization", this.tokenString)))
   }
 
   after {

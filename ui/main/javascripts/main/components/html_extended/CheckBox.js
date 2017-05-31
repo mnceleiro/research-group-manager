@@ -5,7 +5,7 @@ export const CheckBox = (data) => {
   return (
     <div className="checkbox col-md-offset-2 col-md-2">
       <label className="control-label">
-        <Field type="checkbox" id={data.name} name={data.name} component="input" />{data.text}
+        <Field disabled={data.disabled || false} type="checkbox" id={data.name} name={data.name} component="input" />{data.text}
       </label>
     </div>
   )

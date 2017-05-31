@@ -103,7 +103,7 @@ class CongressDetail extends Component {
   onSubmit(congress) {
     if (congress.international === "") congress.international = false
     if (this.isUpdate()) {
-      let toSend = Object.assign({}, congress, { id: this.props.params.key, authors: this.state.authors, typeId: this.state.selectedType, statusId: this.state.selectedState })
+      let toSend = Object.assign({}, congress, { id: parseInt(this.props.params.key), authors: this.state.authors, typeId: this.state.selectedType, statusId: this.state.selectedState })
       this.props.updateCongress(toSend)
     } else {
       let toSend = Object.assign({}, congress, { id: 0, authors: this.state.authors, typeId: this.state.selectedType, statusId: this.state.selectedState })
@@ -168,12 +168,14 @@ class CongressDetail extends Component {
   }
 
   render() {
-    const { handleSubmit, isFetching, publicationStates, congressTypes } = this.props
+    const { handleSubmit, isFetching, publicationStates, congressTypes, editable } = this.props
 
     const headers = ["Email", "Autor", "Investigador asociado"]
     const fields = ["email", "signature", "researcherEmail"]
 
-    if (isFetching || congressTypes.length == 0 || publicationStates.length == 0) {
+    if ((isFetching || congressTypes.length == 0 || publicationStates.length == 0)
+      || (this.isUpdate() && !this.props.congress.id)
+    ) {
       return (
         <LoadingModal isOpen={isFetching} />
       )
@@ -197,22 +199,25 @@ class CongressDetail extends Component {
           </legend>
           <div className="row">
             <form className="form-horizontal" onSubmit={handleSubmit(this.onSubmit)}>
-              <Field component={InputRow} type="text" label="Título" name="title" />
-              <Field component={InputRow} type="text" label="Nombre" name="name" />
-              <Field component={InputRow} type="text" label="Lugar" name="place" />
-              <Field component={InputRow} type="text" label="País" name="country" />
-              <Field component={RGMDefaultDatePicker} type="text" label="Fecha de inicio" name="startDate" />
-              <Field component={RGMDefaultDatePicker} type="text" label="Fecha de fin" name="endDate" />
-              <Field component={RGMDefaultSelect} onChange={this.onStateChange.bind(this)} dataSelected={stateValue} selectableData={publicationStates} type="select" label="Estado" name="status" />
-              <Field component={RGMDefaultSelect} onChange={this.onTypeChange.bind(this)} dataSelected={typeValue} selectableData={congressTypes} type="select" label="Tipo" name="type" />
+              <Field component={InputRow} type="text" label="Título" name="title" disabled={!editable} />
+              <Field component={InputRow} type="text" label="Nombre" name="name" disabled={!editable} />
+              <Field component={InputRow} type="text" label="Lugar" name="place" disabled={!editable} />
+              <Field component={InputRow} type="text" label="País" name="country" disabled={!editable} />
+              <Field component={RGMDefaultDatePicker} type="text" label="Fecha de inicio" name="startDate" disabled={!editable} />
+              <Field component={RGMDefaultDatePicker} type="text" label="Fecha de fin" name="endDate" disabled={!editable} />
+              <Field component={RGMDefaultSelect} disabled={!editable} onChange={this.onStateChange.bind(this)} dataSelected={stateValue} selectableData={publicationStates} type="select" label="Estado" name="status" />
+              <Field component={RGMDefaultSelect} disabled={!editable} onChange={this.onTypeChange.bind(this)} dataSelected={typeValue} selectableData={congressTypes} type="select" label="Tipo" name="type" />
               <div className="form-group">
-                <CheckBox name="international" text="Internacional" />
+                <CheckBox name="international" disabled={!editable} text="Internacional" />
               </div>
 
               <RGMAuthorsTable
                 headers={headers}
                 fields={fields}
                 authors={this.props.authors}
+
+                insertable={editable}
+                removable={editable}
 
                 selectedAuthors={this.state.authors}
                 selectedAuthor={this.state.selectedAuthor}
@@ -222,8 +227,10 @@ class CongressDetail extends Component {
                 onDelete={(i) => this.onDeleteRow(i)}
               />
 
-              <FormButtons canDelete={this.isUpdate()} saveText="Guardar" cancelText="Cancelar" deleteText="Eliminar"
-                cancelAction={this.handleCancel} deleteAction={this.handleDelete} offset="1" />
+              { editable &&
+                <FormButtons canDelete={this.isUpdate()} saveText="Guardar" cancelText="Cancelar" deleteText="Eliminar"
+                  cancelAction={this.handleCancel} deleteAction={this.handleDelete} offset="1" />
+              }
             </form>
           </div>
         </div>
@@ -242,6 +249,7 @@ CongressDetail.propTypes = {
 
   // Variables de control
   isFetching: PropTypes.bool,
+  editable: PropTypes.bool,
   errorHappened: PropTypes.string,
   success: PropTypes.string,
 
@@ -273,6 +281,9 @@ var form = reduxForm({
 
 let mapStateToProps = store => {
   return {
+    editable: store.sessionState.user.admin ||
+      (store.congressState.activeCongress.id ? store.congressState.activeCongress.authors.find(a => a.researcherId === store.sessionState.user.userId) && true : false),
+
     // Datos
     congress: store.congressState.activeCongress,
     authors: store.researcherState.researchers.length === 0 ? store.authorState.authors : store.authorState.authors.map(a => {

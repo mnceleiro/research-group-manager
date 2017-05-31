@@ -41,9 +41,11 @@ class BookTable extends Component {
         <div className="project-table">
           {this.renderFlashMessage()}
           <br />
-          <div className="panel-right">
-            <Link to="/books/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo libro</button></Link>
-          </div>
+          { this.props.creatable &&
+            <div className="panel-right">
+              <Link to="/books/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo libro</button></Link>
+            </div>
+          }
           <RGMDefaultTable headers={headers} fields={fields} data={this.props.books} editable={editable} onEdit={this.props.onBookEdit} editLink="books/edit/" />
         </div>
       )
@@ -62,14 +64,16 @@ BookTable.propTypes = {
   location: PropTypes.object,
   table: PropTypes.object,
 
-  isFetching: PropTypes.bool
+  isFetching: PropTypes.bool,
+  creatable: PropTypes.bool
 }
 
 let mapStateToProps = store => {
   return {
     books: store.bookState.objects,
     table: store.bookState.table,
-    isFetching: store.bookState.isFetching
+    isFetching: store.bookState.isFetching,
+    creatable: store.sessionState.user.admin
   }
 }
 

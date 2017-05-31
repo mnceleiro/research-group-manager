@@ -6,10 +6,14 @@ import RGMMainTable from "../app_generic/RGMMainTable"
 
 let mapStateToProps = store => {
   return {
+    creatable: store.sessionState.user.admin,
     objects: store.authorState.authors.map(a => {
       const r = store.researcherState.researchers.find(r => r.id === a.researcherId)
 
-      if (r) return Object.assign({}, a, { researcherDesc: r.firstName + " " + r.lastName})
+      // if (r) return Object.assign({}, a, { researcherDesc: r.firstName + " " + r.lastName, editText: store.sessionState.user.admin || (a.researcherId === store.sessionState.user.userId ? "Editar" : "Ver")})
+      // else if (store.sessionState.user.admin) return Object.assign({}, a, { editText: "Editar" })
+      // else return Object.assign({}, a, { editText: "Ver"})
+      if (r) return Object.assign({}, a, { researcherDesc: r.firstName + " " + r.lastName })
       else return a
 
     }),

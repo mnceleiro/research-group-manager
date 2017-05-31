@@ -33,33 +33,19 @@ class ProjectTable extends Component {
   }
 
   render() {
-    // let headers = ["Código", "Título", "Fecha de Inicio", "Fecha de fin", "Presupuesto", "Investigadores"]
-    // let fields = ["code", "title", "startDate", "endDate", "budget", "researcherCount"]
-    // let editable = true
-    // let data = this.props.projects
     let { headers, fields, editable } = this.props.table
 
     if (!this.props.isFetching) {
-      // return (
-      //   <div className="project-table">
-      //     {this.renderFlashMessage()}
-      //     <br />
-      //     <div className="panel-right">
-      //       <Link to="/projects/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo Proyecto</button></Link>
-      //     </div>
-      //     <div className="table-responsive">
-      //       <ProjectList list={this.props.projects} onProjectEdit={this.props.onProjectEdit} />
-      //     </div>
-      //   </div>
-      // )
 
       return (
         <div className="project-table">
           {this.renderFlashMessage()}
           <br />
-          <div className="panel-right">
-            <Link to="/projects/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo Proyecto</button></Link>
-          </div>
+          { this.props.creatable &&
+            <div className="panel-right">
+              <Link to="/projects/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo Proyecto</button></Link>
+            </div>
+          }
           <RGMDefaultTable headers={headers} fields={fields} data={this.props.projects} editable={editable} onEdit={this.props.onProjectEdit} editLink="/projects/edit/" />
         </div>
       )
@@ -77,14 +63,16 @@ ProjectTable.propTypes = {
 
   location: PropTypes.object,
   table: PropTypes.object,
-  isFetching: PropTypes.bool
+  isFetching: PropTypes.bool,
+  creatable: PropTypes.bool
 }
 
 let mapStateToProps = store => {
   return {
     projects: store.projectState.projects,
     table: store.projectState.table,
-    isFetching: store.projectState.isFetching
+    isFetching: store.projectState.isFetching,
+    creatable: store.sessionState.user.admin
   }
 }
 

@@ -1,3 +1,7 @@
+# Users schema
+
+# --- !Ups
+
 CREATE TABLE ROLE (
   id bigint(20) NOT NULL,
   description varchar(100) NOT NULL,
@@ -148,10 +152,10 @@ CREATE TABLE AUTHOR_CONGRESS (
 
 CREATE TABLE BOOK (
   id bigint(20) NOT NULL AUTO_INCREMENT,
-  code varchar(255),
+  code varchar(100),
   title varchar(255) NOT NULL,
   book varchar(255) NOT NULL,
-  volume varchar(20),
+  volume varchar(25),
   start_page bigint(20),
   end_page bigint(20),
   year bigint(20),
@@ -245,5 +249,5 @@ INSERT INTO FIELD (id, description) VALUES (3, 'INGENIERÍA NAVAL');
 INSERT INTO FIELD (id, description) VALUES (4, 'INTELIGENCIA ARTIFICIAL');
 INSERT INTO FIELD (id, description) VALUES (5, 'INGENIERÍA CIVIL');
 
-INSERT INTO USER (email, password, admin, access) VALUES ('mnceleiro@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 1, 1);
-INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Marcos', 'Núñez Celeiro', 'Calle Empanada de Zorza nº5', '9825312121', 1);
+INSERT INTO USER (email, password, admin, access) VALUES ('admin@admin.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', TRUE, TRUE);
+INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('NombreAdmin', 'ApellidosAdmin', 'DireccionAdmin', '999999999', 1);

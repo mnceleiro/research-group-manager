@@ -41,9 +41,11 @@ class CongressTable extends Component {
         <div className="project-table">
           {this.renderFlashMessage()}
           <br />
-          <div className="panel-right">
-            <Link to="/congresses/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo congreso</button></Link>
-          </div>
+          { this.props.creatable && 
+            <div className="panel-right">
+              <Link to="/congresses/new"><button className="btn rgm-btn-primary rgm-btn-lg">Nuevo congreso</button></Link>
+            </div>
+          }
           <RGMDefaultTable headers={headers} fields={fields} data={this.props.congresses} editable={editable} onEdit={this.props.onCongressEdit} editLink="congresses/edit/" />
         </div>
       )
@@ -62,14 +64,16 @@ CongressTable.propTypes = {
   location: PropTypes.object,
   table: PropTypes.object,
 
-  isFetching: PropTypes.bool
+  isFetching: PropTypes.bool,
+  creatable: PropTypes.bool
 }
 
 let mapStateToProps = store => {
   return {
     congresses: store.congressState.congresses,
     table: store.congressState.table,
-    isFetching: store.congressState.isFetching
+    isFetching: store.congressState.isFetching,
+    creatable: store.sessionState.user.admin
   }
 }
 

@@ -3,6 +3,7 @@ import {
   LOGOUT_SUCCESS, SET_SESSION_DATA
 } from "../constants/actionTypes"
 
+import { BASE_URL } from "../constants/config"
 import { sessionUtils } from "../utils/SessionUtils"
 
 export function doLogin(credentials) {
@@ -15,13 +16,11 @@ export function doLogin(credentials) {
   return dispatch => {
     dispatch(requestLogin(credentials))
 
-    return fetch("users/login", config)
+    return fetch(`${BASE_URL}users/login`, config)
       .then(response =>
         response.json().then(user => ({ user, response }))
       ).then(({ user, response }) =>  {
         if (!response.ok || user.res) {
-          // If there was a problem, we want to
-          // dispatch the error condition
           if (!response.ok) {
             dispatch(loginError(user.message))
             return Promise.reject(user)
@@ -29,15 +28,10 @@ export function doLogin(credentials) {
           } else if (user.res) dispatch(loginError(user.description))
 
         } else {
-          // If login was successful, set the token in local storage
           sessionUtils.setData(JSON.stringify(user))
-          //localStorage.setItem("current_user", JSON.stringify(user))
-
-          // Dispatch the success action
           dispatch(receiveLogin(user))
         }
-      })/*.catch(err => console.log("Error: ", err))*/
-      // .catch (err => { debugger; dispatch(loginError(err.Message)) })
+      })
   }
 }
 

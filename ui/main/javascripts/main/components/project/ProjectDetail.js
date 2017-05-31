@@ -12,7 +12,7 @@ import { fetchResearchers } from "../../actions/researcher-actions"
 import { InputRow } from "../html_extended/InputRow"
 import { RGMDefaultDatePicker } from "../html_extended/DatePicker"
 // import { RGMDefaultSelect } from "../html_extended/Select"
-import { AuthorModalForm } from "./AuthorModalForm"
+// import { AuthorModalForm } from "./AuthorModalForm"
 import { FormButtons } from "../html_extended/FormButtons"
 import RGMAuthorsTable from "../app_generic/RGMAuthorsTable"
 
@@ -28,9 +28,7 @@ class ProjectDetail extends Component {
     this.handleRemove = this.handleRemove.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
 
-    // this.onSaveAuthor = this.onSaveAuthor.bind(this)
     this.onDeleteRow = this.onDeleteRow.bind(this)
-    // this.onClickEditRow = this.onClickEditRow.bind(this)
 
     this.state = {
       selectedAuthor: null,
@@ -101,7 +99,7 @@ class ProjectDetail extends Component {
     project.authors = this.state.authors
 
     if (this.isUpdate()) {
-      var toSend = Object.assign({}, project, { id: this.props.params.key })
+      var toSend = Object.assign({}, project, { id: parseInt(this.props.params.key) })
       toSend.authors = this.state.authors
       this.props.updateProject(toSend)
 
@@ -111,11 +109,6 @@ class ProjectDetail extends Component {
       this.props.addProject(toSend)
     }
   }
-
-  // onSaveAuthor(o) {
-  //   this.props.editAuthorFromProject(o)
-  //   this.forceUpdate()
-  // }
 
   onAddAuthor() {
     if (this.state.selectedAuthor && this.state.selectedRole) {
@@ -173,12 +166,12 @@ class ProjectDetail extends Component {
   }
 
   render() {
-    const { handleSubmit, isFetching } = this.props
+    const { handleSubmit, isFetching, editable } = this.props
 
     const headers = ["Email", "Autor", "rol", "Investigador asociado"]
     const fields = ["email", "signature", "roleDesc", "researcherDesc"]
 
-    if (isFetching || this.props.roles.length === 0) {
+    if (isFetching || this.props.roles.length === 0 || (this.isUpdate() && !this.props.activeProject.obj)) {
       return (<LoadingModal isOpen={this.props.isFetching} />)
 
     } else {
@@ -203,16 +196,19 @@ class ProjectDetail extends Component {
           </legend>
           <div className="row">
             <form className="form-horizontal" onSubmit={handleSubmit(this.onSubmit)}>
-              <Field component={InputRow} type="text" label="Codigo" name="code" />
-              <Field component={InputRow} type="text" label="Titulo" name="title" />
-              <Field component={RGMDefaultDatePicker} type="text" label="Fecha de inicio" name="startDate" />
-              <Field component={RGMDefaultDatePicker} type="text" label="Fecha de fin" name="endDate" />
-              <Field component={InputRow} type="number" label="Presupuesto" name="budget" />
+              <Field component={InputRow} type="text" label="Codigo" name="code" disabled={!editable} />
+              <Field component={InputRow} type="text" label="Titulo" name="title" disabled={!editable} />
+              <Field component={RGMDefaultDatePicker} type="text" label="Fecha de inicio" name="startDate" disabled={!editable} />
+              <Field component={RGMDefaultDatePicker} type="text" label="Fecha de fin" name="endDate" disabled={!editable} />
+              <Field component={InputRow} type="number" label="Presupuesto" name="budget" disabled={!editable} />
 
               <RGMAuthorsTable
                 headers={headers}
                 fields={fields}
                 authors={this.props.authors}
+
+                insertable={editable}
+                removable={editable}
 
                 selectedAuthors={this.state.authors}
                 selectedAuthor={this.state.selectedAuthor}
@@ -225,17 +221,17 @@ class ProjectDetail extends Component {
 
                 roles={this.props.roles.map(x => { return {"label": x.description, "value": x.id} })}
               />
-
-              <FormButtons canDelete={this.isUpdate()} saveText="Guardar" cancelText="Cancelar" deleteText="Eliminar proyecto"
-                cancelAction={this.handleCancel} deleteAction={this.handleRemove} offset="1" />
-
+              {editable &&
+                <FormButtons canDelete={this.isUpdate()} saveText="Guardar" cancelText="Cancelar" deleteText="Eliminar proyecto"
+                  cancelAction={this.handleCancel} deleteAction={this.handleRemove} offset="1" />
+              }
             </form>
           </div>
 
-          <AuthorModalForm roles={this.props.roles} author={this.state.editingAuthor} researchers={this.props.researchers} authors={this.props.authors} onSaveAuthor={(i,o) => this.onSaveAuthor(i, o)}/>
         </div>
       )
     }
+    // <AuthorModalForm roles={this.props.roles} author={this.state.editingAuthor} researchers={this.props.researchers} authors={this.props.authors} onSaveAuthor={(i,o) => this.onSaveAuthor(i, o)}/>
   }
 }
 
@@ -250,6 +246,7 @@ ProjectDetail.propTypes = {
   errorHappened: PropTypes.string,
   success: PropTypes.string,
   isFetching: PropTypes.bool,
+  editable: PropTypes.bool,
 
   activeProject: PropTypes.object,
   activeAuthor: PropTypes.object,
@@ -267,6 +264,8 @@ ProjectDetail.propTypes = {
 
 let mapStateToProps = store => {
   return {
+    editable: store.sessionState.user.admin ||
+      (store.projectState.activeProject.obj ? store.projectState.activeProject.obj.authors.find(a => a.researcherId === store.sessionState.user.userId) && true : false),
     activeProject: store.projectState.activeProject,
     activeAuthor: store.projectState.activeAuthor,
     project: store.projectState.activeProject.id === 0 ? {} : store.projectState.projects.find(o => {
@@ -307,18 +306,7 @@ let mapDispatchToProps = (dispatch) => {
     },
     fetchResearchers: () => {
       dispatch(fetchResearchers())
-    },
-
-    // Acciones de edicion de autores
-    // addAuthorToCurrentProject: (a) => {
-    //   dispatch(addAuthorToCurrentProject(a))
-    // },
-    // editAuthorFromProject: (o) => {
-    //   dispatch(editAuthorFromProject(o))
-    // },
-    // deleteAuthorFromProject: (i) => {
-    //   dispatch(deleteAuthorFromProject(i))
-    // }
+    }
   }
 }
 

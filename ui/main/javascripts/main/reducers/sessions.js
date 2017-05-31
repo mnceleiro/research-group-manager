@@ -40,7 +40,7 @@ export default function authentication(state = initialState, action) {
     sessionUtils.logout()
     return Object.assign({}, state, {
       isFetching: false,
-      isAuthenticated: false
+      isAuthenticated: sessionUtils.isAuthenticated()
     })
 
   case SET_SESSION_DATA:

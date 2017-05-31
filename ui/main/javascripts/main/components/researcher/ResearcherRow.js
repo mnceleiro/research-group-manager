@@ -11,7 +11,7 @@ class ResearcherRow extends Component {
         <td>{this.props.address}</td>
         <td>{this.props.phone}</td>
         <td>{this.props.email}</td>
-        <td><Link to={"/researchers/edit/" + this.props.id}><button onClick={() => this.props.onResearcherEdit(this.props.id)} className="btn rgm-btn-primary">Editar</button></Link></td>
+        <td><Link to={"/researchers/edit/" + this.props.id}><button onClick={() => this.props.onResearcherEdit(this.props.id)} className="btn rgm-btn-primary">{this.props.btnText}</button></Link></td>
       </tr>
     )
   }
@@ -25,6 +25,7 @@ ResearcherRow.propTypes = {
   address: PropTypes.string.isRequired,
   phone: PropTypes.string.isRequired,
 
+  btnText: PropTypes.string.isRequired,
   onResearcherEdit: PropTypes.func
 }
 

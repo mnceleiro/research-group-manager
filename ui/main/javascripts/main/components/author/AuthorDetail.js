@@ -93,7 +93,7 @@ class AuthorDetail extends Component {
     if (this.isUpdate()) {
       return (
         <div className="col-md-2">
-          <input type="button" id="btnRemoveAuthor" className="btn rgm-btn-default rgm-btn-lg" value="Eliminar investigador" onClick={this.handleRemove} />
+          <input type="button" id="btnRemoveAuthor" className="btn rgm-btn-default rgm-btn-lg" value="Eliminar autor" onClick={this.handleRemove} />
         </div>
       )
     } else return ""
@@ -132,7 +132,7 @@ class AuthorDetail extends Component {
   }
 
   render() {
-    const { handleSubmit, isFetching } = this.props
+    const { handleSubmit, isFetching, editable } = this.props
 
     if (isFetching) {
       return <LoadingModal isOpen={this.props.isFetching} />
@@ -158,12 +158,13 @@ class AuthorDetail extends Component {
         </legend>
         <div className="row">
           <form className="form-horizontal" onSubmit={handleSubmit(this.onSubmit)}>
-            <Field onChange={this.onChange.bind(this)} component={InputRow} type="email" label="Email" name="email" id="email" />
-            <Field onChange={this.onChange.bind(this)} component={InputRow} type="text" label="signature" name="signature" id="signature" />
+            <Field onChange={this.onChange.bind(this)} component={InputRow} type="email" label="Email" name="email" id="email" disabled={!editable} />
+            <Field onChange={this.onChange.bind(this)} component={InputRow} type="text" label="signature" name="signature" id="signature" disabled={!editable} />
             <Field component={RGMDefaultSelect}
               onChange={this.onResearcherSelected.bind(this)}
               dataSelected={resValue}
               selectableData={selectableResearchers}
+              disabled={!editable}
               label="Investigador asociado"
               name="researcherDesc"
               type="select"
@@ -184,10 +185,12 @@ class AuthorDetail extends Component {
              <div className="space-bottom-medium"></div>
            </div>
 
-          <div className="form-group">
+           { editable &&
+             <div className="form-group">
               {saveCancel}
               {this.renderRemoveButton()}
             </div>
+          }
           </form>
         </div>
       </div>
@@ -205,7 +208,7 @@ class AuthorDetail extends Component {
         alert ("Ha introducido el email de otro autor.")
         return
       }
-      let toSend = Object.assign({}, au, { id: this.props.params.key, researcherId: this.state.selectedResearcher })
+      let toSend = Object.assign({}, au, { id: parseInt(this.props.params.key), researcherId: this.state.selectedResearcher })
       this.props.updateAuthor(toSend)
     } else {
 
@@ -238,6 +241,7 @@ AuthorDetail.propTypes = {
   deletedAuthor: PropTypes.object,
 
   isFetching: PropTypes.bool,
+  editable: PropTypes.bool,
 
   handleSubmit: PropTypes.func,
   dispatch: PropTypes.func,
@@ -251,6 +255,8 @@ AuthorDetail.propTypes = {
 
 let mapStateToProps = store => {
   return {
+    editable: store.sessionState.user.admin || (store.authorState.activeAuthor.researcher ? store.authorState.activeAuthor.researcher.id === store.sessionState.user.userId : false),
+
     selectableResearchers: store.researcherState.researchers.filter(r => {
       const found = store.authorState.authors.find(a => r.id === a.researcherId)
       if (found) return false

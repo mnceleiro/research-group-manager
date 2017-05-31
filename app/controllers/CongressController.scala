@@ -21,6 +21,7 @@ import vos.ResearcherVO
 import models.entities.AuthorCongress
 import play.api.i18n.MessagesApi
 import play.api.i18n.I18nSupport
+import models.entities.User
 
 class CongressController @Inject() (
     congressRepo: CongressRepository,

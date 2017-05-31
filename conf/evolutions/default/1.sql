@@ -249,10 +249,10 @@ INSERT INTO FIELD (id, description) VALUES (3, 'INGENIERÍA NAVAL');
 INSERT INTO FIELD (id, description) VALUES (4, 'INTELIGENCIA ARTIFICIAL');
 INSERT INTO FIELD (id, description) VALUES (5, 'INGENIERÍA CIVIL');
 
-INSERT INTO USER (email, password, admin, access) VALUES ('mnceleiro@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', TRUE, TRUE);
+INSERT INTO USER (email, password, admin, access) VALUES ('mnceleiro@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 1, 1);
 
 INSERT INTO USER (email, password, admin, access) VALUES ('ocanellas@gmail.com','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 0, 0);
-INSERT INTO USER (email, password, admin, access) VALUES ('dmritchie@yahoo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 1, 1);
+INSERT INTO USER (email, password, admin, access) VALUES ('dmritchie@yahoo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 0, 1);
 INSERT INTO USER (email, password, admin, access) VALUES ('ltorval@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 1, 1);
 INSERT INTO USER (email, password, admin, access) VALUES ('mrjato@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 0, 1);
 

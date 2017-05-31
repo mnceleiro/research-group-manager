@@ -1,19 +1,14 @@
 import * as types from "../constants/actionTypes"
 
+import { logoutUser } from "./login-actions"
+
 import { sessionUtils } from "../utils/SessionUtils"
 import { BASE_URL } from "../constants/config"
-
-// alert(sessionUtils.getAuthString())
-//import apiGet from "../api/api"
 
 export const showAllResearchers = (researcherList) => ({
   type: types.SHOW_ALL_RESEARCHERS,
   data: researcherList
 })
-
-// export const createResearcher = () => ({
-//   type: types.CREATE_RESEARCHER
-// })
 
 export const editResearcher = (id) => ({
   type: types.EDIT_RESEARCHER,
@@ -23,8 +18,6 @@ export const editResearcher = (id) => ({
 export function fetchResearchers() {
   return function (dispatch) {
     dispatch(requestResearchers())
-    // debugger
-    // return apiGet("researchers/all", receiveResearchers => { dispatch(receiveResearchers) })
 
     var request = new Request(BASE_URL + "researchers/all", {
       headers: new Headers({
@@ -33,7 +26,7 @@ export function fetchResearchers() {
     })
     return fetch(request)
       .then(resp => {
-        if (resp.status === 401) sessionUtils.logout()
+        if (resp.status === 401) { dispatch(logoutUser()) }
         else return resp.json()
       })
       .then(researchersJson => {
@@ -53,7 +46,7 @@ export function fetchResearcherById(id) {
     })
     return fetch(request)
       .then(resp => {
-        if (resp.status === 401) sessionUtils.logout()
+        if (resp.status === 401) dispatch(logoutUser())
         return resp.json()
       })
       .then(researcherJson => {
@@ -77,18 +70,20 @@ export function addResearcher(r) {
       method: "POST",
       body: JSON.stringify(r)
 
-    }).then(resp => {return resp.json() })
-      .then(researcherJson => {
-        if (researcherJson.res === "error") {
-          alert(JSON.stringify(researcherJson))
-          dispatch(addResearcherError(researcherJson.res))
-        } else {
-          dispatch(addResearcherSuccess(researcherJson))
-        }
+    }).then(response => {
+      if (response.status === 401) { dispatch(logoutUser()) }
+      return response.json()
+    }).then(researcherJson => {
+      if (researcherJson.res === "error") {
+        alert(JSON.stringify(researcherJson))
+        dispatch(addResearcherError(researcherJson.res))
+      } else {
+        dispatch(addResearcherSuccess(researcherJson))
+      }
 
-      }).catch(error => {
-        dispatch(addResearcherError(error))
-      })
+    }).catch(error => {
+      dispatch(addResearcherError(error))
+    })
   }
 }
 
@@ -107,17 +102,20 @@ export function updateResearcher(r) {
       method: "POST",
       body: JSON.stringify(r)
 
-    }).then(resp => {return resp.json() })
-      .then(researcherJson => {
-        if (researcherJson.res === "error") {
-          dispatch(updateResearcherError(researcherJson.res))
-        } else {
-          dispatch(updateResearcherSuccess(researcherJson))
-        }
+    }).then(resp => {
+      if (resp.status === 401) { dispatch(logoutUser()) }
+      return resp.json()
 
-      }).catch(error => {
-        dispatch(updateResearcherError(error))
-      })
+    }).then(researcherJson => {
+      if (researcherJson.res === "error") {
+        dispatch(updateResearcherError(researcherJson.res))
+      } else {
+        dispatch(updateResearcherSuccess(researcherJson))
+      }
+
+    }).catch(error => {
+      dispatch(updateResearcherError(error))
+    })
   }
 }
 
@@ -138,7 +136,7 @@ export function deleteResearcher(r) {
 
     }).then(response => {
       if (response.status !== 200) {
-        if (response.status === 401) sessionUtils.logout()
+        if (response.status === 401) { dispatch(logoutUser()) }
         dispatch(deleteResearcherError("No es posible eliminar el investigador."))
       }
       else dispatch(deleteResearcherSuccess(response, r))

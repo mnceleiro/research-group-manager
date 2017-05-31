@@ -21,10 +21,8 @@ export default class RGMAuthorsTable extends Component {
 
   render() {
     const { headers, fields, onInsert, onInsertSelection, onRoleSelection, onEdit, onDelete, authors, roles, selectedAuthors, selectedAuthor, selectedRole } = this.props
-
-    let editable = this.props.editable || false
-    let insertable = this.props.insertable || (onInsert && onInsertSelection) ? true : false
-    let removable = this.props.removable || onDelete ? true : false
+    let insertable = this.props.insertable || false
+    let removable = this.props.removable || false
 
     return (
       <div>
@@ -64,7 +62,7 @@ export default class RGMAuthorsTable extends Component {
 
         <div className="row space-bottom-small">
           <div className="col-md-offset-1 col-md-10">
-            <RGMInlineTable headers={headers} fields={fields} data={selectedAuthors} editable={editable} removable={removable} onClickEdit={onEdit} onDelete={onDelete} />
+            <RGMInlineTable headers={headers} fields={fields} data={selectedAuthors} removable={removable} onClickEdit={onEdit} onDelete={onDelete} />
           </div>
         </div>
       </div>
@@ -79,7 +77,6 @@ RGMAuthorsTable.propTypes = {
   fields: PropTypes.array,
 
   insertable: PropTypes.bool,
-  editable: PropTypes.bool,
   removable: PropTypes.bool,
 
   onInsert: PropTypes.func,

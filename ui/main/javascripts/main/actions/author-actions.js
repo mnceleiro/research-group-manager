@@ -1,5 +1,7 @@
 import * as types from "../constants/actionTypes"
 
+import { logoutUser } from "./login-actions"
+
 import { sessionUtils } from "../utils/SessionUtils"
 import { BASE_URL } from "../constants/config"
 
@@ -81,18 +83,21 @@ export function addAuthor(r) {
       method: "POST",
       body: JSON.stringify(r)
 
-    }).then(resp => {return resp.json() })
-      .then(authorJson => {
-        if (authorJson.res === "error") {
-          alert(JSON.stringify(authorJson))
-          dispatch(addAuthorError(authorJson.res))
-        } else {
-          dispatch(addAuthorSuccess(authorJson))
-        }
+    }).then(resp => {
+      if (resp.status === 401) dispatch(logoutUser())
+      return resp.json()
 
-      }).catch(error => {
-        dispatch(addAuthorError(error))
-      })
+    }).then(authorJson => {
+      if (authorJson.res === "error") {
+        alert(JSON.stringify(authorJson))
+        dispatch(addAuthorError(authorJson.res))
+      } else {
+        dispatch(addAuthorSuccess(authorJson))
+      }
+
+    }).catch(error => {
+      dispatch(addAuthorError(error))
+    })
   }
 }
 
@@ -131,17 +136,20 @@ export function updateAuthor(r) {
       method: "POST",
       body: JSON.stringify(r)
 
-    }).then(resp => {return resp.json() })
-      .then(authorJson => {
-        if (authorJson.res === "error") {
-          dispatch(updateAuthorError(authorJson.res))
-        } else {
-          dispatch(updateAuthorSuccess(authorJson))
-        }
+    }).then(resp => {
+      if (resp.status === 401) dispatch(logoutUser())
+      return resp.json()
 
-      }).catch(error => {
-        dispatch(updateAuthorError(error))
-      })
+    }).then(authorJson => {
+      if (authorJson.res === "error") {
+        dispatch(updateAuthorError(authorJson.res))
+      } else {
+        dispatch(updateAuthorSuccess(authorJson))
+      }
+
+    }).catch(error => {
+      dispatch(updateAuthorError(error))
+    })
   }
 }
 
@@ -181,6 +189,7 @@ export function deleteAuthor(r) {
       body: JSON.stringify(r)
 
     }).then(response => {
+      if (response.status === 401) dispatch(logoutUser())
       dispatch(deleteAuthorSuccess(response, r))
     })
   }

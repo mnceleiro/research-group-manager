@@ -1,9 +1,9 @@
-import React from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router"
 // import ReactDOM from "react-dom"
 
-export default class RGMDefaultTable extends React.Component {
+export default class RGMDefaultTable extends Component {
 
   constructor(props) {
     super(props)
@@ -16,7 +16,7 @@ export default class RGMDefaultTable extends React.Component {
     let htmlFields = editable ? [...fields, "html_editable"] : [...fields]
 
     let htmlData = data.map(o => {
-      if (editable) o.html_editable = <Link to={this.props.editLink + o.id}><button className="btn rgm-btn-primary">Editar</button></Link>
+      if (editable) o.html_editable = <Link to={this.props.editLink + o.id}><button className="btn rgm-btn-primary">{o.editText || "Detalle"}</button></Link>
       return (
         <tr key={o.id}>
           {

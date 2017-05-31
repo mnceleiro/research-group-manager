@@ -2,6 +2,8 @@ import * as types from "../constants/actionTypes"
 import { sessionUtils } from "../utils/SessionUtils"
 import { BASE_URL } from "../constants/config"
 
+import { logoutUser } from "./login-actions"
+
 export function fetchCongresses() {
   return function (dispatch) {
     dispatch(requestCongresses())
@@ -54,7 +56,7 @@ export function addCongress(r) {
       method: "POST",
       body: JSON.stringify(r)
 
-    }).then(resp => {return resp.json() })
+    }).then(resp => { if (resp.status === 401) dispatch(logoutUser()); return resp.json() })
       .then(congressJson => {
         if (congressJson.res === "error") {
           alert(JSON.stringify(congressJson))
@@ -84,7 +86,7 @@ export function updateCongress(r) {
       method: "POST",
       body: JSON.stringify(r)
 
-    }).then(resp => {return resp.json() })
+    }).then(resp => {if (resp.status === 401) dispatch(logoutUser()); return resp.json() })
       .then(congressJson => {
         if (congressJson.res === "error") {
           dispatch(updateCongressError(congressJson))
@@ -113,6 +115,7 @@ export function deleteCongress(r) {
       body: JSON.stringify(r)
 
     }).then(response => {
+      if (response.status === 401) dispatch(logoutUser())
       dispatch(deleteCongressSuccess(response, r))
 
     }).catch(error => {

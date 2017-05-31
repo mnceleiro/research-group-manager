@@ -30,6 +30,7 @@ class AuthorCongressTable(tag: Tag) extends Table[AuthorCongress](tag, "AUTHOR_C
 class AuthorCongressRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
 	val authorsCongresses = TableQuery[AuthorCongressTable]
 
+	val researchers = TableQuery[ResearcherTable]
 	val authors = TableQuery[AuthorTable]
   val congresses = TableQuery[CongressTable]
   
@@ -51,6 +52,31 @@ class AuthorCongressRepository @Inject()(dbConfigProvider: DatabaseConfigProvide
     
     return mappedQuery
   }
+	
+//	def getAuthorWithCongressesByResearcherId(id: Long) = {
+//	  val join = (for {
+//	    (((r,a), ac), c) <- researchers.filter(_.id === id) joinLeft authors on (_.id === _.resId) joinLeft authorsCongresses on(_._2.map(_.id) === _.authorId) joinLeft congresses on (_._2.map(_.congressId) === _.id)
+//	  } yield (r, a, ac, c) )
+//	  
+//	  dbConfig.db.run(join)
+//	}
+	
+//	def checkAuthorHasCongress(resId: Long, congressId: Long): Future[Seq[(Author, Option[AuthorCongress])]] = {
+//	  val join = (for {
+//	    x <- authors.filter(_.resId === resId) joinLeft authorsCongresses.filter(_.congressId === congressId) on(_.id === _.authorId)
+//	  } yield (x._2) ).result.transactionally
+//	  
+//	  dbConfig.db.run(join)
+//	}
+	
+	def checkAuthorHasCongress(resId: Long, congressId: Long): Future[Option[Option[Long]]] = {
+	  val join = (for {
+	    x <- authorsCongresses.filter(x => x.congressId === congressId && x.authorId === resId)
+	    x <- authorsCongresses.filter(x => x.congressId === congressId && x.authorId === resId)
+	  } yield (x.id) ).result.headOption.transactionally
+	  
+	  dbConfig.db.run(join)
+	}
 
   def saveCongress(congress: Congress, aps: Seq[AuthorCongress], as: Seq[Author]) = {
     val authorIds = as.map(x => x.id)

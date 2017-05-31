@@ -9,10 +9,16 @@ export const showNotificationBetweenDates = (title, entity, type, start) => {
   if (type === "start") typeMsg = " SE INICIARÁ EL DÍA "
   else if (type === "end") typeMsg = " FINALIZARÁ EL DÍA "
   else typeMsg = " TENDRÁ LUGAR EL DÍA "
+
+  let entityDesc = "evento"
+  if (entity === "project") entityDesc = "proyecto"
+  else if (entity === "congress") entityDesc = "congreso"
+
+
   new PNotify({
     title: "Aviso de próximos eventos",
     // text: "El evento " + title + typeMsg + moment(start, "DD/MM/YYYY").locale("es").format("L") + " y el " + moment(end, "DD/MM/YYYY").locale("es").format("L"),
-    text: "El evento " + title + typeMsg + "<strong>" + moment(start, "DD/MM/YYYY").locale("es").format("L") + "</strong>",
+    text: "El " + entityDesc + " " + title + typeMsg + "<strong>" + moment(start, "DD/MM/YYYY").locale("es").format("L") + "</strong>",
     delay: 7000
   })
 }

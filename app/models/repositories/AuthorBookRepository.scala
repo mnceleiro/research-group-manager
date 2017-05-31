@@ -33,6 +33,15 @@ class AuthorBookRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
   val books = TableQuery[BookTable]
   
   val dbConfig = dbConfigProvider.get[JdbcProfile]
+	
+	def checkAuthorHasBook(resId: Long, bookId: Long): Future[Option[Option[Long]]] = {
+	  val join = (for {
+	    x <- authorsBooks.filter(x => x.bookId === bookId && x.authorId === resId)
+	    x <- authorsBooks.filter(x => x.bookId === bookId && x.authorId === resId)
+	  } yield (x.id) ).result.headOption.transactionally
+	  
+	  dbConfig.db.run(join)
+	}
   
   def getBook(id: Long): Future[Seq[(Book, Option[AuthorBook], Option[Author])]] = {
     val applicativeJoin = for {
