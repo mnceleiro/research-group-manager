@@ -1,13 +1,6 @@
 import moment from "moment"
 
 export default class DateUtils {
-  // static get CIRCLE() {
-  //   return 1
-  // }
-  // static get SQUARE() {
-  //   return 2
-  // }
-
   static isValid(d) {
     return d && moment(d, "DD/MM/YYYY").isValid()
   }

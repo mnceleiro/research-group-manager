@@ -26,7 +26,6 @@ class AuthorTable(tag: Tag) extends Table[Author](tag, "AUTHOR") {
   def signature = column[String]("signature")
   
   def resId = column[Option[Long]]("res_id")
-//  def researcher = foreignKey("RESEARCHER_FK", resId, authors)(_.id.?, onUpdate=ForeignKeyAction.Restrict, onDelete=ForeignKeyAction.Cascade)
   
   override def * = (id, email, signature, resId) <> ((Author.apply _).tupled, Author.unapply)
 }
@@ -81,10 +80,6 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
   def getComplete(id: Long): Future[Option[(Author, Option[Researcher])]] = {
     val join = for {
       (x)   <- (authors.filter(_.id === id) joinLeft researchers on (_.resId === _.id)).result.headOption
-      
-//      congress   <- authorsCongresses.filter(_.authorId === id) joinLeft congresses on (_.congressId === _.id)
-//      project    <- authorsProjects.filter(_.authorId === id) joinLeft projects on (_.projectId === _.id)
-//      book       <- authorsBooks.filter(_.authorId === id) joinLeft books on (_.bookId === _.id)
       
     } yield (x.map(x => (x._1, x._2)))
 

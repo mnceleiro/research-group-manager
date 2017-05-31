@@ -18,15 +18,12 @@ class JWTUtils {
   }
 
   def isValidToken(jwtToken: String): Boolean = {
-//    println(JsonWebToken.validate(jwtToken, JwtSecretKey))
-//    println(createToken("{ \"id\": 1, \"email\": \"mnceleiro@esei.uvigo.es\", \"password\": \"1234\", \"firstName\": \"Marcos\", \"lastName\": \"Nunez Celeiro\", \"signatureName\": \"Marcos Nunez Celeiro\", \"address\": \"Calle Empanada de Zorza n\u00BA5\", \"phone\": \"9825312121\" }"))
     JsonWebToken.validate(jwtToken, JwtSecretKey)
   }
 
   def decodePayload(jwtToken: String): Option[String] = {
-//    println(jwtToken)
     jwtToken match {
-      case JsonWebToken(header, claimsSet, signature) => /*println(claimsSet.asJsonString);*/ Option(claimsSet.asJsonString)
+      case JsonWebToken(header, claimsSet, signature) => Option(claimsSet.asJsonString)
       case _ => None
     }
   }

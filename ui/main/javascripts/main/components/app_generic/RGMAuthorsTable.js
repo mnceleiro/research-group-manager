@@ -72,19 +72,22 @@ export default class RGMAuthorsTable extends Component {
 
 
 RGMAuthorsTable.propTypes = {
-  // table
+  // Vista
   headers: PropTypes.array,
   fields: PropTypes.array,
 
+  // Variables de control
   insertable: PropTypes.bool,
   removable: PropTypes.bool,
 
+  // Eventos
   onInsert: PropTypes.func,
   onInsertSelection: PropTypes.func,
   onRoleSelection: PropTypes.func,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
 
+  // Datos
   authors: PropTypes.array,
   roles: PropTypes.array,
   selectedAuthors: PropTypes.array,

@@ -19,7 +19,6 @@ import RGMAuthorsTable from "../app_generic/RGMAuthorsTable"
 import { fetchCongressById, addCongress, updateCongress, deleteCongress } from "../../actions/congress-actions"
 import { fetchAuthors } from "../../actions/author-actions"
 import { fetchResearchers } from "../../actions/researcher-actions"
-
 import { fetchCongressTypes } from "../../actions/congressType-actions"
 import { fetchPublicationStates } from "../../actions/publicationState-actions"
 
@@ -44,10 +43,8 @@ class CongressDetail extends Component {
   }
 
   componentWillMount() {
-    // Obtengo el congreso actual con su lista de autores
     if (this.isUpdate()) this.props.fetchCongressById(this.props.params.key)
 
-    // Obtengo la lista de autores e investigadores
     this.props.fetchAuthors()
     this.props.fetchResearchers()
 
@@ -258,7 +255,7 @@ CongressDetail.propTypes = {
   dispatch: PropTypes.func,
   initialize: PropTypes.func,
 
-  // AJAX
+  // Acciones
   fetchCongressById: PropTypes.func,
   addCongress: PropTypes.func,
   updateCongress: PropTypes.func,
@@ -270,7 +267,6 @@ CongressDetail.propTypes = {
   fetchCongressTypes: PropTypes.func,
   fetchPublicationStates: PropTypes.func,
 
-  // Acciones
   handleSubmit: PropTypes.func
 }
 
@@ -281,10 +277,10 @@ var form = reduxForm({
 
 let mapStateToProps = store => {
   return {
-    editable: store.sessionState.user.admin ||
-      (store.congressState.activeCongress.id ? store.congressState.activeCongress.authors.find(a => a.researcherId === store.sessionState.user.userId) && true : false),
-
     // Datos
+    researchers: store.researcherState.researchers,
+    publicationStates: store.publicationStateState.publicationStates,
+    congressTypes: store.congressTypeState.congressTypes,
     congress: store.congressState.activeCongress,
     authors: store.researcherState.researchers.length === 0 ? store.authorState.authors : store.authorState.authors.map(a => {
       if (a.researcherId) {
@@ -294,11 +290,9 @@ let mapStateToProps = store => {
       return a
     }),
 
-    researchers: store.researcherState.researchers,
-    publicationStates: store.publicationStateState.publicationStates,
-    congressTypes: store.congressTypeState.congressTypes,
-
     // Variables de control
+    editable: store.sessionState.user.admin ||
+      (store.congressState.activeCongress.id ? store.congressState.activeCongress.authors.find(a => a.researcherId === store.sessionState.user.userId) && true : false),
     isFetching: store.congressState.isFetching || store.authorState.isFetching || store.publicationStateState.isFetching || store.congressTypeState.isFetching,
     errorHappened: store.congressState.error,
     success: store.congressState.success

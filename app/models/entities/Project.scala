@@ -13,8 +13,6 @@ case class Project(
     researcherCount: Option[Long]
 ) extends BaseEntity
 
-//case class WithAuthor(authorId: Long, role: Long)
-
 case class ProjectWithAuthors(
     p: Project, withAuthors: Option[Seq[AuthorProject]]
 )

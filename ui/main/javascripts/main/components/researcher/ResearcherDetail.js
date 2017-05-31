@@ -36,9 +36,7 @@ class ResearcherDetail extends Component {
   constructor(props) {
     super(props)
 
-    // this.handleChange = this.handleChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
-    // this.handleCancel = this.handleCancel.bind(this)
     this.handleRemove = this.handleRemove.bind(this)
     this.handleInitialize = this.handleInitialize.bind(this)
   }
@@ -152,8 +150,6 @@ class ResearcherDetail extends Component {
     }
     if (res.admin === "") res.admin = false
     if (res.access === "") res.access = false
-
-    // var id = !this.props.params.key ? 0 : this.props.params.key
     var password = !res.password ? null : res.password
 
     var toSend = Object.assign({}, res, {id, usId, resId, password})
@@ -202,17 +198,19 @@ ResearcherDetail.propTypes = {
 
 let mapStateToProps = store => {
   return {
+    // Variables de control
     editable: store.sessionState.user.admin || store.researcherState.activeResearcher === store.sessionState.user.userId,
+    isFetching: store.researcherState.isFetching,
+    success: store.researcherState.success,
+    errorHappened: store.researcherState.error,
+    canEditPermissions: store.sessionState.user.admin,
 
+    // Data
     activeResearcher: store.researcherState.activeResearcher,
     researcher: store.researcherState.activeResearcher === 0 ? {} : store.researcherState.researchers.find(r => {
       return r.id === store.researcherState.activeResearcher
     }),
-    isFetching: store.researcherState.isFetching,
-    success: store.researcherState.success,
-    errorHappened: store.researcherState.error,
-    deletedResearcher: store.researcherState.deletedResearcher,
-    canEditPermissions: store.sessionState.user.admin
+    deletedResearcher: store.researcherState.deletedResearcher
   }
 }
 

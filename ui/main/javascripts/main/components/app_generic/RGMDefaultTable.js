@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router"
-// import ReactDOM from "react-dom"
 
 export default class RGMDefaultTable extends Component {
 

@@ -125,7 +125,6 @@ export function deleteBook(o) {
   }
 }
 
-/* Obtener investigador/es */
 function requestBooks() {
   return {
     type: types.REQUEST_BOOKS,
@@ -155,7 +154,6 @@ function receiveBook(json) {
   }
 }
 
-/* Insertar investigador */
 function requestAddBook() {
   return {
     type: types.REQUEST_ADD_BOOK
@@ -176,7 +174,6 @@ function addBookError(err) {
   }
 }
 
-/* Actualizar investigador */
 function requestUpdateBook() {
   return {
     type: types.REQUEST_ADD_BOOK
@@ -197,7 +194,6 @@ function updateBookError(err) {
   }
 }
 
-/* Eliminar investigador */
 function requestDeleteBook() {
   return {
     type: types.REQUEST_DELETE_BOOK

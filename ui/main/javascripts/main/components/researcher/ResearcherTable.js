@@ -69,10 +69,7 @@ let mapStateToProps = store => {
   return {
     creatable: store.sessionState.user.admin,
     researchers: store.researcherState.researchers.map(x => {
-      // if (store.sessionState.user.admin || store.sessionState.user.userId === x.usId) x.editText = "Detalle"
-      // else x.editText = "Detalle"
       x.editText = "Detalle"
-
       return x
     }),
     isFetching: store.researcherState.isFetching

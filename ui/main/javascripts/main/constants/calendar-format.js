@@ -6,8 +6,6 @@ export const calendarFormat = {
   weekdayFormat: (date, culture, localizer) => localizer.format(date, "dddd", culture),
 
   dayRangeHeaderFormat: ({ start, end }, culture, local) =>
-    // local.format(start, { date: "short" }, culture) + " — " +
-    // local.format(end, { date: "short" }, culture)
     local.format(start, "LL", culture) + " - " + local.format(end, "LL", culture),
 
   dayHeaderFormat: (date, culture, localizer) =>

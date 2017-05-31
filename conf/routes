@@ -35,20 +35,9 @@ GET     /congress-types/all                 controllers.HelperController.getAllC
 GET     /publication-status/all             controllers.HelperController.getAllPublicationStatus
 
 POST    /users/login                        controllers.SessionsController.login
-#GET     /assets/*file         controllers.AssetsController.at(path="/public/assets", file="index.html")
 
 GET     /                           controllers.Assets.at(path="/public/assets", file="index.html")
-#GET     /index.html                 controllers.Assets.at(path="/public/assets", file="index.html")
-#GET     /researchers                controllers.Assets.at(path="/public/assets", file="index.html")
-#GET     /researchers/create         controllers.Assets.at(path="/public/assets", file="index.html")
-#GET     /researchers/new            controllers.Assets.at(path="/public/assets", file="index.html")
-#GET     /researchers/edit           controllers.Assets.at(path="/public/assets", file="index.html")
-#GET     /researchers/edit/1         controllers.Assets.at(path="/public/assets", file="index.html")
-#GET     /researchers/edit/2         controllers.Assets.at(path="/public/assets", file="index.html")
-
-
 
 # Map static resources from the /public folder to the /assets URL path
-#GET     /assets/*file               controllers.Assets.versioned(path="/public/assets", file: Asset)
 GET     /assets/*file                controllers.AssetsController.at(path="/public/assets", file: Asset)
 GET     /*file                       controllers.AssetsController.index(path="/public/assets", file: Asset)

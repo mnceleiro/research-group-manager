@@ -2,7 +2,6 @@ import { REQUEST_PUBLICATION_STATES, RECEIVE_PUBLICATION_STATES } from "../const
 import { sessionUtils } from "../utils/SessionUtils"
 
 export function fetchPublicationStates() {
-  // console.log(window.location.protocol + "//" + window.location.host)
   return function (dispatch) {
     dispatch(requestPublicationStates())
     var request = new Request("../../publication-status/all", {

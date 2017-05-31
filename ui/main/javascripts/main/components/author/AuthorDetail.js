@@ -292,7 +292,6 @@ let mapDispatchToProps = (dispatch) => {
   }
 }
 
-// Decorate the form component
 var form = reduxForm({
   form: "author",
   validate

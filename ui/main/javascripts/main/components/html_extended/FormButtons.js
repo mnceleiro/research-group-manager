@@ -10,7 +10,7 @@ export const FormButtons = (data) => {
     offsetCN = offsetCN.replace("col-md-offset-2", "col-md-offset-" + offset)
     offsetCN = offsetCN.replace("col-md-7", "col-md-" + (9-offset))
   }
-  // console.log(JSON.stringify(data))
+
   return (
     <div className="form-group">
       <div className={offsetCN}>

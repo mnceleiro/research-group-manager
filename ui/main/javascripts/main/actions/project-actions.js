@@ -7,8 +7,6 @@ import { logoutUser } from "./login-actions"
 export function fetchProjects() {
   return function (dispatch) {
     dispatch(requestProjects())
-    // debugger
-    // return apiGet("projects/all", receiveProjects => { dispatch(receiveProjects) })
     var request = new Request(BASE_URL + "projects/all", {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
@@ -144,7 +142,6 @@ export function deleteAuthorFromProject(i) {
   }
 }
 
-/* Obtener investigador/es */
 function requestProjects() {
   return {
     type: types.REQUEST_PROJECTS,
@@ -174,7 +171,6 @@ function receiveProject(json) {
   }
 }
 
-/* Insertar investigador */
 function requestAddProject() {
   return {
     type: types.REQUEST_ADD_PROJECT
@@ -195,7 +191,6 @@ function addProjectError(err) {
   }
 }
 
-/* Actualizar investigador */
 function requestUpdateProject() {
   return {
     type: types.REQUEST_ADD_PROJECT
@@ -216,7 +211,6 @@ function updateProjectError(err) {
   }
 }
 
-/* Eliminar investigador */
 function requestDeleteProject() {
   return {
     type: types.REQUEST_DELETE_PROJECT

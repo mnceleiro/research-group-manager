@@ -14,7 +14,6 @@ import { calendarMessages } from "../../constants/calendar-culture"
 import { showNotificationBetweenDates, removeAll } from "../../utils/NotificationUtils"
 import { LoadingModal } from "../html_extended/modals/Modal"
 
-// let views = Object.keys(BigCalendar.views).map(k => BigCalendar.views[k])
 let views = ["month", "agenda", ]
 
 export class Calendar extends Component {
@@ -80,22 +79,15 @@ export class Calendar extends Component {
     let toret = calendarArray.sort((x,y) => {
       return moment.utc(x.start).diff(moment.utc(y.start))
     })
-    // calendarArray.forEach(x => console.log(x.start))
+
     return toret
   }
-
-  // onSelectEvent(ev, e) {
-  //
-  // }
 
   render() {
     const data = this.props.data
 
     BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
-    // BigCalendar.setLocalizer(
-    //   BigCalendar.globalizeLocalizer(globalize)
-    // )
-    // console.log(views)
+
     if (data.length === 0 || this.props.isFetching) {
       return <LoadingModal isOpen={this.props.isFetching} />
     } else {
@@ -131,8 +123,6 @@ export class Calendar extends Component {
       )
     }
   }
-  // defaultDate={new Date(2017, 5, 26)}
-  // toolbar={false}
 }
 
 Calendar.propTypes = {

@@ -11,8 +11,6 @@ import { fetchResearchers } from "../../actions/researcher-actions"
 
 import { InputRow } from "../html_extended/InputRow"
 import { RGMDefaultDatePicker } from "../html_extended/DatePicker"
-// import { RGMDefaultSelect } from "../html_extended/Select"
-// import { AuthorModalForm } from "./AuthorModalForm"
 import { FormButtons } from "../html_extended/FormButtons"
 import RGMAuthorsTable from "../app_generic/RGMAuthorsTable"
 

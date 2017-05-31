@@ -293,14 +293,14 @@ VALUES
   
 INSERT INTO AUTHOR_BOOK (book_id, author_id) VALUES (1, 1);
 
-INSERT INTO QUARTILE (field_id, number) VALUES (1, 2);
-INSERT INTO JCR (year, impact_factor, quartile_id) VALUES (2016, 7928, 1);
-INSERT INTO JOURNAL 
-  (code, title, journal, volume, start_page, end_page, date, editorial, place, issn, status) 
-VALUES 
-  ('2983AO9E', 'SOFTWARE FOR BIOIMAGING', 'MAGAZINE OF SOFTWARE FOR BIOIMAGING', '8:22', '0', '0', '2016-02-12', '', '', '1758-2946', 1);
+-- INSERT INTO QUARTILE (field_id, number) VALUES (1, 2);
+-- INSERT INTO JCR (year, impact_factor, quartile_id) VALUES (2016, 7928, 1);
+-- INSERT INTO JOURNAL 
+--  (code, title, journal, volume, start_page, end_page, date, editorial, place, issn, status) 
+-- VALUES 
+--  ('2983AO9E', 'SOFTWARE FOR BIOIMAGING', 'MAGAZINE OF SOFTWARE FOR BIOIMAGING', '8:22', '0', '0', '2016-02-12', '', '', '1758-2946', 1);
   
-INSERT INTO AUTHOR_JOURNAL (journal_id, author_id) VALUES (1, 1);
+-- INSERT INTO AUTHOR_JOURNAL (journal_id, author_id) VALUES (1, 1);
 
 # --- !Downs
 

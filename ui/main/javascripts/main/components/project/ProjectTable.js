@@ -5,7 +5,6 @@ import { connect } from "react-redux"
 
 import RGMDefaultTable from "../app_generic/RGMDefaultTable"
 
-// import ProjectList from "./ProjectList"
 import { LoadingModal } from "../html_extended/modals/Modal"
 import FlashMessage from "../html_extended/FlashMessage"
 import { fetchProjects, createProject, editProject } from "../../actions/project-actions"

@@ -2,7 +2,6 @@ import { REQUEST_CONGRESS_TYPES, RECEIVE_CONGRESS_TYPES } from "../constants/act
 import { sessionUtils } from "../utils/SessionUtils"
 
 export function fetchCongressTypes() {
-  // console.log(window.location.protocol + "//" + window.location.host)
   return function (dispatch) {
     dispatch(requestCongressTypes())
     var request = new Request("../../congress-types/all", {

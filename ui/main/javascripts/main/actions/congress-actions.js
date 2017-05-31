@@ -7,7 +7,6 @@ import { logoutUser } from "./login-actions"
 export function fetchCongresses() {
   return function (dispatch) {
     dispatch(requestCongresses())
-    // return apiGet("congresses/all", receiveCongresses => { dispatch(receiveCongresses) })
     var request = new Request(BASE_URL + "congresses/all", {
       headers: new Headers({
         Authorization: sessionUtils.getAuthString()
@@ -124,7 +123,7 @@ export function deleteCongress(r) {
   }
 }
 
-/* Obtener investigador/es */
+
 function requestCongresses() {
   return {
     type: types.REQUEST_CONGRESSES,
@@ -154,7 +153,7 @@ export function receiveCongresses(json) {
   }
 }
 
-/* Insertar investigador */
+
 function requestAddCongress() {
   return {
     type: types.REQUEST_ADD_CONGRESS
@@ -175,7 +174,7 @@ function addCongressError(err) {
   }
 }
 
-/* Actualizar investigador */
+
 function requestUpdateCongress() {
   return {
     type: types.REQUEST_ADD_CONGRESS
@@ -196,7 +195,7 @@ function updateCongressError(err) {
   }
 }
 
-/* Eliminar investigador */
+
 function requestDeleteCongress() {
   return {
     type: types.REQUEST_DELETE_CONGRESS

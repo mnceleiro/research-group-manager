@@ -8,16 +8,14 @@ import { InlineInputRow } from "../html_extended/InputRow"
 import { FormButtons } from "../html_extended/FormButtons"
 import { RGMDefaultSelect } from "../html_extended/Select"
 import { LoadingModal } from "../html_extended/modals/Modal"
+import RGMAuthorsTable from "../app_generic/RGMAuthorsTable"
 
 import { validate } from "./BookValidation"
-
-import RGMAuthorsTable from "../app_generic/RGMAuthorsTable"
 
 // Operaciones asíncronas
 import { fetchBookById, addBook, updateBook, deleteBook } from "../../actions/book-actions"
 import { fetchAuthors } from "../../actions/author-actions"
 import { fetchResearchers } from "../../actions/researcher-actions"
-
 import { fetchPublicationStates } from "../../actions/publicationState-actions"
 
 
@@ -39,10 +37,8 @@ class BookDetail extends Component {
   }
 
   componentWillMount() {
-    // Obtengo el congreso actual con su lista de autores
     if (this.isUpdate()) this.props.fetchBookById(this.props.params.key)
 
-    // Obtengo la lista de autores e investigadores
     this.props.fetchAuthors()
     this.props.fetchResearchers()
 
@@ -50,10 +46,7 @@ class BookDetail extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // Si se detecta error
     if (nextProps.errorHappened) alert(nextProps.errorHappened)
-
-    // Operacion con exito
     if (nextProps.success) {
       browserHistory.push(`/books?success=${nextProps.success}`)
     }
@@ -245,19 +238,17 @@ BookDetail.propTypes = {
   dispatch: PropTypes.func,
   initialize: PropTypes.func,
 
-  // AJAX
-  fetchBookById: PropTypes.func,
+  // Acciones
   addBook: PropTypes.func,
   updateBook: PropTypes.func,
   deleteBook: PropTypes.func,
 
+  fetchBookById: PropTypes.func,
   fetchAuthors: PropTypes.func,
   fetchResearchers: PropTypes.func,
-
   fetchBookTypes: PropTypes.func,
   fetchPublicationStates: PropTypes.func,
 
-  // Acciones
   handleSubmit: PropTypes.func
 }
 
@@ -268,10 +259,10 @@ var form = reduxForm({
 
 let mapStateToProps = store => {
   return {
-    editable: store.sessionState.user.admin ||
-      (store.bookState.active.id ? store.bookState.active.authors.find(a => a.researcherId === store.sessionState.user.userId) && true : false),
     // Datos
     book: store.bookState.active,
+    researchers: store.researcherState.researchers,
+    publicationStates: store.publicationStateState.publicationStates,
     authors: store.researcherState.researchers.length === 0 ? store.authorState.authors : store.authorState.authors.map(a => {
       if (a.researcherId) {
         const res = store.researcherState.researchers.find(r => r.id === a.researcherId)
@@ -280,10 +271,9 @@ let mapStateToProps = store => {
       return a
     }),
 
-    researchers: store.researcherState.researchers,
-    publicationStates: store.publicationStateState.publicationStates,
-
     // Variables de control
+    editable: store.sessionState.user.admin ||
+      (store.bookState.active.id ? store.bookState.active.authors.find(a => a.researcherId === store.sessionState.user.userId) && true : false),
     isFetching: store.bookState.isFetching || store.authorState.isFetching || store.publicationStateState.isFetching,
     errorHappened: store.bookState.error,
     success: store.bookState.success
@@ -292,7 +282,7 @@ let mapStateToProps = store => {
 
 let mapDispatchToProps = dispatch => {
   return {
-    // Congresos
+    // Libros
     fetchBookById: id => dispatch(fetchBookById(id)),
     addBook: c => dispatch(addBook(c)),
     updateBook: c => dispatch(updateBook(c)),
@@ -301,7 +291,6 @@ let mapDispatchToProps = dispatch => {
     // Otros
     fetchAuthors: () => dispatch(fetchAuthors()),
     fetchResearchers: () => dispatch(fetchResearchers()),
-
     fetchPublicationStates: () => dispatch(fetchPublicationStates())
   }
 }

@@ -17,7 +17,6 @@ export const showNotificationBetweenDates = (title, entity, type, start) => {
 
   new PNotify({
     title: "Aviso de próximos eventos",
-    // text: "El evento " + title + typeMsg + moment(start, "DD/MM/YYYY").locale("es").format("L") + " y el " + moment(end, "DD/MM/YYYY").locale("es").format("L"),
     text: "El " + entityDesc + " " + title + typeMsg + "<strong>" + moment(start, "DD/MM/YYYY").locale("es").format("L") + "</strong>",
     delay: 7000
   })

@@ -50,19 +50,23 @@ export default class RGMMainTable extends Component {
 }
 
 RGMMainTable.propTypes = {
+  // Datos
   objects: PropTypes.array,
-  dispatch: PropTypes.func,
-  onEditRow: PropTypes.func,
-  getAll: PropTypes.func,
-  getAllSecondary: PropTypes.func,
-
-  location: PropTypes.object,
   table: PropTypes.object,
-
+  dispatch: PropTypes.func,
   entityTable: PropTypes.string,
   entityString: PropTypes.string,
   editText: PropTypes.string,
 
+  // Eventos
+  onEditRow: PropTypes.func,
+
+  // Acciones
+  getAll: PropTypes.func,
+  getAllSecondary: PropTypes.func,
+
+  // Variables de control
   isFetching: PropTypes.bool,
-  creatable: PropTypes.bool
+  creatable: PropTypes.bool,
+  location: PropTypes.object
 }
