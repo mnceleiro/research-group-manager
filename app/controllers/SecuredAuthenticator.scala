@@ -166,7 +166,7 @@ class SecuredAuthenticator @Inject() (
             block(UserRequest(us, request))
           },
           data => {
-            val hasPermissions = data.usId == userId
+            val hasPermissions = data.usId == userId && data.access == us.access && data.admin == us.admin
             if (hasPermissions) block(UserRequest(us, request)) else Future.successful(Results.Unauthorized("Not authorized"))
         })
         

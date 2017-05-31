@@ -32,7 +32,7 @@ export const validate = formProps => {
     }
   }
 
-  if (formProps.budget && formProps.budget > 1000000) {
+  if (formProps.budget && formProps.budget > 90000000) {
     errors.budget = "El presupuesto introducido supera el límite permitido."
   } else if (formProps.budget < 0) {
     errors.budget = "El presupuesto no puede ser negativo."

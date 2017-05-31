@@ -125,7 +125,7 @@ export function updateAuthor(r) {
   return function (dispatch) {
     dispatch(requestUpdateAuthor())
 
-    var request = new Request(`${BASE_URL}/authors/update/${r.id}`, {
+    var request = new Request(`${BASE_URL}authors/update/${r.id}`, {
       headers: new Headers({
         "Content-Type": "application/json",
         "Authorization": sessionUtils.getAuthString()

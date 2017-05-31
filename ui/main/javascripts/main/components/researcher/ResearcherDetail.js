@@ -91,8 +91,8 @@ class ResearcherDetail extends Component {
     const { handleSubmit } = this.props
 
     var saveCancel = <div className="col-md-offset-2 col-md-7">
-                       <input type="submit" className="btn rgm-btn-primary rgm-btn-lg" value="Guardar" />
-                       <input type="button" className="btn rgm-btn-default rgm-btn-lg" value="Cancelar" onClick={this.handleCancel} />
+                       { editable && <input type="submit" className="btn rgm-btn-primary rgm-btn-lg" value="Guardar" /> }
+                       <input type="button" className="btn rgm-btn-default rgm-btn-lg" value="Volver" onClick={this.handleCancel} />
                      </div>
 
     return (
@@ -110,6 +110,7 @@ class ResearcherDetail extends Component {
             <Field component={InputRow} disabled={!editable} type="text" label="Direccion" name="address" />
             <Field component={InputRow} disabled={!editable} type="number" label="Telefono" name="phone" />
 
+          {this.props.canEditPermissions &&
             <div className="form-group">
               <div className="checkbox col-md-offset-2 col-md-2">
                 <label className="control-label">
@@ -122,12 +123,14 @@ class ResearcherDetail extends Component {
                 </label>
               </div>
             </div>
-            { editable &&
+            }
+
+
             <div className="form-group">
               {saveCancel}
-              {this.renderRemoveButton()}
+              { this.props.canEditPermissions && this.renderRemoveButton()}
             </div>
-            }
+
           </form>
         </div>
       </div>
@@ -154,6 +157,10 @@ class ResearcherDetail extends Component {
     var password = !res.password ? null : res.password
 
     var toSend = Object.assign({}, res, {id, usId, resId, password})
+    if (toSend.id === 1 && (!toSend.admin || !toSend.access)) {
+      alert("No está permitido modificar los permisos del investigador inicial.")
+      return
+    }
 
     if (id > 0) {
       this.props.updateResearcher(toSend)
@@ -164,6 +171,10 @@ class ResearcherDetail extends Component {
   }
 
   handleRemove() {
+    if (this.props.params.key == 1){
+      alert("No está permitido eliminar al investigador base ni cambiarle los permisos.")
+      return
+    }
     this.props.deleteResearcher(this.props.researcher)
   }
 }
@@ -174,6 +185,7 @@ ResearcherDetail.propTypes = {
 
   isFetching: PropTypes.bool,
   editable: PropTypes.bool,
+  canEditPermissions: PropTypes.bool,
 
   fetchResearcherById: PropTypes.func,
   addResearcher: PropTypes.func,
@@ -199,7 +211,8 @@ let mapStateToProps = store => {
     isFetching: store.researcherState.isFetching,
     success: store.researcherState.success,
     errorHappened: store.researcherState.error,
-    deletedResearcher: store.researcherState.deletedResearcher
+    deletedResearcher: store.researcherState.deletedResearcher,
+    canEditPermissions: store.sessionState.user.admin
   }
 }
 
