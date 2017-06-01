@@ -149,6 +149,43 @@ CREATE TABLE AUTHOR_CONGRESS (
   FOREIGN KEY (congress_id) REFERENCES CONGRESS(id)
 );
 
+CREATE TABLE QUARTILE (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  field_id bigint(20) NOT NULL,
+  number bigint(20) NOT NULL,
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (field_id) REFERENCES FIELD (id)
+);
+
+CREATE TABLE JCR (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  year bigint(20) NOT NULL,
+  impact_factor bigint(20) NOT NULL,
+  quartile_id bigint(20) NOT NULL,
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (quartile_id) REFERENCES QUARTILE (id)
+);
+
+CREATE TABLE JOURNAL (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  code varchar(100),
+  title varchar(255) NOT NULL,
+  journal varchar(255) NOT NULL,
+  volume varchar(20),
+  start_page bigint(20),
+  end_page bigint(20),
+  date varchar(255) NOT NULL,
+  editorial varchar(255) NOT NULL,
+  place varchar(255) NOT NULL,
+  issn varchar(255),
+  
+  status bigint(20),
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (status) REFERENCES PUBLICATION_STATUS(id)
+);
 
 CREATE TABLE BOOK (
   id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -177,45 +214,6 @@ CREATE TABLE AUTHOR_BOOK (
   PRIMARY KEY (id),
   FOREIGN KEY (author_id) REFERENCES AUTHOR(id),
   FOREIGN KEY (book_id) REFERENCES BOOK(id)
-);
-
-
-CREATE TABLE QUARTILE (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  field_id bigint(20) NOT NULL,
-  number bigint(20) NOT NULL,
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (field_id) REFERENCES FIELD (id)
-);
-
-CREATE TABLE JCR (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  year bigint(20) NOT NULL,
-  impact_factor bigint(20) NOT NULL,
-  quartile_id bigint(20) NOT NULL,
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (quartile_id) REFERENCES QUARTILE (id)
-);
-
-CREATE TABLE JOURNAL (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  code varchar(255),
-  title varchar(255) NOT NULL,
-  journal varchar(255) NOT NULL,
-  volume varchar(20) NOT NULL,
-  start_page bigint(20),
-  end_page bigint(20),
-  date Date,
-  editorial varchar(255),
-  place varchar(255),
-  issn varchar(255),
-  
-  status bigint(20),
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (status) REFERENCES PUBLICATION_STATUS(id)
 );
 
 CREATE TABLE AUTHOR_JOURNAL (
@@ -286,12 +284,12 @@ INSERT INTO AUTHOR_CONGRESS (author_id, congress_id) VALUES (1, 1);
 INSERT INTO AUTHOR_CONGRESS (author_id, congress_id) VALUES (2, 1);
 INSERT INTO AUTHOR_CONGRESS (author_id, congress_id) VALUES (1, 2);
 
-INSERT INTO BOOK 
-  (code, title, book, volume, start_page, end_page, year, editorial, place, isbn, status) 
+INSERT INTO JOURNAL 
+  (code, title, journal, volume, start_page, end_page, date, editorial, place, issn, status) 
 VALUES 
-  ('39887L', 'SOFTWARE FOR BIOIMAGING', 'BOOK OF SOFTWARE FOR BIOIMAGING', '3:12', '0', '0', '2016', 'Intech', 'Ourense', '1758-2946', 1);
+  ('39887L', 'SOFTWARE FOR BIOIMAGING', 'JOURNAL OF SOFTWARE FOR BIOIMAGING', '3:12', 0, 0, '17/06/2016', 'Intech', 'Ourense', '1758-2946', 1);
   
-INSERT INTO AUTHOR_BOOK (book_id, author_id) VALUES (1, 1);
+INSERT INTO AUTHOR_JOURNAL (journal_id, author_id) VALUES (1, 1);
 
 -- INSERT INTO QUARTILE (field_id, number) VALUES (1, 2);
 -- INSERT INTO JCR (year, impact_factor, quartile_id) VALUES (2016, 7928, 1);

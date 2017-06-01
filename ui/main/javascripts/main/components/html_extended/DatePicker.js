@@ -18,30 +18,44 @@ export class RGMDefaultDatePicker extends Component {
   render() {
     let field = this.props
     const disabled = field.disabled
-    
-    return (
-      <div className="form-group">
-        <label className="control-label col-md-2" htmlFor={field.input.name}>{field.label}:</label>
-        <div className="col-md-9">
-          <DatePicker {...field.input}
-            id={field.name}
-            name={field.input.name}
-            placeholderText={field.label}
-            isClearable={!disabled && true}
-            dateFormat="DD/MM/YYYY"
-            disabled={disabled}
-            locale="es-ES"
-            className="form-control"
-            selected={field.input.value ? moment(field.input.value, "DD/MM/YYYY") : null}
-            onChange={this.handleChange}
-          />
-          {field.meta.touched && field.meta.error && <div className="form-alert alert-danger">{field.meta.error}</div>}
-        </div>
+
+    const labelWidth = this.props.labelWidth || 2
+    const inputWidth = this.props.inputWidth || 9
+
+    let formGroup = this.props.formGroup === undefined ? true : this.props.formGroup
+
+    const labelHtml = <label className={`control-label col-md-${labelWidth}`} htmlFor={field.input.name}>{field.label}:</label>
+    const datepickerHtml = <div className={`col-md-${inputWidth}`}>
+        <DatePicker {...field.input}
+          id={field.name}
+          name={field.input.name}
+          placeholderText={field.label}
+          isClearable={!disabled && false}
+          dateFormat="DD/MM/YYYY"
+          disabled={disabled}
+          locale="es-ES"
+          className="form-control"
+          selected={field.input.value ? moment(field.input.value, "DD/MM/YYYY") : null}
+          onChange={this.handleChange}
+        />
+        {field.meta.touched && field.meta.error && <div className="form-alert alert-danger">{field.meta.error}</div>}
       </div>
-    )
+debugger
+    if (formGroup) {
+      return (
+        <div className="form-group">
+          {labelHtml}{datepickerHtml}
+        </div>
+      )
+    } else {
+      return (<div>{labelHtml}{datepickerHtml}</div>)
+    }
   }
 }
 
 RGMDefaultDatePicker.propTypes = {
-  input: PropTypes.object
+  input: PropTypes.object,
+  labelWidth: PropTypes.string,
+  inputWidth: PropTypes.string,
+  formGroup: PropTypes.bool
 }

@@ -16,7 +16,7 @@ import models.entities.Author
 import play.libs.F.Tuple
 import models.entities.Project
 import models.entities.Congress
-import models.entities.Book
+import models.entities.Journal
 
 class AuthorTable(tag: Tag) extends Table[Author](tag, "AUTHOR") {
   val authors = TableQuery[AuthorTable]
@@ -40,8 +40,8 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
   val congresses = TableQuery[CongressTable]
   val authorsCongresses = TableQuery[AuthorCongressTable]
   
-  val books = TableQuery[BookTable]
-  val authorsBooks= TableQuery[AuthorBookTable]
+  val journals = TableQuery[JournalTable]
+  val authorsJournals= TableQuery[AuthorJournalTable]
   
   val projects = TableQuery[ProjectTable]
   val authorsProjects = TableQuery[AuthorProjectTable]
@@ -65,7 +65,7 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider) {
     val query = (for {
       au <- authors.filter(x => x.id === id).result.headOption
       auCongress <- authorsCongresses.filter(_.authorId === id).delete
-      auBook <- authorsBooks.filter(_.authorId === id).delete
+      auJournal <- authorsJournals.filter(_.authorId === id).delete
       auProject <- authorsProjects.filter(_.authorId === id).delete
       authorDel <- authors.filter(_.id === id).delete
     } yield (authorDel))

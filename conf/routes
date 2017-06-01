@@ -17,11 +17,11 @@ POST    /congresses/add                     controllers.CongressController.add
 POST    /congresses/update/:id              controllers.CongressController.update(id: Long)
 DELETE  /congresses/delete/:id              controllers.CongressController.delete(id: Long)
 
-GET     /books/all                          controllers.BookController.getAll
-GET     /books/with-authors/id/:id          controllers.BookController.getWithAuthors(id: Long)
-POST    /books/add                          controllers.BookController.add
-POST    /books/update/:id                   controllers.BookController.update(id: Long)
-DELETE  /books/delete/:id                   controllers.BookController.delete(id: Long)
+GET     /journals/all                       controllers.JournalController.getAll
+GET     /journals/with-authors/id/:id       controllers.JournalController.getWithAuthors(id: Long)
+POST    /journals/add                       controllers.JournalController.add
+POST    /journals/update/:id                controllers.JournalController.update(id: Long)
+DELETE  /journals/delete/:id                controllers.JournalController.delete(id: Long)
 
 GET     /authors/all                        controllers.AuthorController.getAll
 GET     /authors/id/:id                     controllers.AuthorController.get(id: Long)

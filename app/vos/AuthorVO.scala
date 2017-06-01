@@ -4,7 +4,7 @@ import play.api.data.Mapping
 import play.api.data.Form
 import play.api.data.Forms._
 
-import models.entities.Book
+import models.entities.Journal
 import models.entities.Congress
 import models.entities.Journal
 import models.entities.Researcher
@@ -43,7 +43,6 @@ trait AuthorOfAbstractVO{
 
 case class AuthorOfProjectVO(id: Long, email: String, signature: String, researcherId: Option[Long], role: Long, res: Option[ResearcherVO])
 case class AuthorOfCongressVO(id: Long, email: String, signature: String, researcherId: Option[Long], res: Option[ResearcherVO]) extends AuthorOfAbstractVO
-case class AuthorOfBookVO(id: Long, email: String, signature: String, researcherId: Option[Long], res: Option[ResearcherVO]) extends AuthorOfAbstractVO
 case class AuthorOfJournalVO(id: Long, email: String, signature: String, researcherId: Option[Long], res: Option[ResearcherVO]) extends AuthorOfAbstractVO
 
 object AuthorOfProjectVO {
@@ -81,17 +80,17 @@ object AuthorOfCongressVO {
 	implicit val authorOfCongressReads = Json.reads[AuthorOfCongressVO]
 }
 
-object AuthorOfBookVO {
-  val authorMapping: Mapping[AuthorOfBookVO] = mapping(
+object AuthorOfJournalVO {
+  val authorMapping: Mapping[AuthorOfJournalVO] = mapping(
     "id" -> longNumber,
     "email" -> text,
     "signature" -> text,
     "researcherId" -> optional(longNumber),
     "res" -> optional(ResearcherVO.researcherVOMapping)
-  )(AuthorOfBookVO.apply)(x => Some(x.id, x.email, x.signature, x.researcherId, x.res))
+  )(AuthorOfJournalVO.apply)(x => Some(x.id, x.email, x.signature, x.researcherId, x.res))
 
-  implicit val authorForm: Form[AuthorOfBookVO] = Form(authorMapping)
-	implicit val authorOfBookWrites = Json.writes[AuthorOfBookVO]
-	implicit val authorOfBookReads = Json.reads[AuthorOfBookVO]
+  implicit val authorForm: Form[AuthorOfJournalVO] = Form(authorMapping)
+	implicit val authorOfJournalWrites = Json.writes[AuthorOfJournalVO]
+	implicit val authorOfJournalReads = Json.reads[AuthorOfJournalVO]
 }
 

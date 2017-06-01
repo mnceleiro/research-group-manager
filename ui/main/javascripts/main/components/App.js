@@ -54,8 +54,8 @@ class App extends Component {
   onClickProjects() {
     if (this.state.activeEntity !== "projects") this.setEntity("projects")
   }
-  onClickBooks() {
-    if (this.state.activeEntity !== "books") this.setEntity("books")
+  onClickJournals() {
+    if (this.state.activeEntity !== "journals") this.setEntity("journals")
   }
   onClickCongresses() {
     if (this.state.activeEntity !== "congresses") this.setEntity("congresses")
@@ -81,7 +81,7 @@ class App extends Component {
             onClickResearchers={this.onClickResearchers.bind(this)}
             onClickAuthors={this.onClickAuthors.bind(this)}
             onClickProjects={this.onClickProjects.bind(this)}
-            onClickBooks={this.onClickBooks.bind(this)}
+            onClickJournals={this.onClickJournals.bind(this)}
             onClickCongresses={this.onClickCongresses.bind(this)}
           />
           <div className="content-column">

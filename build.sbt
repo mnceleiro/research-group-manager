@@ -5,7 +5,10 @@ import com.typesafe.sbt.SbtNativePackager.autoImport.NativePackagerHelper._
 
 mappings in Universal ++= directory(baseDirectory.value / "public")
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+lazy val root = (project in file(".")).enablePlugins(PlayScala, DebianPlugin)
+maintainer in Linux := "Marcos Nunez <mnceleiro@esei.uvigo.es>"
+packageSummary in Linux := "Research Group Manager application"
+packageDescription := "Research Group Manager application"
 
 PlayKeys.playRunHooks += Webpack(baseDirectory.value)
 

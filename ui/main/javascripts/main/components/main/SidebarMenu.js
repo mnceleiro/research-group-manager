@@ -44,7 +44,7 @@ export const SidebarMenu = (data) => {
           </div>
           <div className="rgm-menu-section">
             <ul className="nav side-menu">
-              <li className={active === "books" ? "active": ""}><a onClick={data.onClickBooks}><i className="fa fa-book fa-2x"></i>Libros</a></li>
+              <li className={active === "journals" ? "active": ""}><a onClick={data.onClickJournals}><i className="fa fa-book fa-2x"></i>Revistas</a></li>
               <li className={active === "congresses" ? "active": ""}><a onClick={data.onClickCongresses}><i className="fa fa-briefcase fa-2x"></i> Congresos</a></li>
             </ul>
           </div>

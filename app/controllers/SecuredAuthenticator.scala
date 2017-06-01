@@ -15,9 +15,9 @@ import play.api.libs.json.JsValue
 import models.entities.Congress
 import models.entities.AuthorCongress
 import vos.ProjectVO
-import vos.BookVO
+import vos.JournalVO
 import models.repositories.AuthorProjectRepository
-import models.repositories.AuthorBookRepository
+import models.repositories.AuthorJournalRepository
 import vos.AuthorVO
 import models.entities.Author
 import vos.ResearcherVO
@@ -31,7 +31,7 @@ class SecuredAuthenticator @Inject() (
     userRepo: UserRepository, 
     acRepo: AuthorCongressRepository,
     apRepo: AuthorProjectRepository,
-    abRepo: AuthorBookRepository,
+    abRepo: AuthorJournalRepository,
     
     authorRepo: AuthorRepository
 ) extends Controller {
@@ -67,7 +67,7 @@ class SecuredAuthenticator @Inject() (
     
     def checkDeleteAuthorization[A](userId: Long, request: Request[A], block: (Request[A] => Future[Result]), us: User) = {
       val isCongress = request.uri.contains("congresses")
-      val isBook = request.uri.contains("books")
+      val isJournal = request.uri.contains("journals")
       val isProject = request.uri.contains("projects")
       val isAuthor = request.uri.contains("authors")
       val isResearcher = request.uri.contains("researchers")
@@ -79,8 +79,8 @@ class SecuredAuthenticator @Inject() (
           if (x.isDefined) block(UserRequest(us, request)) else Future.successful(Results.Unauthorized("Not authorized"))
         })
         
-      } else if (isBook) {
-        val tableId = abRepo.checkAuthorHasBook(userId, entityId.toInt)
+      } else if (isJournal) {
+        val tableId = abRepo.checkAuthorHasJournal(userId, entityId.toInt)
         tableId.flatMap(x => {
           if (x.isDefined) block(UserRequest(us, request)) else Future.successful(Results.Unauthorized("Not authorized"))
         })
@@ -106,7 +106,7 @@ class SecuredAuthenticator @Inject() (
     
     def checkPostAuthorization[A](userId: Long, request: Request[A], block: (Request[A] => Future[Result]), us: User) = {
       val isCongress = request.uri.contains("congresses")
-      val isBook = request.uri.contains("books")
+      val isJournal = request.uri.contains("journals")
       val isProject = request.uri.contains("projects")
       val isAuthor = request.uri.contains("authors")
       val isResearcher = request.uri.contains("researchers")
@@ -127,8 +127,8 @@ class SecuredAuthenticator @Inject() (
             })
         })
         
-      } else if (isBook) {
-        BookVO.bookVOForm.bindFromRequest()(request).fold(
+      } else if (isJournal) {
+        JournalVO.journalVOForm.bindFromRequest()(request).fold(
           errors => {
             block(UserRequest(us, request))
           },

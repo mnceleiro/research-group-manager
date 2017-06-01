@@ -8,7 +8,7 @@ import messageReducer from "../reducers/reducer_message"
 import projects from "./projects"
 import authors from "./authors"
 import congresses from "./congresses"
-import books from "./books"
+import journals from "./journals"
 
 import roles from "./roles"
 import publicationStates from "./publicationStates"
@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
   projectState: projects,
   authorState: authors,
   congressState: congresses,
-  bookState: books,
+  journalState: journals,
   projectsAuthorsState: projectsAuthors,
 
   rolesState: roles,
