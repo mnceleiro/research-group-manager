@@ -16,6 +16,16 @@ fork in run := false
 
 scalaVersion := "2.11.8"
 
+
+javaOptions in Universal ++= Seq(
+  "-J-Xmx1024m",
+  "-J-Xms512m",
+  s"-Dpidfile.path=/dev/null",
+  s"-Dconfig.file=/usr/share/${packageName.value}/conf/prod.conf",
+  s"-Dhttp.port=8008"
+)
+
+
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 
 ;libraryDependencies += "com.h2database" % "h2" % "1.4.193"
