@@ -48,8 +48,8 @@ export const validate = formProps => {
   }
 
   if (formProps.startPage && formProps.endPage && formProps.startPage > formProps.endPage) {
-    errors.startPage = "La página de fin no puede ser mayor que la de inicio."
-    errors.endPage = "La página de fin no puede ser mayor que la de inicio."
+    errors.startPage = "La página de inicio no puede ser mayor que la de fin."
+    errors.endPage = "La página de inicio no puede ser mayor que la de fin."
   }
 
   if ((formProps.startPage && !formProps.endPage) || !formProps.startPage && formProps.endPage) {

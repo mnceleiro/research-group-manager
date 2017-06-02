@@ -102,7 +102,7 @@ export class Calendar extends Component {
         })
       }
 
-      let defaultDate = calendarArray.length > 0 ? calendarArray[0].start : new Date()
+      let defaultDate = new Date()
       return (
         <div className="row">
           <div className="col-md-offset-1 col-md-9">

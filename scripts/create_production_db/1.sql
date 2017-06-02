@@ -1,43 +1,50 @@
-# Users schema
+CREATE DATABASE IF NOT EXISTS rgm DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+#CREATE DATABASE IF NOT EXISTS rgm_dev DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+#CREATE DATABASE IF NOT EXISTS rgm_test DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+  
+CREATE USER IF NOT EXISTS 'rgmuser'@'localhost' IDENTIFIED BY 'rgmpassword';
+GRANT ALL PRIVILEGES ON rgm.* TO 'rgmuser'@'localhost';
+#GRANT ALL PRIVILEGES ON rgm_dev.* TO 'rgmuser'@'localhost';
+#GRANT ALL PRIVILEGES ON rgm_test.* TO 'rgmuser'@'localhost';
 
-# --- !Ups
+use rgm;
 
-CREATE TABLE ROLE (
+CREATE TABLE IF NOT EXISTS ROLE (
   id bigint(20) NOT NULL,
   description varchar(100) NOT NULL,
   
   PRIMARY KEY (id)
 );
 
-CREATE TABLE CONGRESS_TYPE (
+CREATE TABLE IF NOT EXISTS CONGRESS_TYPE (
   id bigint(20) NOT NULL,
   description varchar(255) NOT NULL,
   
   PRIMARY KEY (id)
 );
 
-CREATE TABLE PUBLICATION_STATUS (
+CREATE TABLE IF NOT EXISTS PUBLICATION_STATUS (
   id bigint(20) NOT NULL,
   description varchar(255) NOT NULL,
   
   PRIMARY KEY (id)
 );
 
-CREATE TABLE FIELD (
+CREATE TABLE IF NOT EXISTS FIELD (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   description varchar(255) NOT NULL,
   
   PRIMARY KEY (id)
 );
 
-CREATE TABLE ENTITY (
+CREATE TABLE IF NOT EXISTS ENTITY (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     name varchar(255) NOT NULL,
     
     PRIMARY KEY (id)
 );
 
-CREATE TABLE USER (
+CREATE TABLE IF NOT EXISTS USER (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     email varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
@@ -48,7 +55,7 @@ CREATE TABLE USER (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE RESEARCHER (
+CREATE TABLE IF NOT EXISTS RESEARCHER (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     first_name varchar(120) NOT NULL,
     last_name varchar(120) NOT NULL,
@@ -61,7 +68,7 @@ CREATE TABLE RESEARCHER (
     FOREIGN KEY (user_id) REFERENCES USER(id)
 );
 
-CREATE TABLE AUTHOR (
+CREATE TABLE IF NOT EXISTS AUTHOR (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     email varchar(255) NOT NULL,
     signature varchar(200) NOT NULL,
@@ -72,7 +79,7 @@ CREATE TABLE AUTHOR (
 );
 -- FOREIGN KEY (res_id) REFERENCES RESEARCHER(id)
 
-CREATE TABLE PROJECT (
+CREATE TABLE IF NOT EXISTS PROJECT (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     code varchar(255) NOT NULL,
     title varchar(255) NOT NULL,
@@ -85,7 +92,7 @@ CREATE TABLE PROJECT (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE PROJECT_FINANCE_ENTITY (
+CREATE TABLE IF NOT EXISTS PROJECT_FINANCE_ENTITY (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   project_id bigint(20) NOT NULL,
   entity_id bigint(20) NOT NULL,
@@ -95,7 +102,7 @@ CREATE TABLE PROJECT_FINANCE_ENTITY (
   FOREIGN KEY(entity_id) REFERENCES ENTITY(id)
 );
 
-CREATE TABLE PROJECT_ENTITY (
+CREATE TABLE IF NOT EXISTS PROJECT_ENTITY (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   project_id bigint(20) NOT NULL,
   entity_id bigint(20) NOT NULL,
@@ -105,7 +112,7 @@ CREATE TABLE PROJECT_ENTITY (
   FOREIGN KEY(entity_id) REFERENCES ENTITY(id)
 );
 
-CREATE TABLE AUTHOR_PROJECT (
+CREATE TABLE IF NOT EXISTS AUTHOR_PROJECT (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   author_id bigint(20) NOT NULL,
   project_id bigint(20) NOT NULL,
@@ -119,7 +126,7 @@ CREATE TABLE AUTHOR_PROJECT (
 );
 -- FOREIGN KEY (author_id) REFERENCES AUTHOR(id),
 
-CREATE TABLE CONGRESS (
+CREATE TABLE IF NOT EXISTS CONGRESS (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   title varchar(255) NOT NULL,
   name varchar(255) NOT NULL,
@@ -138,7 +145,7 @@ CREATE TABLE CONGRESS (
   FOREIGN KEY (status) REFERENCES PUBLICATION_STATUS(id)
 );
 
-CREATE TABLE AUTHOR_CONGRESS (
+CREATE TABLE IF NOT EXISTS AUTHOR_CONGRESS (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   author_id bigint(20) NOT NULL,
   congress_id bigint(20) NOT NULL,
@@ -149,8 +156,45 @@ CREATE TABLE AUTHOR_CONGRESS (
   FOREIGN KEY (congress_id) REFERENCES CONGRESS(id)
 );
 
+CREATE TABLE IF NOT EXISTS QUARTILE (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  field_id bigint(20) NOT NULL,
+  number bigint(20) NOT NULL,
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (field_id) REFERENCES FIELD (id)
+);
 
-CREATE TABLE BOOK (
+CREATE TABLE IF NOT EXISTS JCR (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  year bigint(20) NOT NULL,
+  impact_factor bigint(20) NOT NULL,
+  quartile_id bigint(20) NOT NULL,
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (quartile_id) REFERENCES QUARTILE (id)
+);
+
+CREATE TABLE IF NOT EXISTS JOURNAL (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  code varchar(100),
+  title varchar(255) NOT NULL,
+  journal varchar(255) NOT NULL,
+  volume varchar(20),
+  start_page bigint(20),
+  end_page bigint(20),
+  date varchar(255) NOT NULL,
+  editorial varchar(255) NOT NULL,
+  place varchar(255) NOT NULL,
+  issn varchar(255),
+  
+  status bigint(20),
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (status) REFERENCES PUBLICATION_STATUS(id)
+);
+
+CREATE TABLE IF NOT EXISTS BOOK (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   code varchar(100),
   title varchar(255) NOT NULL,
@@ -169,7 +213,7 @@ CREATE TABLE BOOK (
   FOREIGN KEY (status) REFERENCES PUBLICATION_STATUS(id)
 );
 
-CREATE TABLE AUTHOR_BOOK (
+CREATE TABLE IF NOT EXISTS AUTHOR_BOOK (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   book_id bigint(20) NOT NULL,
   author_id bigint(20) NOT NULL,
@@ -179,46 +223,7 @@ CREATE TABLE AUTHOR_BOOK (
   FOREIGN KEY (book_id) REFERENCES BOOK(id)
 );
 
-
-CREATE TABLE QUARTILE (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  field_id bigint(20) NOT NULL,
-  number bigint(20) NOT NULL,
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (field_id) REFERENCES FIELD (id)
-);
-
-CREATE TABLE JCR (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  year bigint(20) NOT NULL,
-  impact_factor bigint(20) NOT NULL,
-  quartile_id bigint(20) NOT NULL,
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (quartile_id) REFERENCES QUARTILE (id)
-);
-
-CREATE TABLE JOURNAL (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  code varchar(255),
-  title varchar(255) NOT NULL,
-  journal varchar(255) NOT NULL,
-  volume varchar(20) NOT NULL,
-  start_page bigint(20),
-  end_page bigint(20),
-  date Date,
-  editorial varchar(255),
-  place varchar(255),
-  issn varchar(255),
-  
-  status bigint(20),
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (status) REFERENCES PUBLICATION_STATUS(id)
-);
-
-CREATE TABLE AUTHOR_JOURNAL (
+CREATE TABLE IF NOT EXISTS AUTHOR_JOURNAL (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   journal_id bigint(20) NOT NULL,
   author_id bigint(20) NOT NULL,
@@ -251,3 +256,5 @@ INSERT INTO FIELD (id, description) VALUES (5, 'INGENIERÍA CIVIL');
 
 INSERT INTO USER (email, password, admin, access) VALUES ('admin@admin.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', TRUE, TRUE);
 INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('NombreAdmin', 'ApellidosAdmin', 'DireccionAdmin', '999999999', 1);
+
+

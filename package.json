@@ -40,6 +40,9 @@
     "redux-form": "^6.5.0",
     "redux-thunk": "^2.2.0"
   },
+  "optionalDependencies": {
+    "pre-commit": "^1.2.2"
+  },
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "uglify-js": "git+https://github.com/mishoo/UglifyJS2.git#harmony",
@@ -66,7 +69,6 @@
     "jest": "^19.0.2",
     "json-loader": "^0.5.4",
     "node-sass": "^4.5.0",
-    "pre-commit": "^1.2.2",
     "redux-devtools": "^3.3.2",
     "redux-logger": "^3.0.1",
     "resolve-url-loader": "^1.6.1",
