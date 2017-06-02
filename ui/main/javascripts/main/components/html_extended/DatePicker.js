@@ -40,7 +40,7 @@ export class RGMDefaultDatePicker extends Component {
         />
         {field.meta.touched && field.meta.error && <div className="form-alert alert-danger">{field.meta.error}</div>}
       </div>
-debugger
+
     if (formGroup) {
       return (
         <div className="form-group">
