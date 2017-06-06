@@ -1,8 +1,0 @@
-CREATE DATABASE IF NOT EXISTS rgm DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
-CREATE DATABASE IF NOT EXISTS rgm_dev DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
-CREATE DATABASE IF NOT EXISTS rgm_test DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
-  
-CREATE USER IF NOT EXISTS 'rgmuser'@'localhost' IDENTIFIED BY 'rgmpassword';
-GRANT ALL PRIVILEGES ON rgm.* TO 'rgmuser'@'localhost';
-GRANT ALL PRIVILEGES ON rgm_dev.* TO 'rgmuser'@'localhost';
-GRANT ALL PRIVILEGES ON rgm_test.* TO 'rgmuser'@'localhost';

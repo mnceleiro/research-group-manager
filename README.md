@@ -14,7 +14,7 @@ El proyecto se encuentra casi finalizado.
 4. Descargar e instalar el gestor de paquetes NPM.
 5. Instalar Webpack de forma global con NPM: npm install webpack -g
 6. Copiar el fichero git-hooks/pre-push en .git/hooks. Puede hacerse a mano o ejecutando el comando "sbt run" desde la carpeta "git-hooks".
-7. (OPCIONAL) Instalar NodeJS para poder iniciar un servidor que recargue la página automáticamente con cada cambio.
+7. Instalar NodeJS para poder iniciar un servidor que recargue la página automáticamente con cada cambio.
 
 ### Ejecución en local
 
@@ -52,20 +52,35 @@ sbt run
 
 ### Despliegue en producción
 
-La máquina de producción debe tener instalado MySQL. Ejecutar primero el script de la carpeta "scripts" "create_databases.sql" y posteriormente "create_tables.sql".
+La máquina de producción debe tener instalado MySQL. Ejecutar el fichero sql disponible en la carpeta scripts:
+```
+mysql -u root -p < scripts/create_production_db/1.sql 
+```
 
-Ejecutar los siguientes comandos
+Esto generará la base de datos con los usuarios y las tablas necesarias.
+
+Posteriormente ejecutar los siguientes comandos
 
 ```
 npm install
 npm run build:prod
+sbt clean compile dist
+sbt debian:packageBin
+```
+Con esto se generará un fichero .deb que permitirá instalar la aplicación web como un servicio en Debian/Ubuntu. Para esto situarse en la carpeta "target" y escribir:
+
+```
+sudo dpkg -i ResearchGroupManager_1.0.deb
+```
+
+Después de esto es posible que sea necesario reiniciar la sesión. Podrás entrar en la aplicación web en la dirección localhost:8008
+
+
+Los comandos generales para iniciar la aplicación en cualquier entorno y utilizando parámetros serían los siguientes:
+
+```
 sbt clean compile stage
-```
-
-Para iniciar en el servidor de producción:
-
-```
-./target/universal/stage/bin/research-group-manager -Dplay.crypto.secret=clave -Dconfig.resource=prod.conf -Dhttp.port=8008
+./target/universal/stage/bin/research-group-manager -Dplay.crypto.secret=[clave] -Dconfig.resource=[env|prod].conf -Dhttp.port=[puerto]
 ```
 
 Con esto se iniciará un NettyServer en el puerto indicado.

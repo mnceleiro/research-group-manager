@@ -1,7 +1,8 @@
-name := """Research Group Manager"""
-version := "1.0-SNAPSHOT"
+name := """ResearchGroupManager"""
+version := "1.0"
 
 import com.typesafe.sbt.SbtNativePackager.autoImport.NativePackagerHelper._
+import com.typesafe.sbt.packager.archetypes.ServerLoader
 
 mappings in Universal ++= directory(baseDirectory.value / "public")
 
@@ -16,6 +17,7 @@ fork in run := false
 
 scalaVersion := "2.11.8"
 
+serverLoading in Debian := ServerLoader.Systemd
 
 javaOptions in Universal ++= Seq(
   "-J-Xmx1024m",
