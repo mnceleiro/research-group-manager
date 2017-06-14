@@ -77,6 +77,10 @@ div .panel-right {
   font-size: 1.7em;
 }
 
+.user:hover {
+  cursor: pointer;
+}
+
 /* SIDEBAR MENU STILES */
 #menu {
 	background-color: $sidebar_color;
@@ -87,6 +91,10 @@ div .panel-right {
 #menu a {
 	color: $default_font_color;
 	font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+}
+
+#menu a:hover {
+  cursor: pointer;
 }
 
 #menu a > i {

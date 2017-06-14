@@ -40,6 +40,8 @@ class CongressDetail extends Component {
       selectedState: 1,
       selectedType: 1
     }
+
+    this.rendered = false
   }
 
   componentWillMount() {
@@ -170,13 +172,14 @@ class CongressDetail extends Component {
     const headers = ["Email", "Autor", "Investigador asociado"]
     const fields = ["email", "signature", "researcherEmail"]
 
-    if ((isFetching || congressTypes.length == 0 || publicationStates.length == 0)
+    if (!this.rendered && (isFetching || congressTypes.length == 0 || publicationStates.length == 0)
       || (this.isUpdate() && !this.props.congress.id)
     ) {
       return (
         <LoadingModal isOpen={isFetching} />
       )
     } else {
+      this.rendered = true
       let stateValue = publicationStates.find(x => x.id === this.state.selectedState) || publicationStates[0]
       let typeValue = congressTypes.find(x => x.id === this.state.selectedType) || congressTypes[0]
       let congress = this.props.congress

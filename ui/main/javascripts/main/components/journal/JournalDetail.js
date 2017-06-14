@@ -35,6 +35,8 @@ class JournalDetail extends Component {
       selectedAuthor: null,
       selectedState: 1,
     }
+
+    this.rendered = false
   }
 
   componentWillMount() {
@@ -152,11 +154,12 @@ class JournalDetail extends Component {
     const headers = ["Email", "Autor", "Investigador asociado"]
     const fields = ["email", "signature", "researcherEmail"]
 
-    if (isFetching || publicationStates.length == 0) {
+    if (!this.rendered && (isFetching || publicationStates.length == 0)) {
       return (
         <LoadingModal isOpen={this.props.isFetching} />
       )
     } else {
+      this.rendered = true
       const stateValue = publicationStates.find(x => x.id === this.state.selectedState) || publicationStates[0]
 
       let journal = this.props.journal

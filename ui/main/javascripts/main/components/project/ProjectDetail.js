@@ -27,6 +27,7 @@ class ProjectDetail extends Component {
     this.onSubmit = this.onSubmit.bind(this)
 
     this.onDeleteRow = this.onDeleteRow.bind(this)
+    this.rendered = false
 
     this.state = {
       selectedAuthor: null,
@@ -169,10 +170,11 @@ class ProjectDetail extends Component {
     const headers = ["Email", "Autor", "rol", "Investigador asociado"]
     const fields = ["email", "signature", "roleDesc", "researcherDesc"]
 
-    if (isFetching || this.props.roles.length === 0 || (this.isUpdate() && !this.props.activeProject.obj)) {
+    if (!this.rendered && (isFetching || this.props.roles.length === 0 || (this.isUpdate() && !this.props.activeProject.obj))) {
       return (<LoadingModal isOpen={this.props.isFetching} />)
 
     } else {
+      this.rendered = true
       let project = this.props.activeProject.obj
       if (project) {
         project.authors = project.authors.map(x => {

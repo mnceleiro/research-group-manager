@@ -49,6 +49,8 @@ class AuthorDetail extends Component {
     this.state = {
       selectedResearcher: null,
     }
+
+    this.rendered = false
   }
 
   componentWillMount() {
@@ -134,10 +136,10 @@ class AuthorDetail extends Component {
   render() {
     const { handleSubmit, isFetching, editable } = this.props
 
-    if (isFetching) {
+    if (isFetching && !this.rendered) {
       return <LoadingModal isOpen={this.props.isFetching} />
     }
-
+    this.rendered = true
     const selectableResearchers = this.props.selectableResearchers.map(r => {
       return {"id": r.resId, "description": `${r.firstName} ${r.lastName}`}
     })
