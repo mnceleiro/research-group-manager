@@ -39,11 +39,14 @@ class ResearcherDetail extends Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.handleRemove = this.handleRemove.bind(this)
     this.handleInitialize = this.handleInitialize.bind(this)
+    this.initialized = false
   }
 
   componentWillMount() {
     if (this.isUpdate()) {
       this.props.fetchResearcherById(this.props.params.key)
+    } else {
+      this.initialized = true
     }
   }
 
@@ -60,8 +63,9 @@ class ResearcherDetail extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.errorHappened) alert(nextProps.errorHappened)
 
-    if (this.props.activeResearcher === 0 && nextProps.activeResearcher > 0) {
+    if (!this.initialized && nextProps.activeResearcher > 0) {
       this.handleInitialize(nextProps.researcher)
+      this.initialized = true
     }
 
     if (nextProps.success) {
