@@ -42,8 +42,8 @@ class AuthorProjectRepository @Inject()(dbConfigProvider: DatabaseConfigProvider
 	
 	def checkAuthorHasProject(resId: Long, projectId: Long): Future[Option[Option[Long]]] = {
 	  val join = (for {
-	    x <- authorsProjects.filter(x => x.projectId === projectId && x.authorId === resId)
-	    x <- authorsProjects.filter(x => x.projectId === projectId && x.authorId === resId)
+	    au <- authors.filter(a => a.resId === resId)
+	    x <- authorsProjects.filter(x => x.projectId === projectId && x.authorId === au.id)
 	  } yield (x.id) ).result.headOption.transactionally
 	  
 	  dbConfig.db.run(join)
@@ -78,8 +78,8 @@ class AuthorProjectRepository @Inject()(dbConfigProvider: DatabaseConfigProvider
   def updateProject(project: Project, aps: Seq[AuthorProject], as: Seq[Author]) = {
     val query = (for {
       updateProjects <- (projects.filter(_.id === project.id)
-          .map(p => (p.id, p.code, p.title, p.public, p.startDate, p.endDate, p.budget))
-          .update((project.id, project.code, project.title, project.public, project.startDate, project.endDate, project.budget)))
+          .map(p => (p.id, p.code, p.title, p.public, p.startDate, p.endDate, p.budget, p.researcherCount))
+          .update((project.id, project.code, project.title, project.public, project.startDate, project.endDate, project.budget, project.researcherCount)))
       deleteAps <- authorsProjects.filter(_.projectId === project.id).delete
       insertAps <- authorsProjects.returning(authorsProjects.map(_.id)).into((c, ide) => c.copy(id = ide)) ++= aps
       

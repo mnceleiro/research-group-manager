@@ -71,8 +71,8 @@ class AuthorCongressRepository @Inject()(dbConfigProvider: DatabaseConfigProvide
 	
 	def checkAuthorHasCongress(resId: Long, congressId: Long): Future[Option[Option[Long]]] = {
 	  val join = (for {
-	    x <- authorsCongresses.filter(x => x.congressId === congressId && x.authorId === resId)
-	    x <- authorsCongresses.filter(x => x.congressId === congressId && x.authorId === resId)
+	    au <- authors.filter(a => a.resId === resId)
+	    x <- authorsCongresses.filter(x => x.congressId === congressId && x.authorId === au.id)
 	  } yield (x.id) ).result.headOption.transactionally
 	  
 	  dbConfig.db.run(join)

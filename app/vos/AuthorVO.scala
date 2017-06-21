@@ -8,7 +8,6 @@ import models.entities.Journal
 import models.entities.Congress
 import models.entities.Journal
 import models.entities.Researcher
-import models.entities.Project
 import models.entities.Author
 import play.api.libs.json.Json
 
@@ -41,7 +40,7 @@ trait AuthorOfAbstractVO{
   val res: Option[ResearcherVO]
 }
 
-case class AuthorOfProjectVO(id: Long, email: String, signature: String, researcherId: Option[Long], role: Long, res: Option[ResearcherVO])
+case class AuthorOfProjectVO(id: Long, email: String, signature: String, researcherId: Option[Long], role: Long, res: Option[ResearcherVO]) extends AuthorOfAbstractVO
 case class AuthorOfCongressVO(id: Long, email: String, signature: String, researcherId: Option[Long], res: Option[ResearcherVO]) extends AuthorOfAbstractVO
 case class AuthorOfJournalVO(id: Long, email: String, signature: String, researcherId: Option[Long], res: Option[ResearcherVO]) extends AuthorOfAbstractVO
 

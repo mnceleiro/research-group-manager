@@ -36,8 +36,8 @@ class AuthorJournalRepository @Inject()(dbConfigProvider: DatabaseConfigProvider
 	
 	def checkAuthorHasJournal(resId: Long, journalId: Long): Future[Option[Option[Long]]] = {
 	  val join = (for {
-	    x <- authorsJournals.filter(x => x.journalId === journalId && x.authorId === resId)
-	    x <- authorsJournals.filter(x => x.journalId === journalId && x.authorId === resId)
+	    au <- authors.filter(a => a.resId === resId)
+	    x <- authorsJournals.filter(x => x.journalId === journalId && x.authorId === au.id)
 	  } yield (x.id) ).result.headOption.transactionally
 	  
 	  dbConfig.db.run(join)

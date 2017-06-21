@@ -30,20 +30,6 @@ CREATE TABLE IF NOT EXISTS PUBLICATION_STATUS (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS FIELD (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  description varchar(255) NOT NULL,
-  
-  PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS ENTITY (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
-    name varchar(255) NOT NULL,
-    
-    PRIMARY KEY (id)
-);
-
 CREATE TABLE IF NOT EXISTS USER (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     email varchar(255) NOT NULL,
@@ -75,7 +61,8 @@ CREATE TABLE IF NOT EXISTS AUTHOR (
     res_id bigint(20),
     
     UNIQUE(email),
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (res_id) REFERENCES RESEARCHER(id)
 );
 -- FOREIGN KEY (res_id) REFERENCES RESEARCHER(id)
 
@@ -92,26 +79,6 @@ CREATE TABLE IF NOT EXISTS PROJECT (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS PROJECT_FINANCE_ENTITY (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  project_id bigint(20) NOT NULL,
-  entity_id bigint(20) NOT NULL,
-  
-  PRIMARY KEY(id),
-  FOREIGN KEY(project_id) REFERENCES PROJECT(id),
-  FOREIGN KEY(entity_id) REFERENCES ENTITY(id)
-);
-
-CREATE TABLE IF NOT EXISTS PROJECT_ENTITY (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  project_id bigint(20) NOT NULL,
-  entity_id bigint(20) NOT NULL,
-  
-  PRIMARY KEY(id),
-  FOREIGN KEY(project_id) REFERENCES PROJECT(id),
-  FOREIGN KEY(entity_id) REFERENCES ENTITY(id)
-);
-
 CREATE TABLE IF NOT EXISTS AUTHOR_PROJECT (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   author_id bigint(20) NOT NULL,
@@ -122,6 +89,7 @@ CREATE TABLE IF NOT EXISTS AUTHOR_PROJECT (
   UNIQUE (author_id, project_id),
   PRIMARY KEY (id),
   FOREIGN KEY (project_id) REFERENCES PROJECT(id),
+  FOREIGN KEY (author_id) REFERENCES AUTHOR(id),
   FOREIGN KEY (role_id) REFERENCES ROLE(id)
 );
 -- FOREIGN KEY (author_id) REFERENCES AUTHOR(id),
@@ -156,25 +124,6 @@ CREATE TABLE IF NOT EXISTS AUTHOR_CONGRESS (
   FOREIGN KEY (congress_id) REFERENCES CONGRESS(id)
 );
 
-CREATE TABLE IF NOT EXISTS QUARTILE (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  field_id bigint(20) NOT NULL,
-  number bigint(20) NOT NULL,
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (field_id) REFERENCES FIELD (id)
-);
-
-CREATE TABLE IF NOT EXISTS JCR (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  year bigint(20) NOT NULL,
-  impact_factor bigint(20) NOT NULL,
-  quartile_id bigint(20) NOT NULL,
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (quartile_id) REFERENCES QUARTILE (id)
-);
-
 CREATE TABLE IF NOT EXISTS JOURNAL (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   code varchar(100),
@@ -194,34 +143,6 @@ CREATE TABLE IF NOT EXISTS JOURNAL (
   FOREIGN KEY (status) REFERENCES PUBLICATION_STATUS(id)
 );
 
-CREATE TABLE IF NOT EXISTS BOOK (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  code varchar(100),
-  title varchar(255) NOT NULL,
-  book varchar(255) NOT NULL,
-  volume varchar(25),
-  start_page bigint(20),
-  end_page bigint(20),
-  year bigint(20),
-  editorial varchar(255) NOT NULL,
-  place varchar(255) NOT NULL,
-  isbn varchar(255),
-  
-  status bigint(20),
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (status) REFERENCES PUBLICATION_STATUS(id)
-);
-
-CREATE TABLE IF NOT EXISTS AUTHOR_BOOK (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  book_id bigint(20) NOT NULL,
-  author_id bigint(20) NOT NULL,
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (author_id) REFERENCES AUTHOR(id),
-  FOREIGN KEY (book_id) REFERENCES BOOK(id)
-);
 
 CREATE TABLE IF NOT EXISTS AUTHOR_JOURNAL (
   id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -248,11 +169,6 @@ INSERT INTO PUBLICATION_STATUS (id, description) VALUES (1, 'JUSTIFICADO');
 INSERT INTO PUBLICATION_STATUS (id, description) VALUES (2, 'ACEPTADO');
 INSERT INTO PUBLICATION_STATUS (id, description) VALUES (3, 'ENVIADO');
 
-INSERT INTO FIELD (id, description) VALUES (1, 'CIENCIAS DE LA COMPUTACIÓN');
-INSERT INTO FIELD (id, description) VALUES (2, 'BIOLOGÍA');
-INSERT INTO FIELD (id, description) VALUES (3, 'INGENIERÍA NAVAL');
-INSERT INTO FIELD (id, description) VALUES (4, 'INTELIGENCIA ARTIFICIAL');
-INSERT INTO FIELD (id, description) VALUES (5, 'INGENIERÍA CIVIL');
 
 INSERT INTO USER (email, password, admin, access) VALUES ('admin@admin.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', TRUE, TRUE);
 INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('NombreAdmin', 'ApellidosAdmin', 'DireccionAdmin', '999999999', 1);
