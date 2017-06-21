@@ -47,7 +47,7 @@ export const validate = formProps => {
     errors.endPage = "El número de página no está en el formato correcto."
   }
 
-  if (formProps.startPage && formProps.endPage && formProps.startPage > formProps.endPage) {
+  if (formProps.startPage && formProps.endPage && parseInt(formProps.startPage, 10) > parseInt(formProps.endPage, 10)) {
     errors.startPage = "La página de inicio no puede ser mayor que la de fin."
     errors.endPage = "La página de inicio no puede ser mayor que la de fin."
   }
