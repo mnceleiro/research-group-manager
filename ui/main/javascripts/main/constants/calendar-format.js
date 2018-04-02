@@ -12,5 +12,6 @@ export const calendarFormat = {
     localizer.format(date, "DDD", culture),
 
   monthHeaderFormat: (date, culture, localizer) => localizer.format(date, "LL", culture),
-  agendaHeaderFormat: ({start, end}, culture, localizer) => localizer.format(start, "LL", culture) + " - " + localizer.format(end, "LL", culture)
+  // agendaHeaderFormat: ({start, end}, culture, localizer) => localizer.format(start, "LL", culture) + " - " + localizer.format(end, "LL", culture)
+  agendaHeaderFormat: (start, culture, localizer) => localizer.format(start, "MMMM YYYY", culture)
 }

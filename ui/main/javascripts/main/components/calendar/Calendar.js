@@ -105,7 +105,7 @@ export class Calendar extends Component {
       let defaultDate = new Date()
       return (
         <div className="row">
-          <div className="col-md-offset-1 col-md-9">
+          <div className="col-md-12">
             <div className="table-responsive">
               <BigCalendar
                 messages={calendarMessages}

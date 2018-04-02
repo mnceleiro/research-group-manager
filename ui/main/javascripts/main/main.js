@@ -9,7 +9,6 @@ $(document).ready(function() {
 
   $MENU_TOGGLE.on("click", function() {
     $CONTENT_COLUMN.css("min-height", $(window).height())
-
     // Expand/collapse sidebar
     if ($BODY.hasClass("nav-md")) {
       // Contraer

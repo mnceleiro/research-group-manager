@@ -248,37 +248,37 @@ INSERT INTO FIELD (id, description) VALUES (4, 'INTELIGENCIA ARTIFICIAL');
 INSERT INTO FIELD (id, description) VALUES (5, 'INGENIERÍA CIVIL');
 
 INSERT INTO USER (email, password, admin, access) VALUES ('mnceleiro@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 1, 1);
-INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Marcos', 'Núñez Celeiro', 'Calle Empanada de Zorza nº5', '9825312121', 1);
+INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Marcos', 'Núñez Celeiro', 'Avenida da Coruña nº5', '9825312121', 1);
 
-INSERT INTO USER (email, password, admin, access) VALUES ('ocanellas@gmail.com','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 0, 0);
+INSERT INTO USER (email, password, admin, access) VALUES ('ollopez@gmail.com','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 0, 0);
 INSERT INTO USER (email, password, admin, access) VALUES ('dmritchie@yahoo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 0, 1);
 INSERT INTO USER (email, password, admin, access) VALUES ('ltorval@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 1, 1);
 INSERT INTO USER (email, password, admin, access) VALUES ('mrjato@esei.uvigo.es','$2a$12$l/xZ9uxuWijTvc14Ff5AVur6FIFMogs0DFdVhlfmHR3XWgvmQIVke', 0, 1);
 
-INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Oscar', 'Mixwell Cañellas', 'Calle Alcantara nº12', '9825312122', 2);
+INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Oscar', 'López López', 'Calle Alcantara nº12', '9825312122', 2);
 INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Dennis', 'MacAlistair Ritchie', 'Avenida Curros Enriquez 7', '9825312123', 3);
 INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Linus', 'Benedict Torvalds', 'Plaza Pontevedra 122', '9825312124', 4);
-INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Miguel', 'Reboiro Jato', 'Avenida de la Coruña 17', '9825312125', 5);
+INSERT INTO RESEARCHER (first_name, last_name, address, phone, user_id) VALUES ('Miguel', 'Reboiro Jato', 'Avenida da Coruña 17', '9825312125', 5);
 
 INSERT INTO AUTHOR (email, signature, res_id) VALUES ('mnceleiro@esei.uvigo.es', 'Marcos Nunez-Celeiro', 1);
-INSERT INTO AUTHOR (email, signature, res_id) VALUES ('ocanellas@gmail.com', 'Oscar Mixwell Cañellas', 2);
+INSERT INTO AUTHOR (email, signature, res_id) VALUES ('ollopez@gmail.com', 'Oscar López-López', 2);
 INSERT INTO AUTHOR (email, signature, res_id) VALUES ('dmritchie@yahoo.es', 'Dennis MacAlistair-Ritchie', 3);
 INSERT INTO AUTHOR (email, signature, res_id) VALUES ('ltorval@esei.uvigo.es', 'Linus Benedict-Torvalds', 4);
 INSERT INTO AUTHOR (email, signature, res_id) VALUES ('mrjato@esei.uvigo.es', 'Miguel Reboiro-Jato', 5);
 INSERT INTO AUTHOR (email, signature) VALUES ('mfowler@gmail.com', 'Martin Fowler');
 
-INSERT INTO PROJECT (code, public, title, start_date, end_date, budget, researcher_count) VALUES ('2323', 1, 'title1', '02/07/2017', '03/10/2017', 3000, 4);
-INSERT INTO PROJECT (code, public, title, start_date, end_date, budget, researcher_count) VALUES ('2324', 1, 'title2', '26/06/2017', '14/09/2017', 4000, 5);
-INSERT INTO PROJECT (code, public, title, start_date, end_date, budget, researcher_count) VALUES ('1212', 1, 'Proyecto de prueba', '08/11/2017', '21/12/2017', 2122, 5);
+INSERT INTO PROJECT (code, public, title, start_date, end_date, budget, researcher_count) VALUES ('2323', 1, 'Tit 1', '03/07/2017', '06/07/2017', 3000, 2);
+INSERT INTO PROJECT (code, public, title, start_date, end_date, budget, researcher_count) VALUES ('2324', 1, 'Tit 2', '26/06/2017', '07/07/2017', 4000, 1);
+INSERT INTO PROJECT (code, public, title, start_date, end_date, budget, researcher_count) VALUES ('1212', 1, 'Tit 3', '08/11/2017', '21/12/2017', 2122, 0);
 
 INSERT INTO AUTHOR_PROJECT (author_id, project_id, role_id) VALUES (1, 1, 1);
 INSERT INTO AUTHOR_PROJECT (author_id, project_id, role_id) VALUES (2, 1, 1);
 INSERT INTO AUTHOR_PROJECT (author_id, project_id, role_id) VALUES (1, 2, 1);
 
 
-INSERT INTO CONGRESS (title, name, place, country, start, end, international, type, status) VALUES ('TITULO CONGRESO 1', 'NOMBRE CONGRESO 1', 'OURENSE', 'ESPAÑA', '18/07/2017', '18/07/2017', 1, 1, 1);
-INSERT INTO CONGRESS (title, name, place, country, start, end, international, type, status) VALUES ('TITULO CONGRESO 2', 'NOMBRE CONGRESO 2', 'OURENSE', 'ESPAÑA', '05/07/2017', '05/07/2017', 1, 2, 3);
-INSERT INTO CONGRESS (title, name, place, country, start, end, international, type, status) VALUES ('TITULO CONGRESO 3', 'NOMBRE CONGRESO 3', 'OURENSE', 'ESPAÑA', '11/07/2017', '12/07/2017', 0, 2, 1);
+INSERT INTO CONGRESS (title, name, place, country, start, end, international, type, status) VALUES ('CONG1', 'CONG1', 'OURENSE', 'ESPAÑA', '18/07/2017', '18/07/2017', 1, 1, 1);
+INSERT INTO CONGRESS (title, name, place, country, start, end, international, type, status) VALUES ('CONG2', 'CONG2', 'OURENSE', 'ESPAÑA', '05/07/2017', '05/07/2017', 1, 2, 3);
+INSERT INTO CONGRESS (title, name, place, country, start, end, international, type, status) VALUES ('CONG3', 'CONG3', 'OURENSE', 'ESPAÑA', '11/07/2017', '12/07/2017', 0, 2, 1);
 
 INSERT INTO AUTHOR_CONGRESS (author_id, congress_id) VALUES (1, 1);
 INSERT INTO AUTHOR_CONGRESS (author_id, congress_id) VALUES (2, 1);
